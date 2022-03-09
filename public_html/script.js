@@ -1769,8 +1769,8 @@ function refreshSelected() {
 
 	if (selected.registration != null) {
 		$('#selected_photo_link').html(getJetPhotosPhotoLink(selected.registration));
-		$('#selected_photo_link').append(" | " + getFlightAwarePhotoLink(selected.registration));
-		$('#selected_photo_link').append(" | " + getPlaneSpottersPhotoLink(selected.registration));
+		$('#selected_photo_link').append(" &bull; " + getFlightAwarePhotoLink(selected.registration));
+		$('#selected_photo_link').append(" &bull; " + getPlaneSpottersPhotoLink(selected.registration));
 	}
 }
 
@@ -2493,11 +2493,9 @@ function setSelectedInfoBlockVisibility() {
 
 	if (planeSelected && mapIsVisible) {
 		$('#selected_infoblock').show();
-		$('#layout_container').css("height", "80vh");
 		updateMapSize();
 	} else {
 		$('#selected_infoblock').hide();
-		$('#layout_container').css("height", "100vh");
 		updateMapSize();
 	}
 }

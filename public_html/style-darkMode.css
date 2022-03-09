@@ -16,23 +16,6 @@ html, body {
   height: 100%;
 }
 
-#selected_infoblock {
-  position: relative;
-  width: 100%;
-  background: #212121;
-  cursor: pointer;
-  z-index: 9999;
-  height: 20vh;
-  overflow: hidden;
-}
-#selected_infoblock a {
-color: #84d1d0;
-text-decoration: none;
-}
-#selected_infoblock a:hover {
-  color: #5aa5a4;
-}
-
 #map_container {
   flex: 1 1 auto;
   position: relative;
@@ -54,8 +37,8 @@ text-decoration: none;
 
 #show_map_button {
   position: absolute;
-    right: 10px;
-    z-index: 999;
+  right: 10px;
+  z-index: 999;
 }
 
 #toggle_sidebar_button svg, #expand_sidebar_control svg {
@@ -93,8 +76,8 @@ text-decoration: none;
 
 #sidebar_container {
   display: flex;
-  width: 550px;
-  /* AKISSACK  ------------ Ref: AK9F */
+  width: 30vw;
+  min-width: 560px;
   left: 0 !important;
 }
 
@@ -116,7 +99,9 @@ text-decoration: none;
 #sidebar_canvas {
   flex: 1 1 auto;
   padding: 10px;
+  display: flex;
   overflow: auto;
+  flex-direction: column;
 }
 
 div#SpecialSquawkWarning {
@@ -271,6 +256,50 @@ div#loader {
 
 .hidden {
   display: none;
+}
+
+#selected_infoblock {
+  position: relative;
+  width: 100%;
+  background: #2a2a2a;
+  cursor: pointer;
+  z-index: 99;
+  max-height: 30vh;
+  overflow: hidden;
+  margin-top: auto;
+}
+
+#selected_infoblock a {
+  color: #84d1d0;
+  text-decoration: none;
+}
+
+#selected_infoblock a:hover {
+  color: #5aa5a4;
+}
+
+.psImage {
+  display: block;
+  max-width: 320px;
+  float: left;
+  position: relative;
+  margin-right: 10px;
+}
+
+.psImage img {
+  width: 100%;
+  height: auto;
+}
+
+.psPhotoInfo {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  display: block;
+  background: #0000008f;
+  width: auto;
+  padding: 5px;
+  font-size: 10px;
 }
 
 .infoblock_heading {
@@ -455,26 +484,7 @@ div.mp {
   transition: width 500ms ease-in-out;
 }
 
-
-.psImage {
-  display: block;
-  max-width: 380px;
-  float: left;
-  position: relative;
-  margin-right: 10px;
-}
-
-.psImage img{
-  width: 100%;
-  height:auto;
-}
-.psPhotoInfo {
-  position: absolute;
-    top: 8px;
-    left: 16px;
-    display: block;
-    background: #0000008f;
-    width: auto;
-    padding: 5px;
-    font-size: 10px;
+.planes_table {
+  max-height: 70vh;
+  overflow-y: auto;
 }
