@@ -189,6 +189,10 @@ div#loader {
   text-align: center;
 }
 
+#myAcAc {
+  min-width: 60px;
+}
+
 #sudo_buttons {
   display: flex;
   justify-content: space-between;
@@ -260,35 +264,101 @@ div#loader {
 
 #selected_infoblock {
   position: relative;
-  width: 100%;
+  width: auto;
   background: #2a2a2a;
-  cursor: pointer;
   z-index: 99;
-  max-height: 30vh;
-  overflow: hidden;
+  max-height: 35vh;
+  overflow: auto;
   margin-top: auto;
+  margin-right: -9px;
+  margin-left: -3px;
+  margin-bottom: -10px;
 }
 
 #selected_infoblock a {
   color: #84d1d0;
   text-decoration: none;
+  font-size: 12px;
+  font-family: 'Inconsolata', monospace;
 }
 
 #selected_infoblock a:hover {
   color: #5aa5a4;
 }
 
+.acInfoHeader {
+  margin: 8px;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.acInfoHeader h2 {
+  display: flex;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+}
+
+.acInfoHeaderAdditional {
+  display: block;
+}
+
+.acInfoHeaderAdditional #selected_links {
+  display: block;
+}
+
+.acInfoHeaderAdditional #selected_links a:hover, #selected_icao:hover {
+  background: #1c1c1c;
+}
+
+.acInfoHeaderAdditional #selected_links a, #selected_icao {
+  display: inline-block;
+  background: #3c3b3b;
+  padding: 2px;
+  margin-right: 4px;
+}
+
+#selected_flag img {
+  height: 18px;
+  width: auto;
+  margin-right: 5px;
+  image-rendering: auto;
+}
+
+#selected_follow svg {
+  margin-left: 5px;
+  width: 24px;
+  height: 24px;
+}
+
 .psImage {
   display: block;
-  max-width: 320px;
+  width: 200px;
+  height: 133px;
   float: left;
   position: relative;
-  margin-right: 10px;
+  margin: 8px;
+  text-align: center;
+  background: #363636;
+  color: #161616;
+}
+
+.psImage svg {
+  margin-top: 20%;
 }
 
 .psImage img {
   width: 100%;
   height: auto;
+}
+
+.psImage img:hover {
+  position: relative;
+  width: 200%;
+  height: auto;
+  display: block;
+  transition: 0.2s;
 }
 
 .psPhotoInfo {
@@ -299,6 +369,11 @@ div#loader {
   background: #0000008f;
   width: auto;
   padding: 5px;
+  font-size: 10px;
+  color: #fff;
+}
+
+.psPhotoInfo a {
   font-size: 10px;
 }
 
@@ -314,18 +389,6 @@ div#loader {
 
 .infoblock_body {
   font-size: small;
-}
-
-#selected_icao {
-  font-size: x-small;
-}
-
-#selected_registration {
-  font-size: x-small;
-}
-
-#selected_icaotype {
-  font-size: x-small;
 }
 
 .dim {
@@ -487,4 +550,30 @@ div.mp {
 .planes_table {
   max-height: 70vh;
   overflow-y: auto;
+}
+
+/*styled scrollbar*/
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+:root {
+  scrollbar-face-color: rgba(0, 0, 0, 0.9);
+  ;
+  /* Firefox 63 compatibility */
+  scrollbar-track-color: rgba(0, 0, 0, 0.1);
+  ;
+  /* Firefox 63 compatibility */
+  scrollbar-color: rgba(0, 0, 0, 0.1);
+  rgba(0, 0, 0, 0.9);
+  scrollbar-width: thin;
 }

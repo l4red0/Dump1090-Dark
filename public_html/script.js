@@ -143,6 +143,7 @@ function processReceiverUpdate(data) {
 				}
 				selectPlaneByHex(h, false);
 				getPlaneSpottersApiData(h);
+        getVariousLinksFlight();
 				evt.preventDefault();
 			}.bind(undefined, hex));
 
@@ -1501,58 +1502,58 @@ function initialize_map() {
 		});
 
 
-	request.done(function(data) {
-		var ringStyle;
+		request.done(function(data) {
+			var ringStyle;
 
-		if (UseDefaultTerrianRings) {
-			ringStyle = new ol.style.Style({
-				fill: null,
-				stroke: new ol.style.Stroke({
-					color: '#000000',
-					lineDash: UseTerrianLineDash ? [4, 4] : null,
-					width: TerrianLineWidth
-				})
-			});
-		} else {
-			ringStyle = [];
-
-			for (var i = 0; i < TerrianAltitudes.length; ++i) {
-				ringStyle.push(new ol.style.Style({
+			if (UseDefaultTerrianRings) {
+				ringStyle = new ol.style.Style({
 					fill: null,
 					stroke: new ol.style.Stroke({
-						color: getTerrianColorByAlti(TerrianAltitudes[i]),
+						color: '#000000',
 						lineDash: UseTerrianLineDash ? [4, 4] : null,
 						width: TerrianLineWidth
 					})
-				}));
-			}
-		}
+				});
+			} else {
+				ringStyle = [];
 
-		for (var i = 0; i < data.rings.length; ++i) {
-			var geom = new ol.geom.LineString();
-			var points = data.rings[i].points;
-			if (points.length > 0) {
-				for (var j = 0; j < points.length; ++j) {
-					geom.appendCoordinate([points[j][1], points[j][0]]);
+				for (var i = 0; i < TerrianAltitudes.length; ++i) {
+					ringStyle.push(new ol.style.Style({
+						fill: null,
+						stroke: new ol.style.Stroke({
+							color: getTerrianColorByAlti(TerrianAltitudes[i]),
+							lineDash: UseTerrianLineDash ? [4, 4] : null,
+							width: TerrianLineWidth
+						})
+					}));
 				}
-				geom.appendCoordinate([points[0][1], points[0][0]]);
-				geom.transform('EPSG:4326', 'EPSG:3857');
-
-				var feature = new ol.Feature(geom);
-				if (UseDefaultTerrianRings) {
-					feature.setStyle(ringStyle);
-				} else {
-					feature.setStyle(ringStyle[i]);
-				}
-				StaticFeatures.push(feature);
 			}
-		}
-	});
 
-	request.fail(function(jqxhr, status, error) {
-		// no rings available, do nothing
-	});
-}
+			for (var i = 0; i < data.rings.length; ++i) {
+				var geom = new ol.geom.LineString();
+				var points = data.rings[i].points;
+				if (points.length > 0) {
+					for (var j = 0; j < points.length; ++j) {
+						geom.appendCoordinate([points[j][1], points[j][0]]);
+					}
+					geom.appendCoordinate([points[0][1], points[0][0]]);
+					geom.transform('EPSG:4326', 'EPSG:3857');
+
+					var feature = new ol.Feature(geom);
+					if (UseDefaultTerrianRings) {
+						feature.setStyle(ringStyle);
+					} else {
+						feature.setStyle(ringStyle[i]);
+					}
+					StaticFeatures.push(feature);
+				}
+			}
+		});
+
+		request.fail(function(jqxhr, status, error) {
+			// no rings available, do nothing
+		});
+	}
 }
 
 function createSiteCircleFeatures() {
@@ -1693,7 +1694,6 @@ function refreshSelected() {
 	} else {
 		$('#selected_callsign').text('n/a');
 	}
-	$('#selected_flightaware_link').html(getFlightAwareModeSLink(selected.icao, selected.flight, "[FlightAware]"));
 
 	if (selected.registration !== null) {
 		$('#selected_registration').text(selected.registration);
@@ -1756,10 +1756,12 @@ function refreshSelected() {
 		}
 		$('#selected_follow').removeClass('hidden');
 		if (FollowSelected) {
-			$('#selected_follow').css('font-weight', 'bold');
+			$('#selected_follow').html('<span title="Stop following"><i icon-name="locate-off"></i></span>');
+			lucide.createIcons();
 			OLMap.getView().setCenter(ol.proj.fromLonLat(selected.position));
 		} else {
-			$('#selected_follow').css('font-weight', 'normal');
+			$('#selected_follow').html('<span title="Locate on map and follow"><i icon-name="locate-fixed"></i></span>');
+			lucide.createIcons();
 		}
 	}
 
@@ -1788,15 +1790,15 @@ function getPlaneSpottersApiData(hex) {
 				'Access-Control-Allow-Origin': '*',
 			},
 			beforeSend: function(xhr) {
-				xhr.setRequestHeader("Authorization", "Basic " + btoa(""));
+				//xhr.setRequestHeader("Authorization", "Basic " + btoa(""));
+				$('#selected_infoblock .psImage').html('<i icon-name="image-off"></i><br>NO MEDIA');
 			},
 			success: function(data) {
 				if (data.photos.length >= 1) {
 					renderPlaneSpottersImage(data);
 				} else {
-					$('#selected_infoblock .psImage').html("");
+					$('#selected_infoblock .psImage').html('<i icon-name="image-off"></i><br>NO MEDIA');
 				}
-
 			}
 		})
 	}
@@ -2254,8 +2256,8 @@ function selectPlaneByHex(hex, autofollow) {
 
 	if (SelectedPlane !== null && autofollow) {
 		FollowSelected = true;
-		if (OLMap.getView().getZoom() < 8)
-			OLMap.getView().setZoom(8);
+		if (OLMap.getView().getZoom() <= 8)
+			OLMap.getView().setZoom(11);
 	} else {
 		FollowSelected = false;
 	}
@@ -2369,8 +2371,8 @@ function deselectAllPlanes() {
 
 function toggleFollowSelected() {
 	FollowSelected = !FollowSelected;
-	if (FollowSelected && OLMap.getView().getZoom() < 8)
-		OLMap.getView().setZoom(8);
+	if (FollowSelected && OLMap.getView().getZoom() <= 8)
+		OLMap.getView().setZoom(11);
 	refreshSelected();
 }
 
@@ -2492,11 +2494,11 @@ function setSelectedInfoBlockVisibility() {
 	var planeSelected = (typeof SelectedPlane !== 'undefined' && SelectedPlane != null && SelectedPlane != "ICAO");
 
 	if (planeSelected && mapIsVisible) {
-		$('#selected_infoblock').show();
-		updateMapSize();
+		//$('#selected_infoblock').show();
+		//updateMapSize();
 	} else {
-		$('#selected_infoblock').hide();
-		updateMapSize();
+		//$('#selected_infoblock').hide();
+		//updateMapSize();
 	}
 }
 
@@ -2602,15 +2604,16 @@ function updatePlaneFilter() {
 	PlaneFilter.altitudeUnits = DisplayUnits;
 }
 
-function getFlightAwareIdentLink(ident, linkText) {
-	if (ident !== null && ident !== "") {
-		if (!linkText) {
-			linkText = ident;
-		}
-		return "<a target=\"_blank\" href=\"https://flightaware.com/live/flight/" + ident.trim() + "\">" + linkText + "</a>";
-	}
-
-	return "";
+function getVariousLinksFlight() {
+  if (Planes[SelectedPlane].icao !== null && Planes[SelectedPlane].icao !== "") {
+	$('#selected_links').css('display', 'flex');
+	$('#selected_adsbexchange_link').attr('href', 'https://globe.adsbexchange.com/?icao=' + Planes[SelectedPlane].icao);
+	$('#selected_planefinder_link').attr('href', 'https://planefinder.net/flight/' + Planes[SelectedPlane].flight);
+	$('#selected_opensky_link').attr('href', 'https://opensky-network.org/aircraft-profile?icao24=' + Planes[SelectedPlane].icao);
+	$('#selected_flightaware_link').attr('href', 'https://flightaware.com/live/flight/' + Planes[SelectedPlane].flight);
+} else {
+	$('#selected_links').css('display', 'none');
+}
 }
 
 function getFlightAwareModeSLink(code, ident, linkText) {

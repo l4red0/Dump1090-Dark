@@ -72,7 +72,7 @@ function PlaneObject(icao) {
 
         // request metadata
         getAircraftData(this.icao).done(function(data) {
-		console.log(data);
+          	    //console.log(data);
                 if ("r" in data)    {this.registration = data.r;}
                 if ("t" in data)    {this.icaotype = data.t;}
                 if ("desc" in data) {this.typeDescription = data.desc;}
@@ -129,7 +129,7 @@ PlaneObject.prototype.isFiltered = function() {
  			var planeAltitude = this.altitude === "ground" ? 0 : convert_altitude(this.altitude, this.filter.altitudeUnits);
 			if (planeAltitude < this.filter.minAltitude || planeAltitude > this.filter.maxAltitude) {
 				AcInBracket = false;
-			}	
+			}
 		}
 		//return planeAltitude < this.filter.minAltitude || planeAltitude > this.filter.maxAltitude;  //if low or high, exclude (true)
 	}
@@ -180,10 +180,10 @@ PlaneObject.prototype.updateTrack = function(estimate_time) {
 
         var lastseg = this.track_linesegs[this.track_linesegs.length - 1];
         var elapsed = (this.last_position_time - lastseg.head_update);
-        
+
         var est_track = (elapsed > estimate_time);
         var ground_track = (this.altitude === "ground");
-        
+
         if (est_track) {
 
                 if (!lastseg.estimated) {
@@ -204,7 +204,7 @@ PlaneObject.prototype.updateTrack = function(estimate_time) {
 
                 return true;
         }
-        
+
         if (lastseg.estimated) {
                 // We are back to good data (we got two points close in time), switch back to
                 // solid lines.
@@ -218,7 +218,7 @@ PlaneObject.prototype.updateTrack = function(estimate_time) {
                 this.history_size ++;
                 // continue
         }
-        
+
         if ( (lastseg.ground && this.altitude !== "ground") ||
              (!lastseg.ground && this.altitude === "ground") ) {
                 //console.log(this.icao + " ground state changed");
@@ -236,7 +236,7 @@ PlaneObject.prototype.updateTrack = function(estimate_time) {
                 this.history_size += 3;
                 return true;
         }
-        
+
         // Add more data to the existing track.
         // We only retain some historical points, at 5+ second intervals,
         // plus the most recent point
@@ -359,7 +359,7 @@ PlaneObject.prototype.getMarkerColor = function() {
             if (this.is_interesting) {
                myColour = '#993333' ;
             }
-	    return myColour;  
+	    return myColour;
         } else {
            // ---------------------------   AKISSACK mono colour  Ref: AK9C ends
            return 'hsl(' + (h/5).toFixed(0)*5 + ',' + (s/5).toFixed(0)*5 + '%,' + (l/5).toFixed(0)*5 + '%)'
@@ -374,9 +374,9 @@ PlaneObject.prototype.updateIcon = function() {
         var outline = (this.position_from_mlat ? OutlineMlatColor : OutlineADSBColor);
 	var baseMarker = getBaseMarker(this.category, this.icaotype, this.typeDescription, this.wtc);
 	if (ShowMyPreferences) { // Ref: AK9D starts
-            if (ShowMyIcons) {   // Ref: AK10B starts       
- 	        var baseMarker = getMyBaseMarker(this.category, this.icaotype, this.typeDescription, this.wtc, this.ac_category);    
-	    } // Ref: AK10B ends      
+            if (ShowMyIcons) {   // Ref: AK10B starts
+ 	        var baseMarker = getMyBaseMarker(this.category, this.icaotype, this.typeDescription, this.wtc, this.ac_category);
+	    } // Ref: AK10B ends
 	    var adjWeight = (this.is_interesting ? 0.5 : 0.5)
             var weight = ((this.selected ? 0.75 : adjWeight ) / baseMarker.scale).toFixed(1);
 	    if (this.is_interesting == 'Y') {
@@ -497,17 +497,17 @@ PlaneObject.prototype.updateData = function(receiver_timestamp, data) {
 	this.messages	= data.messages;
         this.rssi       = data.rssi;
 	this.last_message_time = receiver_timestamp - data.seen;
-        
+
         if (typeof data.type !== "undefined")
                 this.addrtype	= data.type;
         else
                 this.addrtype   = 'adsb_icao';
 
-		
+
 	// AKISSACK - Altitude taking into account differering data structures (changed in FA 3.6.2?)
         if (typeof data.altitude !== "undefined") {
 		this.altitude	= data.altitude;
-        } else if (typeof data.alt_baro !== "undefined") { 
+        } else if (typeof data.alt_baro !== "undefined") {
 		this.altitude	= data.alt_baro;
 	} else if (typeof data.alt_geom !== "undefined") {
                 this.altitude = data.alt_geom;
@@ -520,17 +520,17 @@ PlaneObject.prototype.updateData = function(receiver_timestamp, data) {
 	// AKISSACK - Rate of climb/descent taking into account differering data structures (changed in FA 3.6.2?)
         if (typeof data.vert_rate !== "undefined") {
 		this.vert_rate	= data.vert_rate;
-        } else if (typeof data.geom_rate !== "undefined") {  
+        } else if (typeof data.geom_rate !== "undefined") {
 	        this.vert_rate	= data.geom_rate;
         } else if (typeof data.baro_rate !== "undefined") {
                 this.vert_rate = data.baro_rate;
 	}
 
 
-	// AKISSACK - Speed taking into account differering data structures (changed in FA 3.6.2?)	
+	// AKISSACK - Speed taking into account differering data structures (changed in FA 3.6.2?)
         if (typeof data.speed !== "undefined") {
 		this.speed	= data.speed;
-	} else if (typeof data.gs !== "undefined") {  
+	} else if (typeof data.gs !== "undefined") {
 		this.speed	= data.gs;
         } else if (typeof data.tas !== "undefined") {
                 this.speed = data.tas;
@@ -576,7 +576,7 @@ PlaneObject.prototype.updateTick = function(receiver_timestamp, last_timestamp) 
         // recompute seen and seen_pos
         this.seen = receiver_timestamp - this.last_message_time;
         this.seen_pos = (this.last_position_time === null ? null : receiver_timestamp - this.last_position_time);
-        
+
 	// If no packet in over 58 seconds, clear the plane.
 	if (this.seen > 58) {
                 if (this.visible) {
@@ -601,7 +601,7 @@ PlaneObject.prototype.updateTick = function(receiver_timestamp, last_timestamp) 
 					localStorage.setItem("MaxRngRange", JSON.stringify(MaxRngRange));
 					localStorage.setItem("MaxRngLat", JSON.stringify(MaxRngLat));
 					localStorage.setItem("MaxRngLon", JSON.stringify(MaxRngLon));
-					if (SleafordMySql && this.siteNm > MinRangeLikely) { // 120) { 
+					if (SleafordMySql && this.siteNm > MinRangeLikely) { // 120) {
 					  // Store this in mySql so I will always have max ranges
 					  updateMySql("max",this.siteBearing,this.siteNm,this.position[1],this.position[0],this.icao,this.fl);
 					}
@@ -614,7 +614,7 @@ PlaneObject.prototype.updateTick = function(receiver_timestamp, last_timestamp) 
 						localStorage.setItem("MidRngRange", JSON.stringify(MidRngRange));
 						localStorage.setItem("MidRngLat", JSON.stringify(MidRngLat));
 						localStorage.setItem("MidRngLon", JSON.stringify(MidRngLon));
-						if (SleafordMySql && this.siteNm < MidRangeLikely) { //200) {  
+						if (SleafordMySql && this.siteNm < MidRangeLikely) { //200) {
 					  		updateMySql("mid",this.siteBearing,this.siteNm,this.position[1],this.position[0],this.icao,this.fl);
 						}
 					}
@@ -627,12 +627,12 @@ PlaneObject.prototype.updateTick = function(receiver_timestamp, last_timestamp) 
 						localStorage.setItem("MinRngRange", JSON.stringify(MinRngRange));
 						localStorage.setItem("MinRngLat", JSON.stringify(MinRngLat));
 						localStorage.setItem("MinRngLon", JSON.stringify(MinRngLon));
-						if (SleafordMySql && this.siteNm < MinRangeLikely ){ // 150) { 
+						if (SleafordMySql && this.siteNm < MinRangeLikely ){ // 150) {
 					  		updateMySql("min",this.siteBearing,this.siteNm,this.position[1],this.position[0],this.icao,this.fl);
 						}
 					}
 				};
-                        } else { 
+                        } else {
                                 this.updateMarker(false); // didn't move
                         }
                 } else {
@@ -657,7 +657,7 @@ PlaneObject.prototype.updateMarker = function(moved) {
                 this.clearMarker();
                 return;
         }
-        
+
         this.updateIcon();
         if (this.marker) {
                 if (moved) {
@@ -666,7 +666,7 @@ PlaneObject.prototype.updateMarker = function(moved) {
 		    // ---------------------------------------------------------------------
                     // AKISSACK - PERMANENT LABEL PART 2 - Update ---------------- ref: AK7A
 		    // ---------------------------------------------------------------------
-		    if (ShowPermanentLabels) {	
+		    if (ShowPermanentLabels) {
                         // Update label as as well as moving we may have gone up or down
                 	var v = '-';  // An indication of level, climbing or decending
                 	var labelText = '';
@@ -689,12 +689,12 @@ PlaneObject.prototype.updateMarker = function(moved) {
 				labelText = labelText + (this.squawk ? ' ['+ this.squawk+']' : '');
 
                         	if (this.selected && !SelectedAllPlanes ) {
-                        		this.labelColour = '#ffff00' //this.labelColour = 'yellow' changed for semi transparency					
+                        		this.labelColour = '#ffff00' //this.labelColour = 'yellow' changed for semi transparency
                         	} else {
-                        		this.labelColour = '#ffffff' //this.labelColour = 'white'			
+                        		this.labelColour = '#ffffff' //this.labelColour = 'white'
                         	}
 
-				//LINE TWO  
+				//LINE TWO
 				if (ShowAdditionalData) {
                                         //  Let's try an alternative to ID -> https://github.com/alkissack/Dump1090-OpenLayers3-html/issues/3
                                         var tmpText = this.ac_aircraft ? this.ac_aircraft : '-';
@@ -729,7 +729,7 @@ PlaneObject.prototype.updateMarker = function(moved) {
 					color: myFillColour //(this.is_interesting ? 'rgb(255,0,0)' : 'rgb(0,0,255)')
 				      }),
         		              stroke: new ol.style.Stroke({
-					color: myStrokeColour, //this.labelColour, 
+					color: myStrokeColour, //this.labelColour,
 					width: 4
 				      }),
                                       textAlign: 'left',
@@ -764,7 +764,7 @@ PlaneObject.prototype.updateMarker = function(moved) {
 		// ----------------------------------------------------------------------------------
                 // ------------------------------------------------------------------- ref: AK6A ends
 		// ----------------------------------------------------------------------------------
-                
+
                 this.marker.hex = this.icao;
                 this.marker.setStyle(this.markerStyle);
                 PlaneIconFeatures.push(this.marker);
@@ -787,23 +787,23 @@ PlaneObject.prototype.updateLines = function() {
         var estimateStyle = new ol.style.Style({
                 stroke: new ol.style.Stroke({
                         color: '#a08080',
-                        width: 0.75,		// Reduced width Ref: AK9A 
-                        lineDash: [3, 3]     
+                        width: 0.75,		// Reduced width Ref: AK9A
+                        lineDash: [3, 3]
                 })
         });
 
-	if (ShowMyPreferences) { // AKISSACK 
+	if (ShowMyPreferences) { // AKISSACK
         	var airStyle = new ol.style.Style({
 			stroke: new ol.style.Stroke({
 				color: (this.is_interesting == 'Y' ? '#ff0000' : '#0000ff'),
-        	                width: 0.75		// Reduced width Ref: AK9A 
+        	                width: 0.75		// Reduced width Ref: AK9A
         	        })
 	        });
 	} else {
         	var airStyle = new ol.style.Style({
                 	stroke: new ol.style.Stroke({
 	                       	color: '#000000',
-                        	width: 0.75		// Reduced width Ref: AK9A 
+                        	width: 0.75		// Reduced width Ref: AK9A
                 	})
        		});
 	}
@@ -811,7 +811,7 @@ PlaneObject.prototype.updateLines = function() {
         var groundStyle = new ol.style.Style({
                 stroke: new ol.style.Stroke({
                         color: '#408040',
-                        width: 0.75		// Reduced width Ref: AK9A 
+                        width: 0.75		// Reduced width Ref: AK9A
                 })
         });
 
@@ -865,7 +865,7 @@ function degrees(n) {
   return n * (180 / Math.PI);
 }
 
-// AKISSACK 
+// AKISSACK
 function getBearing(startLat,startLong,endLat,endLong){
   startLat = radians(startLat);
   startLong = radians(startLong);
@@ -893,19 +893,19 @@ function updateMySql(ring,bearing,dist,lat,lon,icao,fl){
   //if (dist >100) console.log(bearing+" "+dist+" "+icao+" "+fl); // Debug purposes
   if (bearing === 360) bearing = 0;
 
-  $(function () 
+  $(function ()
   {
-    $.ajax({                                      
-      url: 'sql/range_update_one.php',     
-      async: true , 
+    $.ajax({
+      url: 'sql/range_update_one.php',
+      async: true ,
       data: "ring="+ ring +"&bearing="+ bearing +"&range="+ dist+ "&lat="+ lat+ "&lon="+ lon+ "&icao="+ icao +"&fltlvl=" + fl ,
-      dataType: 'json',  
-      success: function(retData)  
+      dataType: 'json',
+      success: function(retData)
         {
           //console.log(ring+" "+retData); // true or false (success/failure)
 	  //console.log( retData); // true or false (success/failure)
         }
     });
-  }); 
+  });
 
 }

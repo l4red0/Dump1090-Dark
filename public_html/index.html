@@ -1,4 +1,4 @@
-<!DOCTYPE HTML> <!-- AKISSACK - WHOLE FILE ------------ Ref: AK9F -->
+<!DOCTYPE HTML>
 <html>
 
 <head>
@@ -206,59 +206,66 @@
 
 
 
-			<!-- selected_infoblock -->
-			<div id="selected_infoblock" class="hidden">
-				<div class="psImage"></div>
-				<table style="margin: 20px; width: auto;">
-					<tr class="infoblock_heading">
-						<td colspan="2">
-							<b><span id="selected_callsign" onclick="toggleFollowSelected();" class="pointer">n/a</span></b>
-							<span id="selected_follow" onclick="toggleFollowSelected();" class="pointer">&#x21D2;</span>
-							<span id="selected_flag"><img style="width: 20px; height=12px" src="" alt="Flag"></span>
-							<a href="http://www.airframes.org/" onclick="document.getElementById('horrible_hack').submit.call(document.getElementById('airframes_post')); return false;">
-								<span id="selected_icao"></span>
-							</a>
+				<!-- selected_infoblock -->
+				<div id="selected_infoblock">
+					<div class="acInfoHeader">
+						<h2>
+							<span id="selected_flag"><img style="" src="./flags-tiny/noflag.png" alt="Flag"></span>
+							<span id="selected_callsign" onclick="toggleFollowSelected();" class="pointer">n/a</span>
+							<span id="selected_follow" onclick="toggleFollowSelected();" class="pointer"><i icon-name="locate-fixed"></i></span>
+						</h2>
+						<div>
 							<span id="selected_registration"></span>
 							<span id="selected_icaotype"></span>
 							<span id="selected_emergency"></span>
-							<span id="selected_flightaware_link"></span>
-						</td>
-					</tr>
+							ICAO: <a href="http://www.airframes.org/" onclick="document.getElementById('horrible_hack').submit.call(document.getElementById('airframes_post')); return false;" title="[ICAO] airframes.org" id="selected_icao"></a>
+						</div>
+						<div class="acInfoHeaderAdditional">
+							<span id="selected_links">
+								<a id="selected_adsbexchange_link" href="#" target="_blank" title="[ICAO] adsbexchange.com">[AEx]</a>
+								<a id="selected_flightaware_link" href="#" target="_blank" title="[FLIGHT] flightaware.com ">[FA]</a>
+								<a id="selected_planefinder_link" href="#" target="_blank" title="[FLIGHT] planefinder.net">[PF]</a>
+								<a id="selected_opensky_link" href="#" target="_blank" title="[ICAO] opensky-network.org">[OS]</a>
+							</span>
+						</div>
+					</div>
 
-					<tr id="infoblock_country" class="infoblock_body">
-						<td colspan="2">Country of registration: <span id="selected_country">n/a</span></td>
-					</tr>
+					<div class="psImage"><i icon-name="image-off"></i><br>NO MEDIA</div>
+					<table style="width: auto;">
+						<tr id="infoblock_country" class="infoblock_body">
+							<td colspan="2">Country of registration: <span id="selected_country">n/a</span></td>
+						</tr>
 
-					<tr class="infoblock_body">
-						<td style="width: 55%">Altitude: <span id="selected_altitude"></span></td>
-						<td style="width: 45%">Squawk: <span id="selected_squawk"></span></td>
-					</tr>
+						<tr class="infoblock_body">
+							<td style="width: 55%">Altitude: <span id="selected_altitude"></span></td>
+							<td style="width: 45%">Squawk: <span id="selected_squawk"></span></td>
+						</tr>
 
-					<tr class="infoblock_body">
-						<td>Speed: <span id="selected_speed">n/a</span></td>
-						<td>RSSI: <span id="selected_rssi">n/a</span></td>
-					</tr>
+						<tr class="infoblock_body">
+							<td>Speed: <span id="selected_speed">n/a</span></td>
+							<td>RSSI: <span id="selected_rssi">n/a</span></td>
+						</tr>
 
-					<tr class="infoblock_body">
-						<td>Vertical rate: <span id="selected_vertical_rate">n/a</span></td>
-						<td>Messages: <span id="selected_message_count">n/a</span></td>
-					</tr>
+						<tr class="infoblock_body">
+							<td>Vertical rate: <span id="selected_vertical_rate">n/a</span></td>
+							<td>Messages: <span id="selected_message_count">n/a</span></td>
+						</tr>
 
-					<tr class="infoblock_body">
-						<td>Track: <span id="selected_track">n/a</span></td>
-						<td>Last seen: <span id="selected_seen">n/a</span></td>
-					</tr>
-					<tr class="infoblock_body">
-						<td colspan="2">Position: <span id="selected_position">n/a</span></td>
-					</tr>
-					<tr class="infoblock_body">
-						<td colspan="2">Distance from Site: <span id="selected_sitedist">n/a</span></td>
-					</tr>
-					<tr class="infoblock_body">
-						<td colspan="2"><span id="selected_photo_link"></span></td>
-					</tr>
-				</table>
-			</div>
+						<tr class="infoblock_body">
+							<td>Track: <span id="selected_track">n/a</span></td>
+							<td>Last seen: <span id="selected_seen">n/a</span></td>
+						</tr>
+						<tr class="infoblock_body">
+							<td colspan="2">Position: <span id="selected_position">n/a</span></td>
+						</tr>
+						<tr class="infoblock_body">
+							<td colspan="2">Distance from Site: <span id="selected_sitedist">n/a</span></td>
+						</tr>
+						<tr class="infoblock_body">
+							<td colspan="2"><span id="selected_photo_link"></span></td>
+						</tr>
+					</table>
+				</div>
 			</div> <!-- sidebar_canvas -->
 		</div> <!-- sidebar_container -->
 	</div> <!-- layout_container -->
