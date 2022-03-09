@@ -361,6 +361,14 @@ div#loader {
   height: 24px;
 }
 
+.trackIcon svg{
+width: 18px;
+height:18px;
+}
+.trackIcon {
+  display: block;
+  margin: 0px;
+}
 .psImage {
   display: block;
   width: 200px;

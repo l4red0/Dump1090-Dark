@@ -1707,17 +1707,17 @@ function refreshSelected() {
 		$('#selected_icaotype').text("");
 	}
 
-  if (selected.icaotype !== null) {
-    $('#selected_model').text(selected.ac_aircraft);
-  } else {
-    $('#selected_model').text("");
-  }
+	if (selected.icaotype !== null) {
+		$('#selected_model').text(selected.ac_aircraft);
+	} else {
+		$('#selected_model').text("");
+	}
 
-  if (selected.icaotype !== null) {
-    $('#selected_category').text(selected.ac_category);
-  } else {
-    $('#selected_category').text("");
-  }
+	if (selected.icaotype !== null) {
+		$('#selected_category').text(selected.ac_category);
+	} else {
+		$('#selected_category').text("");
+	}
 
 	var emerg = document.getElementById('selected_emergency');
 	if (selected.squawk in SpecialSquawks) {
@@ -1886,7 +1886,7 @@ function refreshTableInfo() {
 			}
 
 			if (ShowMyPreferences) {
-				tableplane.tr.cells[0].innerHTML = getAirframesModeSLinkIcao(tableplane.icao); // AKISSACK ------------ Ref: AK9F
+				tableplane.tr.cells[0].innerHTML = tableplane.icao;
 				tableplane.tr.cells[2].textContent = (tableplane.flight !== null ? tableplane.flight : "");
 			} else {
 				// ICAO doesn't change
@@ -1923,10 +1923,11 @@ function refreshTableInfo() {
 				tableplane.tr.cells[10].textContent = format_speed_brief(tableplane.speed, DisplayUnits);
 				tableplane.tr.cells[11].textContent = format_vert_rate_brief(tableplane.vert_rate, DisplayUnits);
 				tableplane.tr.cells[12].textContent = format_distance_brief(tableplane.sitedist, DisplayUnits); // Column index change needs to be reflected above in initialize_map()
-				tableplane.tr.cells[13].textContent = format_track_brief(tableplane.track);
+				//tableplane.tr.cells[13].textContent = format_track_brief(tableplane.track);
+				tableplane.tr.cells[13].innerHTML = trackIcon(tableplane.track);
 				tableplane.tr.cells[14].textContent = tableplane.messages;
 				tableplane.tr.cells[15].innerHTML = (tableplane.rssi !== null ? rssiToIcon(tableplane.rssi) : "");
-				tableplane.tr.cells[16].innerHTML = progressBar(tableplane.seen);
+				tableplane.tr.cells[16].innerHTML = progressBarIcon(tableplane.seen);
 				tableplane.tr.cells[17].textContent = (tableplane.position !== null ? tableplane.position[1].toFixed(4) : "");
 				tableplane.tr.cells[18].textContent = (tableplane.position !== null ? tableplane.position[0].toFixed(4) : "");
 				tableplane.tr.cells[19].textContent = format_data_source(tableplane.getDataSource());
@@ -2617,7 +2618,7 @@ function updatePlaneFilter() {
 }
 
 function getVariousLinksFlight() {
-	if (Planes[SelectedPlane].icao !== null && Planes[SelectedPlane].icao !== "") {
+	if (Planes[SelectedPlane].icao !== null && Planes[SelectedPlane].icao !== "" && Planes[SelectedPlane].icao !== 'undefined') {
 		$('#selected_links').css('display', 'flex');
 		$('#selected_adsbexchange_link').attr('href', 'https://globe.adsbexchange.com/?icao=' + Planes[SelectedPlane].icao);
 		$('#selected_planefinder_link').attr('href', 'https://planefinder.net/flight/' + Planes[SelectedPlane].flight);
@@ -2769,7 +2770,7 @@ function rssiToIcon(rssi) {
 }
 
 //Draw progress bar for last seen
-function progressBar(sec) {
+function progressBarIcon(sec) {
 	var pBar = "";
 	var percent = "100";
 	var sec = Math.round(sec);
@@ -2781,6 +2782,18 @@ function progressBar(sec) {
 	pBar = '<div class="progressBarWrapper shadow" title="' + sec + ' s"><div class="progressBar"><span class="progressBarFill" style="width: ' + percent + '%;"></span></div>';
 	return pBar;
 }
+
+//Draw arrow direction for track
+function trackIcon(track) {
+	var trackIcon = "";
+	if (track !== null) {
+		trackIcon = '<div class="trackIcon" title="' + track + '°"><svg xmlns="http://www.w3.org/2000/svg" style="transform: rotate(' + track + 'deg)" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></div>';
+	} else {
+		trackIcon = track;
+	}
+	return trackIcon;
+}
+
 
 $(document).ready(function() {
 	lucide.createIcons();
