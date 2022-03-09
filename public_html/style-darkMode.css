@@ -1,0 +1,480 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;300;700&family=Ubuntu:wght@300;400;500&display=swap');
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #212121;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 1em;
+  overflow: auto;
+  height: 100%;
+  color: #fffffffa;
+}
+
+#layout_container {
+  display: flex;
+  height: 100%;
+}
+
+#selected_infoblock {
+  position: relative;
+  width: 100%;
+  background: #212121;
+  cursor: pointer;
+  z-index: 9999;
+  height: 20vh;
+  overflow: hidden;
+}
+#selected_infoblock a {
+color: #84d1d0;
+text-decoration: none;
+}
+#selected_infoblock a:hover {
+  color: #5aa5a4;
+}
+
+#map_container {
+  flex: 1 1 auto;
+  position: relative;
+  height: 100%;
+}
+
+#map_canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+#toggle_sidebar_control {
+  display: block;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+#show_map_button {
+  position: absolute;
+    right: 10px;
+    z-index: 999;
+}
+
+#toggle_sidebar_button svg, #expand_sidebar_control svg {
+  stroke: rgb(33 33 33);
+}
+
+#toggle_sidebar_button {
+  float: right;
+  width: 32px;
+  height: 28px;
+  background-size: 32px 28px;
+  background-repeat: no-repeat;
+  background-position: 0px;
+  background-color: transparent;
+  border: none;
+}
+
+#expand_sidebar_control {
+  display: block;
+  position: absolute;
+  top: 48px;
+  right: 10px;
+}
+
+#expand_sidebar_button {
+  float: right;
+  width: 32px;
+  height: 28px;
+  background-size: 32px 28px;
+  background-repeat: no-repeat;
+  background-position: 0px;
+  background-color: transparent;
+  border: none;
+}
+
+#sidebar_container {
+  display: flex;
+  width: 550px;
+  /* AKISSACK  ------------ Ref: AK9F */
+  left: 0 !important;
+}
+
+#splitter {
+  flex: 0 0 6px;
+  cursor: col-resize;
+  background-color: #464646;
+  left: 0 !important;
+}
+
+#splitter:after {
+  content: '\2807';
+  color: #303030;
+  font-size: 28px;
+  line-height: 100vh;
+  margin-left: -3px;
+}
+
+#sidebar_canvas {
+  flex: 1 1 auto;
+  padding: 10px;
+  overflow: auto;
+}
+
+div#SpecialSquawkWarning {
+  position: absolute;
+  bottom: 25px;
+  left: 100px;
+  border: 2px solid red;
+  background-color: #FFFFA3;
+  opacity: 0.75;
+  filter: alpha(opacity=75);
+  padding: 5px;
+  text-align: center;
+}
+
+div#update_error {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  border: 2px solid red;
+  background-color: #FFFFA3;
+  opacity: 0.75;
+  filter: alpha(opacity=75);
+  padding: 5px;
+  text-align: center;
+}
+
+div#loader {
+  z-index: 99;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: #000;
+  opacity: 0.8;
+  filter: alpha(opacity=80);
+}
+
+#spinny {
+  width: 128px;
+  height: 128px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -64px 0 0 -64px;
+}
+
+#loader_progress {
+  width: 250px;
+  height: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 128px 0 0 -125px;
+}
+
+#tableinfo {
+  font-size: 13px;
+  font-family: 'Inconsolata', monospace;
+}
+
+#tableinfo a {
+  color: #B3ffffff;
+  text-decoration: none;
+  font-size: 90%;
+}
+
+#tableinfo a:hover {
+  color: #80ffffff;
+}
+
+#tableinfo tr td {
+  padding: .2em;
+}
+
+.aircraft_table_header {
+  background-color: #018786;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.aircraft_table_header td {
+  padding: 5px;
+  text-align: center;
+}
+
+#sudo_buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+#units_container,
+#altitude_filter_form {
+  font-size: small;
+  margin: 10px 0 10px 0;
+}
+
+.verticalRateTriangle {
+  padding: 2px;
+}
+
+.icaoCodeColumn {
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 14px;
+}
+
+.tableAcName {
+  font-size: 11px;
+  text-overflow: ellipsis;
+}
+
+#plane_row_template td {
+  heigh: 34px;
+}
+
+#plane_row_template.plane_table_row {
+  cursor: pointer;
+  background: #2c2c2c;
+}
+
+#plane_row_template.selected {
+  background-color: #5b172f !important;
+  font-weight: 700;
+}
+
+#plane_row_template.vPosition {
+  background: #014f4e;
+  color: #fff;
+}
+
+#plane_row_template.mlat {
+  background-color: #3700B3;
+  color: #fff;
+}
+
+.squawk7500 {
+  font-weight: bold;
+  background-color: #ff5555;
+}
+
+.squawk7600 {
+  font-weight: bold;
+  background-color: #00ffff;
+}
+
+.squawk7700 {
+  font-weight: bold;
+  background-color: #ffff00;
+}
+
+.hidden {
+  display: none;
+}
+
+.infoblock_heading {
+  font-size: larger;
+}
+
+.infoblock_heading a {
+  text-decoration: none;
+  color: blue;
+  font-size: x-small;
+}
+
+.infoblock_body {
+  font-size: small;
+}
+
+#selected_icao {
+  font-size: x-small;
+}
+
+#selected_registration {
+  font-size: x-small;
+}
+
+#selected_icaotype {
+  font-size: x-small;
+}
+
+.dim {
+  opacity: 0.3;
+  filter: alpha(opacity=30);
+  /* For IE8 and earlier */
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.sidebarButton {
+  background-color: #014f4e;
+  padding: .4em .5em;
+  margin: .2em;
+  color: #FFFFFF;
+  font-weight: 400;
+  font-size: 14px;
+  border: 1px solid #095e5d;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.sidebarButton:hover {
+  background-color: #013a39;
+}
+
+.sidebarButton span {
+  display: block;
+  width: 100%;
+}
+
+.altitudeFilterInput {
+  width: 50px;
+}
+
+select.error, textarea.error, input.error {
+  color: #FF0000;
+}
+
+.layer-switcher {
+  top: 86px !important;
+  right: 10px !important;
+}
+
+.layer-switcher.shown .panel {
+  display: block;
+  background: #212121;
+}
+
+/* AKISSACK - ref: AK1B Starts ---------------------------------------------------------------------------- */
+div#mouseposition {
+  position: absolute;
+  top: 0px;
+  left: 20px;
+  opacity: 1;
+  text-align: left;
+  color: blue;
+}
+
+div.mp {
+  width: 210px;
+}
+
+/* ----------------------------------------------------------------------------------------- ref: AK1B Ends */
+/* AKISSACK -  HOVER OVER LABELS (also in script.js/PlaneObject.js/index.html) ----------- ref: AK6C starts */
+.ofInterest {
+  color: red;
+}
+
+#popinfo {
+  max-width: 200px;
+  background-color: white;
+  color: black;
+  opacity: 0.850;
+  font-size: 8pt;
+  font-family: sans-serif;
+  margin: 5px;
+  border: 1px solid black;
+  border-radius: 10px 10px 10px 0;
+  padding: 2px 5px 2px 5px;
+  white-space: pre-wrap;
+}
+
+/* AKISSACK -  HOVER OVER LABELS (also in script.js/PlaneObject.js/index.html) ------------ ref: AK6C ends */
+#currentStats {
+  display: flex;
+  justify-content: center;
+  font-size: 10px;
+  width: 100%;
+  color: #cbcbcb;
+}
+
+#currentStats .currentStatsLabel {
+  margin-left: .5em;
+  padding: 2px;
+  color: #dddddd;
+  align-items: center;
+}
+
+#currentStats div {
+  display: inline-flex;
+}
+
+#currentStats span {
+  margin-left: .2em;
+  display: inline-flex;
+  font-weight: 700;
+  font-size: 13px;
+  background: #000;
+  padding: 2px;
+}
+
+.flag {
+  width: 20px;
+  height: 12px;
+  margin: 2px;
+}
+
+.rssiIndicator svg {
+  height: 18px;
+}
+
+.shadow {
+  text-shadow: 0 0 2px #000;
+  -moz-text-shadow: 0 0 2px #000;
+  -webkit-text-shadow: 0 0 2px #000;
+}
+
+.green {
+  color: #3a6c1b;
+}
+
+.red {
+  color: #0f8b67;
+}
+
+.progressBarWrapper {
+  width: 25px;
+}
+
+.progressBar {
+  width: 100%;
+  background-color: #464646;
+  border-radius: 0px;
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / 20%);
+}
+
+.progressBarFill {
+  display: block;
+  height: 10px;
+  background-color: #ffffffdb;
+  border-radius: 0px;
+  transition: width 500ms ease-in-out;
+}
+
+
+.psImage {
+  display: block;
+  max-width: 380px;
+  float: left;
+  position: relative;
+  margin-right: 10px;
+}
+
+.psImage img{
+  width: 100%;
+  height:auto;
+}
+.psPhotoInfo {
+  position: absolute;
+    top: 8px;
+    left: 16px;
+    display: block;
+    background: #0000008f;
+    width: auto;
+    padding: 5px;
+    font-size: 10px;
+}

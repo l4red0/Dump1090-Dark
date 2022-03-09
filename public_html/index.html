@@ -23,6 +23,7 @@
 	<script type="text/javascript" src="flags.js"></script>
 	<script type="text/javascript" src="layers.js"></script>
 	<script type="text/javascript" src="script.js"></script>
+	<script type="text/javascript" src="jquery/lucide.min.js"></script>
 	<title>FlightAware dump1090</title>
 </head>
 
@@ -47,13 +48,175 @@
 	</form>
 
 	<div id="layout_container">
-		<div id="selected_infoblock" class="hidden">
+
+
+
+		<div id="map_container">
+			<div id="map_canvas">
+				<div id="popinfo"></div> <!-- AKISSACK  - HOVER OVER LABEL - ref: AK6B -->
+			</div>
+			<div id="toggle_sidebar_control" class="ol-unselectable ol-control">
+				<button id="toggle_sidebar_button" class="hide_sidebar" title="Toggle Sidebar"><i icon-name="chevrons-right"></i></button>
+			</div>
+			<div id="expand_sidebar_control" class="ol-unselectable ol-control">
+				<button id="expand_sidebar_button" title="Expand Sidebar"><i icon-name="chevrons-left"></i></button>
+			</div>
+		</div>
+
+		<div id="dump1090_infoblock" style="display:none;">
 			<table style="width: 100%">
+				<tr class="infoblock_heading">
+					<td>
+						<b id="infoblock_name">FlightAware dump1090</b>
+					</td>
+					<td>
+						<span id="show_map_button" class="pointer"><i icon-name="x-square"></i></span>
+					</td>
+					<td style="text-align: right">
+						<a href="https://github.com/flightaware/dump1090" id="dump1090_version" target="_blank"></a>
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan="2">
+
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<div id="sidebar_container">
+			<div id="splitter" class="ui-resizable-handle ui-resizable-w"></div>
+			<div id="sidebar_canvas">
+				<!--statistic panel-->
+				<div id="currentStats">
+					<div class="currentStatsLabel">Aircraft (total):<span id="dump1090_total_ac">n/a</span></div>
+					<div class="currentStatsLabel">Aircraft (positions):<span id="dump1090_total_ac_positions">n/a</span></div>
+					<div class="currentStatsLabel">Max distance:<span id="dump1090_max_range">n/a</span>
+						<div class="distanceUnit"></div>
+					</div>
+					<div class="currentStatsLabel">Messages:<span id="dump1090_message_rate">n/a</span>/s</div>
+				</div>
+
+				<!--configuration panel-->
+				<span class="sidebarButton pointer" onclick="toggleOptions('sudo_buttons');"><i icon-name="settings" title="Settings"></i><span>Settings</span></span>
+				<div id="sudo_buttons" style="display: none;">
+					<span class="sidebarButton darkModeBtn pointer" onclick="darkMode();" title="Light/Dark Mode"><i icon-name="moon"></i></span>
+					<span class="sidebarButton pointer" onclick="selectAllPlanes();"><i icon-name="plane" title="Select all Aircraft"></i><span>Select All</span></span>
+					<span class="sidebarButton pointer" onclick="selectMilPlanes();" title="Select only special Aircraft"><i icon-name="plane"></i><span>Select Special</span></span> <!-- AKISSACK Ref: AK9G -->
+					<span class="sidebarButton pointer" onclick="deselectAllPlanes();" title="Deselect all"><i icon-name="plane"></i><span>Deselect</span></span>
+					<span class="sidebarButton pointer" onclick="resetMap();" title="Reset Map"><i icon-name="minimize"></i><span>Map</span></span>
+					<span class="sidebarButton pointer" onclick="resetRangePlot();" title="Reset Range"><i icon-name="trash-2"></i><span>Range</span></span> <!-- AKISSACK Ref: ref: AK8K -->
+				</div>
+
+				<!--filters panel-->
+				<span class="sidebarButton pointer" onclick="toggleOptions('altitude_filter_form');"><i icon-name="sliders" title="Filter data"></i><span>Filter data</span></span>
+				<form id="altitude_filter_form" style="display: none;">
+					<!-- AKISSACK Ref: AK11A -->
+					<label> Filter by height:</label>
+					<input id="altitude_filter_min" name="minAltitude" type="text" class="altitudeFilterInput" maxlength="5">
+					<label for="minAltitude" class="altitudeUnit"></label>
+					<span> to </span>
+					<input id="altitude_filter_max" name="maxAltitude" type="text" class="altitudeFilterInput" maxlength="5">
+					<label for="maxAltitude" class="altitudeUnit"></label>
+					<button type="submit" style="float: right;">Filter</button>
+					</br>
+					<label> Specials only:</label>
+					<input id="specials_filter" type="checkbox" name="specials">
+					<button id="altitude_filter_reset_button" style="float: right;">Reset</button>
+					<!-- AKISSACK Ref: AK11A  Ends -->
+				</form>
+
+
+
+
+				<div id="units_container">
+					<!--  AKISSACK Remove units option from panel
+						<label for="units_selector">Units:</label>
+						<select name="units_selector" id="units_selector">
+							<option value="nautical">Aeronautical</option>
+							<option value="metric">Metric</option>
+							<option value="imperial">Imperial</option>
+						</select>
+-->
+				</div>
+
+
+
+				<div id="planes_table">
+					<table id="tableinfo" style="width: 100%">
+						<thead class="aircraft_table_header">
+							<tr>
+								<td id="icao" onclick="sortByICAO();">ICAO</td>
+								<td id="flag" onclick="sortByCountry()">
+									<!-- column for flag image -->
+								</td>
+								<td id="flight" onclick="sortByFlight();" title="ID / Flight">ID</td>
+								<td id="registration" onclick="sortByRegistration();">Registration</td>
+								<td id="aircraft_type" onclick="sortByAircraftType();"> Air craft type</td>
+								<td id="myAc" onclick="sortByICAO();">Aircraft</td> <!-- AKISSACK [MYTB] -->
+								<td id="myAcAc" onclick="sortByICAO();">NAME</td> <!-- AKISSACK [MYTB] -->
+								<td id="myAcCat" onclick="sortByICAO();">Icon</td> <!-- AKISSACK [MYTB] -->
+								<td id="squawk" onclick="sortBySquawk();" title="Squawk">SQWK</td>
+								<td id="altitude" onclick="sortByAltitude();" title="Altitude">ALT (<span class="altitudeUnit"></span>)</td>
+								<td id="speed" onclick="sortBySpeed();" title="Speed">SPD (<span class="speedUnit"></span>)</td>
+								<td id="vert_rate" onclick="sortByVerticalRate();">Vertical Rate (<span class="verticalRateUnit"></span>)</td>
+								<td id="distance" onclick="sortByDistance();" title="Distance">DIST (<span class="distanceUnit"></span>)</td>
+								<td id="track" onclick="sortByTrack();">TRACK</td>
+								<td id="msgs" onclick="sortByMsgs();">Msgs</td>
+								<td id="rssi" onclick="sortByRssi();" style="width: 28px;">RSSI</td>
+								<td id="seen" onclick="sortBySeen();">AGE</td>
+								<td id="lat" onclick="sortByLatitude();">Latitude</td>
+								<td id="lon" onclick="sortByLongitude();">Longitude</td>
+								<td id="data_source" onclick="sortByDataSource();">SOURCE</td>
+								<td id="airframes_mode_s_link">Airframes.org Link</td>
+								<td id="flightaware_mode_s_link">FlightAware Link</td>
+								<td id="flightaware_photo_link">Photos</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr id="plane_row_template" class="plane_table_row hidden">
+								<td class="icaoCodeColumn">ICAO</td>
+								<td><img class="flag shadow" src="" alt="Flag"></td>
+								<td>FLIGHT</td>
+								<td>REGISTRATION</td>
+								<td>AIRCRAFT_TYPE</td>
+								<td class="typeColumn">MYAC</td> <!-- AKISSACK [MYTB] -->
+								<td style="text-align: right">MYACAC</td> <!-- AKISSACK [MYTB] -->
+								<td style="text-align: right">MYACCAT</td> <!-- AKISSACK [MYTB] -->
+								<td style="text-align: right">SQUAWK</td>
+								<td style="text-align: right">ALTITUDE</td>
+								<td style="text-align: right">SPEED</td>
+								<td style="text-align: right">VERT_RATE</td>
+								<td style="text-align: right">DISTANCE</td>
+								<td style="text-align: right">TRACK</td>
+								<td style="text-align: right">MSGS</td>
+								<td style="text-align: right">RSSI</td>
+								<td style="text-align: right">SEEN</td>
+								<td style="text-align: right">LAT</td>
+								<td style="text-align: right">LON</td>
+								<td style="text-align: right">DATA_SOURCE</td>
+								<td style="text-align: center">AIRFRAMES_MODE_S_LINK</td>
+								<td style="text-align: center">FLIGHTAWARE_MODE_S_LINK</td>
+								<td style="text-align: center">FLIGHTAWARE_PHOTO_LINK</td>
+							</tr>
+						</tbody>
+					</table>
+				</div> <!-- planes_table -->
+
+			</div> <!-- sidebar_canvas -->
+		</div> <!-- sidebar_container -->
+	</div> <!-- layout_container -->
+
+		<!-- selected_infoblock -->
+		<div id="selected_infoblock" class="hidden">
+			<div class="psImage"></div>
+			<table style="margin: 20px; width: auto;">
 				<tr class="infoblock_heading">
 					<td colspan="2">
 						<b><span id="selected_callsign" onclick="toggleFollowSelected();" class="pointer">n/a</span></b>
 						<span id="selected_follow" onclick="toggleFollowSelected();" class="pointer">&#x21D2;</span>
-						<span id="selected_flag"><img style="width: 20px; height=12px" src="about:blank" alt="Flag"></span>
+						<span id="selected_flag"><img style="width: 20px; height=12px" src="" alt="Flag"></span>
 						<a href="http://www.airframes.org/" onclick="document.getElementById('horrible_hack').submit.call(document.getElementById('airframes_post')); return false;">
 							<span id="selected_icao"></span>
 						</a>
@@ -97,155 +260,9 @@
 					<td colspan="2"><span id="selected_photo_link"></span></td>
 				</tr>
 			</table>
-		</div> <!-- selected_infoblock -->
-		<div id="map_container">
-			<div id="map_canvas">
-				<div id="popinfo"></div> <!-- AKISSACK  - HOVER OVER LABEL - ref: AK6B -->
-			</div>
-			<div id="toggle_sidebar_control" class="ol-unselectable ol-control">
-				<button id="toggle_sidebar_button" class="hide_sidebar" title="Toggle Sidebar"></button>
-			</div>
-			<div id="expand_sidebar_control" class="ol-unselectable ol-control">
-				<button id="expand_sidebar_button" title="Expand Sidebar"></button>
-			</div>
 		</div>
-		<div id="sidebar_container">
-			<div id="splitter" class="ui-resizable-handle ui-resizable-w"></div>
-			<div id="sidebar_canvas">
-
-				<div id="dump1090_infoblock">
-					<table style="width: 100%">
-						<tr class="infoblock_heading">
-							<td>
-								<b id="infoblock_name">FlightAware dump1090</b>
-							</td>
-							<td>
-								<span id="show_map_button" class="sidebarButton pointer">Show Map</span>
-							</td>
-							<td style="text-align: right">
-								<a href="https://github.com/flightaware/dump1090" id="dump1090_version" target="_blank"></a>
-							</td>
-						</tr>
-
-						<tr>
-							<td colspan="2">
-								<div id="sudo_buttons">
-									<span class="sidebarButton darkModeBtn pointer" onclick="darkMode();">Dark mode</span>
-									<span class="sidebarButton pointer" onclick="resetMap();">Reset Map</span>
-									<span class="sidebarButton pointer" onclick="selectAllPlanes();">Select All Aircraft</span>
-									<span class="sidebarButton pointer" onclick="selectMilPlanes();">Select Specials</span> <!-- AKISSACK Ref: AK9G -->
-									<span class="sidebarButton pointer" onclick="deselectAllPlanes();">DeSelect Aircraft</span>
-									<span class="sidebarButton pointer" onclick="resetRangePlot();">Reset Range</span> <!-- AKISSACK Ref: ref: AK8K -->
-
-								</div>
-							</td>
-						</tr>
-
-						<tr class="infoblock_body">
-							<td>Aircraft (total): <span id="dump1090_total_ac">n/a</span></td>
-							<td>Messages: <span id="dump1090_message_rate">n/a</span>/sec</td>
-						</tr>
-
-						<tr class="infoblock_body">
-							<td>(with positions): <span id="dump1090_total_ac_positions">n/a</span></td>
-							<td>Max: <span id="dump1090_max_range">n/a</span> <span class="distanceUnit"></span></td> <!-- Ref: AK9S -->
-							<!-- <td>History: <span id="dump1090_total_history">n/a</span> positions</td> Ref: AK9S -->
-						</tr>
-					</table>
-				</div> <!-- dump1090_infoblock -->
-
-				<div id="units_container">
-					<!--  AKISSACK Remove units option from panel
-						<label for="units_selector">Units:</label>
-						<select name="units_selector" id="units_selector">
-							<option value="nautical">Aeronautical</option>
-							<option value="metric">Metric</option>
-							<option value="imperial">Imperial</option>
-						</select>
--->
-				</div>
-
-				<form id="altitude_filter_form">
-					<!-- AKISSACK Ref: AK11A -->
-					<label> Filter by height:</label>
-					<input id="altitude_filter_min" name="minAltitude" type="text" class="altitudeFilterInput" maxlength="5">
-					<label for="minAltitude" class="altitudeUnit"></label>
-					<span> to </span>
-					<input id="altitude_filter_max" name="maxAltitude" type="text" class="altitudeFilterInput" maxlength="5">
-					<label for="maxAltitude" class="altitudeUnit"></label>
-					<button type="submit" style="float: right;">Filter</button>
-					</br>
-					<label> Specials only:</label>
-					<input id="specials_filter" type="checkbox" name="specials">
-					<button id="altitude_filter_reset_button" style="float: right;">Reset</button>
-					<!-- AKISSACK Ref: AK11A  Ends -->
-				</form>
 
 
-				<div id="planes_table">
-					<table id="tableinfo" style="width: 100%">
-						<thead class="aircraft_table_header">
-							<tr>
-								<td id="icao" onclick="sortByICAO();">ICAO</td>
-								<td id="flag" onclick="sortByCountry()">
-									<!-- column for flag image -->
-								</td>
-								<td id="flight" onclick="sortByFlight();">Ident</td>
-								<td id="registration" onclick="sortByRegistration();">Registration</td>
-								<td id="aircraft_type" onclick="sortByAircraftType();"> Air craft type</td>
-								<td id="myAc" onclick="sortByICAO();">Aircraft</td> <!-- AKISSACK [MYTB] -->
-								<td id="myAcAc" onclick="sortByICAO();">Name</td> <!-- AKISSACK [MYTB] -->
-								<td id="myAcCat" onclick="sortByICAO();">Icon</td> <!-- AKISSACK [MYTB] -->
-								<td id="squawk" onclick="sortBySquawk();">Squawk</td>
-								<td id="altitude" onclick="sortByAltitude();">Altitude (<span class="altitudeUnit"></span>)</td>
-								<td id="speed" onclick="sortBySpeed();">Speed (<span class="speedUnit"></span>)</td>
-								<td id="vert_rate" onclick="sortByVerticalRate();">Vertical Rate (<span class="verticalRateUnit"></span>)</td>
-								<td id="distance" onclick="sortByDistance();">Distance (<span class="distanceUnit"></span>)</td>
-								<td id="track" onclick="sortByTrack();">Track</td>
-								<td id="msgs" onclick="sortByMsgs();">Msgs</td>
-								<td id="seen" onclick="sortBySeen();">Age</td>
-								<td id="rssi" onclick="sortByRssi();">RSSI</td>
-								<td id="lat" onclick="sortByLatitude();">Latitude</td>
-								<td id="lon" onclick="sortByLongitude();">Longitude</td>
-								<td id="data_source" onclick="sortByDataSource();">Source</td>
-								<td id="airframes_mode_s_link">Airframes.org Link</td>
-								<td id="flightaware_mode_s_link">FlightAware Link</td>
-								<td id="flightaware_photo_link">Photos</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr id="plane_row_template" class="plane_table_row hidden">
-								<td class="icaoCodeColumn">ICAO</td>
-								<td><img style="width: 20px; height=12px" src="about:blank" alt="Flag"></td>
-								<td>FLIGHT</td>
-								<td>REGISTRATION</td>
-								<td>AIRCRAFT_TYPE</td>
-								<td class="typeColumn">MYAC</td> <!-- AKISSACK [MYTB] -->
-								<td style="text-align: right">MYACAC</td> <!-- AKISSACK [MYTB] -->
-								<td style="text-align: right">MYACCAT</td> <!-- AKISSACK [MYTB] -->
-								<td style="text-align: right">SQUAWK</td>
-								<td style="text-align: right">ALTITUDE</td>
-								<td style="text-align: right">SPEED</td>
-								<td style="text-align: right">VERT_RATE</td>
-								<td style="text-align: right">DISTANCE</td>
-								<td style="text-align: right">TRACK</td>
-								<td style="text-align: right">MSGS</td>
-								<td style="text-align: right">SEEN</td>
-								<td style="text-align: right">RSSI</td>
-								<td style="text-align: right">LAT</td>
-								<td style="text-align: right">LON</td>
-								<td style="text-align: right">DATA_SOURCE</td>
-								<td style="text-align: center">AIRFRAMES_MODE_S_LINK</td>
-								<td style="text-align: center">FLIGHTAWARE_MODE_S_LINK</td>
-								<td style="text-align: center">FLIGHTAWARE_PHOTO_LINK</td>
-							</tr>
-						</tbody>
-					</table>
-				</div> <!-- planes_table -->
-
-			</div> <!-- sidebar_canvas -->
-		</div> <!-- sidebar_container -->
-	</div> <!-- layout_container -->
 
 	<div id="SpecialSquawkWarning" class="hidden">
 		<b>Squawk 7x00 is reported and shown.</b><br>

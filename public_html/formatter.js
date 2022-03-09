@@ -42,7 +42,7 @@ function format_track_brief(track) {
 	if (track === null){
 		return "";
 	}
-	
+
 	return Math.round(track);
 }
 
@@ -51,7 +51,7 @@ function format_track_long(track) {
 	if (track === null){
 		return "n/a";
 	}
-	
+
 	var trackDir = Math.floor((360 + track % 360 + 22.5) / 45) % 8;
 	return Math.round(track) + DEGREES + NBSP + "(" + TrackDirections[trackDir] + ")";
 }
@@ -59,7 +59,7 @@ function format_track_long(track) {
 // alt in feet
 function format_altitude_brief(alt, vr, displayUnits) {
 	var alt_text;
-	
+
 	if (alt === null){
 		return "";
 	} else if (alt === "ground"){
@@ -71,9 +71,9 @@ function format_altitude_brief(alt, vr, displayUnits) {
 	// Vertical Rate Triangle
 	var verticalRateTriangle = "<span class=\"verticalRateTriangle\">";
 	if (vr > 128){
-		verticalRateTriangle += UP_TRIANGLE;
+		verticalRateTriangle += '<span class="green shadow">'+UP_TRIANGLE+'</span>';
 	} else if (vr < -128){
-		verticalRateTriangle += DOWN_TRIANGLE;
+		verticalRateTriangle += '<span class="red shadow">'+DOWN_TRIANGLE+'</span>';
 	} else {
 		verticalRateTriangle += NBSP;
 	}
@@ -85,7 +85,7 @@ function format_altitude_brief(alt, vr, displayUnits) {
 // alt in feet
 function format_altitude_long(alt, vr, displayUnits) {
 	var alt_text = "";
-	
+
 	if (alt === null) {
 		return "n/a";
 	} else if (alt === "ground") {

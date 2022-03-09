@@ -8,14 +8,14 @@
 // -- Title Settings --------------------------------------
 // Show number of aircraft and/or messages per second in the page title
 PlaneCountInTitle = true;
-MessageRateInTitle = false;
+MessageRateInTitle = true;
 
 // -- Output Settings -------------------------------------
 // The DisplayUnits setting controls whether nautical (ft, NM, knots),
 // metric (m, km, km/h) or imperial (ft, mi, mph) units are used in the
 // plane table and in the detailed plane info. Valid values are
 // "nautical", "metric", or "imperial".
-DisplayUnits = "nautical";
+DisplayUnits = "metric";
 
 // -- Map settings ----------------------------------------
 // These settings are overridden by any position information
@@ -29,9 +29,9 @@ DefaultZoomLvl   = 7;
 // that location is used and these settings are ignored.
 
 SiteShow    = true;		// true to show a center marker
-SiteLat     = 53;		// position of the marker
-SiteLon     = -0.4;		// *****  CHANGE THE LAT/LONG to match your location *****
-SiteName    = "Rx";		// tooltip of the marker
+SiteLat     = xx.xx;		// position of the marker
+SiteLon     = yy.yy;		// *****  CHANGE THE LAT/LONG to match your location *****
+SiteName    = "Radar";		// tooltip of the marker
 
 // Default center of the map.
 DefaultCenterLat = SiteLat;
@@ -70,13 +70,13 @@ ColorByAlt = {
         },
 
         // Changes added to the color of the currently selected plane
-        selected : { h: 0, s: -10, l: +20 },
+        selected : { h: 60, s: +10, l: 0 },
 
         // Changes added to the color of planes that have stale position info
-        stale :    { h: 0, s: -10, l: +30 },
+        stale :    { h: 0, s: -20, l: -20 },
 
         // Changes added to the color of planes that have positions from mlat
-        mlat :     { h: 0, s: -10, l: -10 }
+        mlat :     { h: 0, s: -10, l: -50 }
 };
 
 // For a monochrome display try this:
@@ -90,20 +90,20 @@ ColorByAlt = {
 // };
 
 // Outline color for aircraft icons with an ADS-B position
-OutlineADSBColor = '#000000';
+OutlineADSBColor = '#1f2540';
 
 // Outline color for aircraft icons with a mlat position
-OutlineMlatColor = '#4040FF';
+OutlineMlatColor = '#32bf6a';
 
 SiteCircles = true; // true to show circles (only shown if the center marker is shown)
 // In miles, nautical miles, or km (depending settings value 'DisplayUnits')
-SiteCirclesDistances = new Array(100,150,200,250);
+SiteCirclesDistances = new Array(50,100,150,200);
 
 // Show the clocks at the top of the righthand pane? You can disable the clocks if you want here
 ShowClocks = false;
 
 // Controls page title, righthand pane when nothing is selected
-PageName = "FlightAware";
+PageName = "DUMP1090";
 
 // Show country flags by ICAO addresses?
 ShowFlags = true;
@@ -136,7 +136,7 @@ MapzenAPIKey = null;
 UseDefaultTerrianRings  = true;         // default Terrian rings color, otherwise colored by altitude (color defined in TerrianColorByAlt)
 UseTerrianLineDash      = false;        // true: dashed or false: solid terrian rings
 TerrianLineWidth        = 1;            // line width of terrian rings
-TerrianAltitudes        = [9842,39370]; // altitudes in ft as in alt parameter TerrianColorByAlt, replace XXXXXXX with your code: sudo wget -O /usr/share/dump1090-fa/html/upintheair.json "www.heywhatsthat.com/api/upintheair.json?id=XXXXXXX&refraction=0.25&alts=3000,12000" 
+TerrianAltitudes        = [9842,39370]; // altitudes in ft as in alt parameter TerrianColorByAlt, replace XXXXXXX with your code: sudo wget -O /usr/share/dump1090-fa/html/upintheair.json "www.heywhatsthat.com/api/upintheair.json?id=XXXXXXX&refraction=0.25&alts=3000,12000"
 TerrianColorByAlt       = {             // colours depending on altitude (UseDefaultTerrianRings must be false and TerrianAltitudes must be set), default same as colours of planes in air, alt in ft
         h: [ { alt: 2000,  val: 20 },    // orange
              { alt: 10000, val: 140 },   // light green
@@ -145,9 +145,8 @@ TerrianColorByAlt       = {             // colours depending on altitude (UseDef
         l: 50,
 };
 
-ShowSiteRingDistanceText = false;       // show the distance text in site rings
-
-UseJetPhotosPhotoLink    = false;       // Use jetphotos.com instead of FlightAware for photo links
+ShowSiteRingDistanceText = true;       // show the distance text in site rings
+UseJetPhotosPhotoLink    = true;       // Use jetphotos.com instead of FlightAware for photo links
 
 // for this you have to change /etc/lighttpd/conf-enabled/89-dump1090-fa.conf : commenting out the filter $HTTP["url"] =~ "^/dump1090-fa/data/.*\.json$"  and always send the response header
 // maybe filter is not correct --- Help wanted
@@ -155,7 +154,7 @@ UseJetPhotosPhotoLink    = false;       // Use jetphotos.com instead of FlightAw
 // #$HTTP["url"] =~ "^/dump1090-fa/data/.*\.json$" {
 //       setenv.add-response-header = ( "Access-Control-Allow-Origin" => "*" )
 // #}
-EndpointDump1090        = "";    // insert here endpoint to other computer where dump1090 is running (ex: http://192.168.1.152:8080/), leave it empty if it is running here
+EndpointDump1090        = "";     // insert here endpoint to other computer where dump1090 is running (ex: http://192.168.1.152:8080/), leave it empty if it is running here
 
 // ----------------------------------------------------------------------------------------------------------------------------
 // Options to enable/disable modifications provided in Dump1090-OpenLayers3-html by Al Kissack
@@ -184,8 +183,8 @@ ShowUKMilLayers      = true;   // https://github.com/alkissack/Dump1090-OpenLaye
 // ----------------------------------------------------------------------------------------------------------------------------
 ShowMyPreferences    = true ;  // Required to enable the FOUR options below
 ShowAdditionalData   = true ;  //
-ShowMyIcons          = true ;  // https://github.com/alkissack/Dump1090-OpenLayers3-html/wiki/10.-Aircraft-icon-changes
-ShowSimpleColours    = true ;  // https://github.com/alkissack/Dump1090-OpenLayers3-html/wiki/9.-Minor-personal-preference-changes
+ShowMyIcons          = false ;  // https://github.com/alkissack/Dump1090-OpenLayers3-html/wiki/10.-Aircraft-icon-changes
+ShowSimpleColours    = false ;  // https://github.com/alkissack/Dump1090-OpenLayers3-html/wiki/9.-Minor-personal-preference-changes
 			       // ******************************************************************************
 ShowHTMLColumns	     = true ;  // *** If you turn this off, use the original-index.html file instead         ***
 			       // ******************************************************************************
@@ -196,3 +195,5 @@ ShowMyFindsLayer     = false ;	// Private plot (non-aircraft related)
 ShowSleafordRange    = false ;  // This shows a range layer based on 53N -0.5W A more reasltic range layer for my antenna location --  AK9T
 SleafordMySql        = false ;  // Don't set this without reviewing the code - it is for me and a local mySql server on 192.168.1.11
 // ----------------------------------------------------------------------------------------------------------------------------
+
+DarkMode        = true; //Enable dark scheme
