@@ -99,7 +99,7 @@
 				</div>
 
 				<!--configuration panel-->
-				<span class="sidebarButton pointer" onclick="toggleOptions('sudo_buttons');"><i icon-name="settings" title="Settings"></i><span>Settings</span></span>
+				<span class="sidebarButton pointer" onclick="toggleOptions('sudo_buttons');" title="Settings"><i icon-name="settings"></i><span>Settings</span></span>
 				<div id="sudo_buttons" style="display: none;">
 					<span class="sidebarButton darkModeBtn pointer" onclick="darkMode();" title="Light/Dark Mode"><i icon-name="moon"></i></span>
 					<span class="sidebarButton pointer" onclick="selectAllPlanes();"><i icon-name="plane" title="Select all Aircraft"></i><span>Select All</span></span>
@@ -215,8 +215,7 @@
 							<span id="selected_follow" onclick="toggleFollowSelected();" class="pointer"><i icon-name="locate-fixed"></i></span>
 						</h2>
 						<div>
-							<span id="selected_registration"></span>
-							<span id="selected_icaotype"></span>
+
 							<span id="selected_emergency"></span>
 							ICAO: <a href="http://www.airframes.org/" onclick="document.getElementById('horrible_hack').submit.call(document.getElementById('airframes_post')); return false;" title="[ICAO] airframes.org" id="selected_icao"></a>
 						</div>
@@ -231,40 +230,72 @@
 					</div>
 
 					<div class="psImage"><i icon-name="image-off"></i><br>NO MEDIA</div>
-					<table style="width: auto;">
+					<!--aircraft detailed data-->
+					<table id="acDetailsTable">
+						<tr class="infoblock_body">
+							<td class="acDetailsTableLabel"><i icon-name="plane"></i>MODEL</td>
+							<td class="acDetailsTableValue" colspan="3"><span id="selected_model"></span></td>
+						</tr>
+
 						<tr id="infoblock_country" class="infoblock_body">
-							<td colspan="2">Country of registration: <span id="selected_country">n/a</span></td>
+							<td class="acDetailsTableLabel"><i icon-name="flag"></i>COUNTRY</td>
+							<td class="acDetailsTableValue"><span id="selected_country"></span></td>
+							<td class="acDetailsTableLabel"><i icon-name="move-vertical"></i>ALTITUDE</td>
+							<td class="acDetailsTableValue"><span id="selected_altitude"></span></td>
 						</tr>
 
 						<tr class="infoblock_body">
-							<td style="width: 55%">Altitude: <span id="selected_altitude"></span></td>
-							<td style="width: 45%">Squawk: <span id="selected_squawk"></span></td>
+							<td class="acDetailsTableLabel"><i icon-name="form-input"></i>REGISTRATION</td>
+							<td class="acDetailsTableValue"><span id="selected_registration"></span></td>
+							<td class="acDetailsTableLabel"><i icon-name="ruler"></i>Distance</td>
+							<td class="acDetailsTableValue"><span id="selected_sitedist"></span></td>
+
+						</tr>
+						<tr class="infoblock_body">
+							<td class="acDetailsTableLabel">AC category</td>
+							<td class="acDetailsTableValue"><span id="selected_category"></span></td>
+							<td class="acDetailsTableLabel"><i icon-name="gauge"></i>SPEED</td>
+							<td class="acDetailsTableValue"><span id="selected_speed"></span></td>
 						</tr>
 
 						<tr class="infoblock_body">
-							<td>Speed: <span id="selected_speed">n/a</span></td>
-							<td>RSSI: <span id="selected_rssi">n/a</span></td>
+							<td class="acDetailsTableLabel">AC ICAO Code</td>
+							<td class="acDetailsTableValue"><span id="selected_icaotype"></span></td>
+							<td class="acDetailsTableLabel" title="Vertical rate / Rate of climb"><i icon-name="trending-up"></i>ROC</td>
+							<td class="acDetailsTableValue"><span id="selected_vertical_rate"></span></td>
 						</tr>
 
 						<tr class="infoblock_body">
-							<td>Vertical rate: <span id="selected_vertical_rate">n/a</span></td>
-							<td>Messages: <span id="selected_message_count">n/a</span></td>
+							<td class="acDetailsTableLabel"><i icon-name="binary"></i>Messages</td>
+							<td class="acDetailsTableValue"><span id="selected_message_count"></span></td>
+							<td class="acDetailsTableLabel"><i icon-name="radio"></i>RSSI</td>
+							<td class="acDetailsTableValue"><span id="selected_rssi"></span></td>
+
 						</tr>
 
 						<tr class="infoblock_body">
-							<td>Track: <span id="selected_track">n/a</span></td>
-							<td>Last seen: <span id="selected_seen">n/a</span></td>
+							<td class="acDetailsTableLabel"><i icon-name="history"></i>Last seen</td>
+							<td class="acDetailsTableValue"><span id="selected_seen"></span></td>
+							<td class="acDetailsTableLabel"><i icon-name="compass"></i>Track</td>
+							<td class="acDetailsTableValue"><span id="selected_track"></span></td>
 						</tr>
+
 						<tr class="infoblock_body">
-							<td colspan="2">Position: <span id="selected_position">n/a</span></td>
+							<td class="acDetailsTableLabel"><i icon-name="megaphone"></i>SQUAWK</td>
+							<td class="acDetailsTableValue"><span id="selected_squawk"></span></td>
 						</tr>
+
 						<tr class="infoblock_body">
-							<td colspan="2">Distance from Site: <span id="selected_sitedist">n/a</span></td>
+							<td class="acDetailsTableLabel"><i icon-name="locate-fixed"></i>Position</td>
+							<td class="acDetailsTableValue" colspan="3"><span id="selected_position"></span></td>
 						</tr>
+
+						<!--
 						<tr class="infoblock_body">
 							<td colspan="2"><span id="selected_photo_link"></span></td>
-						</tr>
+						</tr>-->
 					</table>
+
 				</div>
 			</div> <!-- sidebar_canvas -->
 		</div> <!-- sidebar_container -->

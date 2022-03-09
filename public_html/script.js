@@ -143,7 +143,7 @@ function processReceiverUpdate(data) {
 				}
 				selectPlaneByHex(h, false);
 				getPlaneSpottersApiData(h);
-        getVariousLinksFlight();
+				getVariousLinksFlight();
 				evt.preventDefault();
 			}.bind(undefined, hex));
 
@@ -1707,6 +1707,18 @@ function refreshSelected() {
 		$('#selected_icaotype').text("");
 	}
 
+  if (selected.icaotype !== null) {
+    $('#selected_model').text(selected.ac_aircraft);
+  } else {
+    $('#selected_model').text("");
+  }
+
+  if (selected.icaotype !== null) {
+    $('#selected_category').text(selected.ac_category);
+  } else {
+    $('#selected_category').text("");
+  }
+
 	var emerg = document.getElementById('selected_emergency');
 	if (selected.squawk in SpecialSquawks) {
 		emerg.className = SpecialSquawks[selected.squawk].cssClass;
@@ -1835,7 +1847,7 @@ function refreshTableInfo() {
 	for (var i = 0; i < PlanesOrdered.length; ++i) {
 		var tableplane = PlanesOrdered[i];
 		TrackedHistorySize += tableplane.history_size;
-		if (tableplane.seen >= 58 || tableplane.isFiltered()) {
+		if (tableplane.seen >= 120 || tableplane.isFiltered()) {
 			tableplane.tr.className = "plane_table_row hidden";
 		} else {
 			TrackedAircraft++;
@@ -2605,15 +2617,15 @@ function updatePlaneFilter() {
 }
 
 function getVariousLinksFlight() {
-  if (Planes[SelectedPlane].icao !== null && Planes[SelectedPlane].icao !== "") {
-	$('#selected_links').css('display', 'flex');
-	$('#selected_adsbexchange_link').attr('href', 'https://globe.adsbexchange.com/?icao=' + Planes[SelectedPlane].icao);
-	$('#selected_planefinder_link').attr('href', 'https://planefinder.net/flight/' + Planes[SelectedPlane].flight);
-	$('#selected_opensky_link').attr('href', 'https://opensky-network.org/aircraft-profile?icao24=' + Planes[SelectedPlane].icao);
-	$('#selected_flightaware_link').attr('href', 'https://flightaware.com/live/flight/' + Planes[SelectedPlane].flight);
-} else {
-	$('#selected_links').css('display', 'none');
-}
+	if (Planes[SelectedPlane].icao !== null && Planes[SelectedPlane].icao !== "") {
+		$('#selected_links').css('display', 'flex');
+		$('#selected_adsbexchange_link').attr('href', 'https://globe.adsbexchange.com/?icao=' + Planes[SelectedPlane].icao);
+		$('#selected_planefinder_link').attr('href', 'https://planefinder.net/flight/' + Planes[SelectedPlane].flight);
+		$('#selected_opensky_link').attr('href', 'https://opensky-network.org/aircraft-profile?icao24=' + Planes[SelectedPlane].icao);
+		$('#selected_flightaware_link').attr('href', 'https://flightaware.com/live/flight/' + Planes[SelectedPlane].flight);
+	} else {
+		$('#selected_links').css('display', 'none');
+	}
 }
 
 function getFlightAwareModeSLink(code, ident, linkText) {
@@ -2761,8 +2773,11 @@ function progressBar(sec) {
 	var pBar = "";
 	var percent = "100";
 	var sec = Math.round(sec);
-
-	percent = 100 - Math.round(sec / 60 * 100) / 1;
+	if (sec <= 60) {
+		percent = 100 - Math.round(sec / 60 * 100) / 1;
+	} else {
+		percent = 0;
+	}
 	pBar = '<div class="progressBarWrapper shadow" title="' + sec + ' s"><div class="progressBar"><span class="progressBarFill" style="width: ' + percent + '%;"></span></div>';
 	return pBar;
 }

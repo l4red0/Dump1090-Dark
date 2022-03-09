@@ -319,6 +319,35 @@ div#loader {
   margin-right: 4px;
 }
 
+#acDetailsTable {
+  font-size: 12px;
+  border-collapse: collapse;
+  width: -webkit-fill-available;
+  margin: 0px 4px 8px 0px;
+}
+
+#acDetailsTable td {
+  border: 1px solid #343434;
+  padding: 3px;
+}
+
+#acDetailsTable td svg {
+  height: 18px;
+  margin: -2px -2px -4px -5px;
+  stroke: #8f8f8f;
+}
+
+#acDetailsTable .acDetailsTableLabel {
+  font-family: 'Inconsolata', monospace;
+  text-transform: uppercase;
+  font-weight: 600;
+  background: #222;
+}
+
+#acDetailsTable .acDetailsTableValue {
+  font-family: 'Inconsolata', monospace;
+}
+
 #selected_flag img {
   height: 18px;
   width: auto;
@@ -338,7 +367,8 @@ div#loader {
   height: 133px;
   float: left;
   position: relative;
-  margin: 8px;
+  margin-left: 8px;
+  margin-right: 4px;
   text-align: center;
   background: #363636;
   color: #161616;
@@ -385,10 +415,6 @@ div#loader {
   text-decoration: none;
   color: blue;
   font-size: x-small;
-}
-
-.infoblock_body {
-  font-size: small;
 }
 
 .dim {
