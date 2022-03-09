@@ -2,7 +2,7 @@
 
 This is fork of [alkissack's Dump1090-OpenLayers3-html](https://github.com/alkissack/Dump1090-OpenLayers3-html). For the full picture, please take a look at the documentation and repository from [alkissack's](https://github.com/alkissack/Dump1090-OpenLayers3-html), as I tend to clean up some files and comments that are unnecessary in my opinion.
 
-### This project provides default dark scheme for the dump1090 web interface. Also includes some new, ui-oriented features.
+### This project provides default dark scheme for the dump1090 web interface. Also includes some new, ui-driven features.
 
 ### Changelog
 **09.03.22 - Initial release**
