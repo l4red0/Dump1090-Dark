@@ -1492,12 +1492,15 @@ function initialize_map() {
 	// NB: altitudes are in _meters_, you can specify a list of altitudes
 
 	// kick off an ajax request that will add the rings when it's done
-	var request = $.ajax({
-		url: 'upintheair.json',
-		timeout: 5000,
-		cache: true,
-		dataType: 'json'
-	});
+	if (!PanoramaRingsJson === false) {
+		var request = $.ajax({
+			url: PanoramaRingsJson,
+			timeout: 5000,
+			cache: true,
+			dataType: 'json'
+		});
+
+
 	request.done(function(data) {
 		var ringStyle;
 
@@ -1549,6 +1552,7 @@ function initialize_map() {
 	request.fail(function(jqxhr, status, error) {
 		// no rings available, do nothing
 	});
+}
 }
 
 function createSiteCircleFeatures() {
@@ -1790,8 +1794,8 @@ function getPlaneSpottersApiData(hex) {
 				if (data.photos.length >= 1) {
 					renderPlaneSpottersImage(data);
 				} else {
-          $('#selected_infoblock .psImage').html("");
-        }
+					$('#selected_infoblock .psImage').html("");
+				}
 
 			}
 		})

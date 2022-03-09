@@ -197,3 +197,4 @@ SleafordMySql        = false ;  // Don't set this without reviewing the code - i
 // ----------------------------------------------------------------------------------------------------------------------------
 
 DarkMode        = true; //Enable dark scheme
+PanoramaRingsJson = false; //Terrain limit rings - see script.js
