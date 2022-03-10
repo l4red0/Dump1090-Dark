@@ -3,8 +3,10 @@
 This is fork of [alkissack's Dump1090-OpenLayers3-html](https://github.com/alkissack/Dump1090-OpenLayers3-html). For the full picture, please take a look at the documentation and repository from [alkissack's](https://github.com/alkissack/Dump1090-OpenLayers3-html), as I tend to clean up some files and comments that are unnecessary in my opinion.
 
 ### This project provides default dark scheme for the dump1090 web interface. Also includes some new, ui-driven features.
-#### Please keep in mind that this is bug heavy, pre-release project with experimental features. Currently developed (and compatible) with stock pi24 dump1090-mutabily with plan to support other dump1090 versions with broader `aircraft.json` data.  
+#### Please keep in mind that this is bug heavy, pre-release project with experimental features. Currently developed (and compatible) with stock pi24 dump1090-mutabily with plan to support other dump1090 versions with broader `aircraft.json` data.
 
+![UI printscreen - initial release](https://github.com/l4red0/Dump1090-Dark-UI/blob/master/screen.png?raw=true)
+> Initial release UI.
 
 ### Changelog
 **09.03.22 - Initial release**
