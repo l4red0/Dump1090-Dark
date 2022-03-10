@@ -383,7 +383,7 @@ var PositionHistoryBuffer = []
 
 function start_load_history() {
 	if (PositionHistorySize > 0 && window.location.hash != '#nohistory') {
-		$("#loader_progress").attr('max', PositionHistorySize);
+		$("#loaderProgress").attr('max', PositionHistorySize);
 		console.log("Starting to load history (" + PositionHistorySize + " items)");
 		load_history_item(0);
 	} else {
@@ -398,7 +398,7 @@ function load_history_item(i) {
 	}
 
 	// Ref: AK9Y  --  console.log("Loading history #" + i);
-	$("#loader_progress").attr('value', i);
+	$("#loaderProgress").attr('value', i);
 
 	$.ajax({
 			url: EndpointDump1090 + 'data/history_' + i + '.json',
@@ -1871,6 +1871,9 @@ function refreshTableInfo() {
 
 			var classes = "plane_table_row";
 
+      if (tableplane.position !== null) {
+        classes += " vPosition";
+      }
 
 			if (tableplane.position !== null && tableplane.seen_pos < 60) {
 				++TrackedAircraftPositions;
@@ -2746,6 +2749,8 @@ function darkMode() {
 	if (localStorage.getItem("darkMode") === null || localStorage.getItem('darkMode') === 'false') {
 		$('link[href="style.css"]').attr('href', 'style-darkMode.css');
 		localStorage.setItem('darkMode', 'true');
+
+    //can make negative of any map but the output is usally ugly
 		//document.querySelector('canvas').style.filter = "invert(85%)";
 	} else if (localStorage.getItem('darkMode') === 'true' || $('link[href="style.css"]').attr('href') === 'style-darkMode.css') {
 		$('link[href="style-darkMode.css"]').attr('href', 'style.css');
