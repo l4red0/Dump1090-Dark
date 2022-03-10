@@ -147,11 +147,9 @@
 					<table id="tableinfo" style="width: 100%">
 						<thead class="aircraft_table_header">
 							<tr>
+								<td id="flag" onclick="sortByCountry()"></td>
 								<td id="icao" onclick="sortByICAO();">ICAO</td>
-								<td id="flag" onclick="sortByCountry()">
-									<!-- column for flag image -->
-								</td>
-								<td id="flight" onclick="sortByFlight();" title="ID / Flight">ID</td>
+								<td id="flight" onclick="sortByFlight();" title="ID / Flight">FLIGHT</td>
 								<td id="registration" onclick="sortByRegistration();">Registration</td>
 								<td id="aircraft_type" onclick="sortByAircraftType();"> Air craft type</td>
 								<td id="myAc" onclick="sortByICAO();">Aircraft</td> <!-- AKISSACK [MYTB] -->
@@ -162,10 +160,10 @@
 								<td id="speed" onclick="sortBySpeed();" title="Speed">SPD (<span class="speedUnit"></span>)</td>
 								<td id="vert_rate" onclick="sortByVerticalRate();">Vertical Rate (<span class="verticalRateUnit"></span>)</td>
 								<td id="distance" onclick="sortByDistance();" title="Distance">DIST (<span class="distanceUnit"></span>)</td>
-								<td id="track" onclick="sortByTrack();">TRACK</td>
+								<td id="track" onclick="sortByTrack();" title="Track"><i icon-name="compass"></i></td>
 								<td id="msgs" onclick="sortByMsgs();">Msgs</td>
-								<td id="rssi" onclick="sortByRssi();" style="width: 28px;">RSSI</td>
-								<td id="seen" onclick="sortBySeen();">AGE</td>
+								<td id="rssi" onclick="sortByRssi();" style="width: 28px;" title="RSSI"><i icon-name="radio"></i></td>
+								<td id="seen" onclick="sortBySeen();" title="Age / Last seen"><i icon-name="history"></i></td>
 								<td id="lat" onclick="sortByLatitude();">Latitude</td>
 								<td id="lon" onclick="sortByLongitude();">Longitude</td>
 								<td id="data_source" onclick="sortByDataSource();">SOURCE</td>
@@ -176,8 +174,8 @@
 						</thead>
 						<tbody>
 							<tr id="plane_row_template" class="plane_table_row hidden">
-								<td class="icaoCodeColumn">ICAO</td>
 								<td><img class="flag shadow" src="" alt="Flag"></td>
+								<td class="icaoCodeColumn">ICAO</td>
 								<td>FLIGHT</td>
 								<td>REGISTRATION</td>
 								<td>AIRCRAFT_TYPE</td>
@@ -283,6 +281,8 @@
 						<tr class="infoblock_body">
 							<td class="acDetailsTableLabel"><i icon-name="megaphone"></i>SQUAWK</td>
 							<td class="acDetailsTableValue"><span id="selected_squawk"></span></td>
+							<td class="acDetailsTableLabel"><i icon-name="megaphone"></i>SOURCE</td>
+							<td class="acDetailsTableValue"><span id="selected_source"></span></td>
 						</tr>
 
 						<tr class="infoblock_body">

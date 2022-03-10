@@ -1,30 +1,46 @@
 // -*- mode: javascript; indent-tabs-mode: t; c-basic-offset: 8 -*-
 "use strict";
 
-var NBSP='\u00a0';
-var DEGREES='\u00b0'
-var UP_TRIANGLE='\u25b2'; // U+25B2 BLACK UP-POINTING TRIANGLE
-var DOWN_TRIANGLE='\u25bc'; // U+25BC BLACK DOWN-POINTING TRIANGLE
+var NBSP = '\u00a0';
+var DEGREES = '\u00b0'
+var UP_TRIANGLE = '\u25b2'; // U+25B2 BLACK UP-POINTING TRIANGLE
+var DOWN_TRIANGLE = '\u25bc'; // U+25BC BLACK DOWN-POINTING TRIANGLE
 // ---------------------------------------------------------------------------------------
 // AKISACK - Add some characters for labels ----------------------------------------------
 // ---------------------------------------------------------------------------------------
-var UP_TRI='\u25b3';    // U+25B4 Hollow BLACK UP-POINTING TRIANGLE
-var DOWN_TRI='\u25bd';  // U+25BE Hollow BLACK DOWN-POINTING TRIANGLE
-var UP_TRIS='\u23eb';   // U+25B4 double BLACK UP-POINTING TRIANGLE
-var LEVEL='\u2014';     // level
-var DOWN_TRIS='\u23ec'; // U+25BE double BLACK DOWN-POINTING TRIANGLE
-var UP_AR='\u2b61';     // U+25B4  UP-POINTING Arrow
-var DOWN_AR='\u2b63';   // U+25BE DOWN-POINTING Arrow
+var UP_TRI = '\u25b3'; // U+25B4 Hollow BLACK UP-POINTING TRIANGLE
+var DOWN_TRI = '\u25bd'; // U+25BE Hollow BLACK DOWN-POINTING TRIANGLE
+var UP_TRIS = '\u23eb'; // U+25B4 double BLACK UP-POINTING TRIANGLE
+var LEVEL = '\u2014'; // level
+var DOWN_TRIS = '\u23ec'; // U+25BE double BLACK DOWN-POINTING TRIANGLE
+var UP_AR = '\u2b61'; // U+25B4  UP-POINTING Arrow
+var DOWN_AR = '\u2b63'; // U+25BE DOWN-POINTING Arrow
 // ---------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------ AKISSACK
 // ---------------------------------------------------------------------------------------
-var TrackDirections = ["North","Northeast","East","Southeast","South","Southwest","West","Northwest"];
+var TrackDirections = ["North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest"];
 
 var UnitLabels = {
-	'altitude': { metric: "m", imperial: "ft", nautical: "ft"},
-	'speed': { metric: "km/h", imperial: "mph", nautical: "kt" },
-	'distance': { metric: "km", imperial: "mi", nautical: "NM" },
-	'verticalRate': { metric: "m/s", imperial: "ft/min", nautical: "ft/min" }
+	'altitude': {
+		metric: "m",
+		imperial: "ft",
+		nautical: "ft"
+	},
+	'speed': {
+		metric: "km/h",
+		imperial: "mph",
+		nautical: "kt"
+	},
+	'distance': {
+		metric: "km",
+		imperial: "mi",
+		nautical: "NM"
+	},
+	'verticalRate': {
+		metric: "m/s",
+		imperial: "ft/min",
+		nautical: "ft/min"
+	}
 };
 
 // formatting helpers
@@ -39,7 +55,7 @@ function get_unit_label(quantity, systemOfMeasurement) {
 
 // track in degrees (0..359)
 function format_track_brief(track) {
-	if (track === null){
+	if (track === null) {
 		return "";
 	}
 
@@ -48,7 +64,7 @@ function format_track_brief(track) {
 
 // track in degrees (0..359)
 function format_track_long(track) {
-	if (track === null){
+	if (track === null) {
 		return "n/a";
 	}
 
@@ -60,9 +76,9 @@ function format_track_long(track) {
 function format_altitude_brief(alt, vr, displayUnits) {
 	var alt_text;
 
-	if (alt === null){
+	if (alt === null) {
 		return "";
-	} else if (alt === "ground"){
+	} else if (alt === "ground") {
 		return "ground";
 	}
 
@@ -70,10 +86,10 @@ function format_altitude_brief(alt, vr, displayUnits) {
 
 	// Vertical Rate Triangle
 	var verticalRateTriangle = "<span class=\"verticalRateTriangle\">";
-	if (vr > 128){
-		verticalRateTriangle += '<span class="green shadow">'+UP_TRIANGLE+'</span>';
-	} else if (vr < -128){
-		verticalRateTriangle += '<span class="red shadow">'+DOWN_TRIANGLE+'</span>';
+	if (vr > 128) {
+		verticalRateTriangle += '<span class="green shadow">' + UP_TRIANGLE + '</span>';
+	} else if (vr < -128) {
+		verticalRateTriangle += '<span class="red shadow">' + DOWN_TRIANGLE + '</span>';
 	} else {
 		verticalRateTriangle += NBSP;
 	}
@@ -106,7 +122,7 @@ function format_altitude_long(alt, vr, displayUnits) {
 // alt in feet
 function convert_altitude(alt, displayUnits) {
 	if (displayUnits === "metric") {
-		return alt / 3.2808;  // feet to meters
+		return alt / 3.2808; // feet to meters
 	}
 
 	return alt;
@@ -135,10 +151,9 @@ function format_speed_long(speed, displayUnits) {
 // speed in knots
 function convert_speed(speed, displayUnits) {
 	if (displayUnits === "metric") {
-		return speed * 1.852;  // knots to kilometers per hour
-	}
-	else if (displayUnits === "imperial") {
-		return speed * 1.151;  // knots to miles per hour
+		return speed * 1.852; // knots to kilometers per hour
+	} else if (displayUnits === "imperial") {
+		return speed * 1.151; // knots to miles per hour
 	}
 
 	return speed;
@@ -168,8 +183,7 @@ function format_distance_long(dist, displayUnits) {
 function convert_distance(dist, displayUnits) {
 	if (displayUnits === "metric") {
 		return (dist / 1000); // meters to kilometers
-	}
-	else if (displayUnits === "imperial") {
+	} else if (displayUnits === "imperial") {
 		return (dist / 1609); // meters to miles
 	}
 	return (dist / 1852); // meters to nautical miles

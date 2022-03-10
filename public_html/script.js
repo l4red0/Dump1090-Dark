@@ -118,18 +118,18 @@ function processReceiverUpdate(data) {
 
 			if (hex[0] === '~') {
 				// Non-ICAO address
-				plane.tr.cells[0].textContent = hex.substring(1);
+				plane.tr.cells[1].textContent = hex.substring(1);
 				$(plane.tr).css('font-style', 'italic');
 			} else {
-				plane.tr.cells[0].textContent = hex;
+				plane.tr.cells[1].textContent = hex;
 			}
 
 			// set flag image if available
 			if (ShowFlags && plane.icaorange.flag_image !== null) {
-				$('img', plane.tr.cells[1]).attr('src', FlagPath + plane.icaorange.flag_image);
-				$('img', plane.tr.cells[1]).attr('title', plane.icaorange.country);
+				$('img', plane.tr.cells[0]).attr('src', FlagPath + plane.icaorange.flag_image);
+				$('img', plane.tr.cells[0]).attr('title', plane.icaorange.country);
 			} else {
-				$('img', plane.tr.cells[1]).css('display', 'none');
+				$('img', plane.tr.cells[0]).css('display', 'none');
 			}
 
 			plane.tr.addEventListener('click', function(h, evt) {
@@ -520,7 +520,7 @@ function initialize_map() {
 
 	// Maybe hide flag info
 	if (!ShowFlags) {
-		PlaneRowTemplate.cells[1].style.display = 'none'; // hide flag column
+		PlaneRowTemplate.cells[0].style.display = 'none'; // hide flag column
 		document.getElementById("flag").style.display = 'none'; // hide flag header
 		document.getElementById("infoblock_country").style.display = 'none'; // hide country row
 	}
@@ -1727,6 +1727,7 @@ function refreshSelected() {
 		emerg.className = 'hidden';
 	}
 
+	$('#selected_source').text(format_data_source(selected.addrtype));
 	$("#selected_altitude").text(format_altitude_long(selected.altitude, selected.vert_rate, DisplayUnits));
 
 	if (selected.squawk === null || selected.squawk === '0000') {
@@ -1734,6 +1735,10 @@ function refreshSelected() {
 	} else {
 		$('#selected_squawk').text(selected.squawk);
 	}
+
+
+
+
 
 	$('#selected_speed').text(format_speed_long(selected.speed, DisplayUnits));
 	$('#selected_vertical_rate').text(format_vert_rate_long(selected.vert_rate, DisplayUnits));
@@ -1866,6 +1871,7 @@ function refreshTableInfo() {
 
 			var classes = "plane_table_row";
 
+
 			if (tableplane.position !== null && tableplane.seen_pos < 60) {
 				++TrackedAircraftPositions;
 				if (tableplane.position_from_mlat)
@@ -1876,9 +1882,16 @@ function refreshTableInfo() {
 			if (tableplane.icao == SelectedPlane)
 				classes += " selected";
 
+			if (tableplane.position_from_mlat && tableplane.position !== null) {
+				classes += " vposMlat";
+			}
+
 			if (tableplane.is_interesting == 'Y') { // AKISSACK ------------ Ref: AK9F
 				classes += " ofInterest ";
 			}
+
+			if (tableplane.position == null && tableplane.seen_pos == null && !tableplane.position_from_mlat)
+				classes += " nopos";
 
 			if (tableplane.squawk in SpecialSquawks) {
 				classes = classes + " " + SpecialSquawks[tableplane.squawk].cssClass;
@@ -1886,7 +1899,7 @@ function refreshTableInfo() {
 			}
 
 			if (ShowMyPreferences) {
-				tableplane.tr.cells[0].innerHTML = tableplane.icao;
+				tableplane.tr.cells[1].innerHTML = tableplane.icao;
 				tableplane.tr.cells[2].textContent = (tableplane.flight !== null ? tableplane.flight : "");
 			} else {
 				// ICAO doesn't change

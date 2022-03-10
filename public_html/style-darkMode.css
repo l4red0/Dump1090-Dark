@@ -110,10 +110,11 @@ div#SpecialSquawkWarning {
   left: 100px;
   border: 2px solid red;
   background-color: #FFFFA3;
-  opacity: 0.75;
-  filter: alpha(opacity=75);
+  opacity: 0.95;
+  filter: alpha(opacity=95);
   padding: 5px;
   text-align: center;
+  color: #212121;
 }
 
 div#update_error {
@@ -121,11 +122,12 @@ div#update_error {
   bottom: 25px;
   left: 25px;
   border: 2px solid red;
-  background-color: #FFFFA3;
-  opacity: 0.75;
-  filter: alpha(opacity=75);
+  background-color: #ff9494;
+  opacity: 0.95;
+  filter: alpha(opacity=95);
   padding: 5px;
   text-align: center;
+  color: #212121;
 }
 
 div#loader {
@@ -161,6 +163,7 @@ div#loader {
 #tableinfo {
   font-size: 13px;
   font-family: 'Inconsolata', monospace;
+  border-collapse: collapse;
 }
 
 #tableinfo a {
@@ -174,7 +177,8 @@ div#loader {
 }
 
 #tableinfo tr td {
-  padding: .2em;
+  padding: 1px 4px 1px 4px;
+  border: 1px solid #1c1c1c;
 }
 
 .aircraft_table_header {
@@ -229,7 +233,8 @@ div#loader {
 }
 
 #plane_row_template.selected {
-  background-color: #5b172f !important;
+  /*background-color: #5b172f !important;*/
+  box-shadow: inset 0px 0px 3px 3px #00000057;
   font-weight: 700;
 }
 
@@ -238,9 +243,12 @@ div#loader {
   color: #fff;
 }
 
+#plane_row_template.vposMlat {
+  background: #003e3d;
+}
+
 #plane_row_template.mlat {
   background-color: #3700B3;
-  color: #fff;
 }
 
 .squawk7500 {
@@ -361,14 +369,16 @@ div#loader {
   height: 24px;
 }
 
-.trackIcon svg{
-width: 18px;
-height:18px;
+.trackIcon svg {
+  width: 18px;
+  height: 18px;
 }
+
 .trackIcon {
   display: block;
   margin: 0px;
 }
+
 .psImage {
   display: block;
   width: 200px;
@@ -492,7 +502,17 @@ div.mp {
 /* ----------------------------------------------------------------------------------------- ref: AK1B Ends */
 /* AKISSACK -  HOVER OVER LABELS (also in script.js/PlaneObject.js/index.html) ----------- ref: AK6C starts */
 .ofInterest {
-  color: red;
+  color: #f97272;
+  font-weight: 600;
+}
+
+.nopos {
+  background-color: #161616;
+  color: #9f9f9f
+}
+
+.nopos img {
+  filter: grayscale(100%);
 }
 
 #popinfo {
@@ -563,7 +583,7 @@ div.mp {
 }
 
 .progressBarWrapper {
-  width: 25px;
+  width: 100%;
 }
 
 .progressBar {
