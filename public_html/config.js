@@ -191,4 +191,4 @@ SleafordMySql        = false ;  // Don't set this without reviewing the code - i
 
 DarkMode        = true; //Enable dark scheme
 PanoramaRingsJson = false; //Terrain limit rings - see script.js. To enable provide path to "upintheair.json" file.
-OL3 = false; //set to false for experimental openlayer 6.13.0 support instead of OL3
+OL3 = false; //set to false for experimental openlayer 6.13.0 support instead of OL3. Changes to paths of css and js required in index.xtml
