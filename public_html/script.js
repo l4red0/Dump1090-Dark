@@ -1373,11 +1373,11 @@ function initialize_map() {
 		// trap mouse moving over
 		//var hitTolerance = 100;
 		OLMap.on('pointermove', function(evt) {
-
+			//console.log(evt.pixel);
 			var feature = OLMap.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
 				overlay.setPosition(evt.coordinate);
 				var popname = feature.get('name');
-				//console.log(popname);
+
 
 				if (ShowMyFindsLayer && (typeof popname != 'undefined') && popname != '~') {
 					overlay.getElement().innerHTML = (popname ? popname : '');
@@ -1430,7 +1430,7 @@ function initialize_map() {
 					//return feature;
 					return null;
 				}
-			}, null, function(layer) {
+			}, function(layer) {
 				if (ShowMyFindsLayer) {
 					return (layer == iconsLayer, MyFeatures);
 				} else {
