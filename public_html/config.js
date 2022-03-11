@@ -123,15 +123,6 @@ ChartBundleLayers = true;
 //
 BingMapsAPIKey = null;
 
-// Provide a Mapzen API key here to enable the Mapzen vector tile layer.
-// You can obtain a free key at https://mapzen.com/developers/
-// (you need a "vector tiles" key)
-//
-// Be sure to quote your key:
-//   MapzenAPIKey = "your key here";
-//
-MapzenAPIKey = null;
-
 
 UseDefaultTerrianRings  = true;         // default Terrian rings color, otherwise colored by altitude (color defined in TerrianColorByAlt)
 UseTerrianLineDash      = false;        // true: dashed or false: solid terrian rings
@@ -163,14 +154,16 @@ ShowMouseLatLong     = true ;  // https://github.com/alkissack/Dump1090-OpenLaye
 ShowAdditionalMaps   = true ;  // https://github.com/alkissack/Dump1090-OpenLayers3-html/wiki/2.-Additional-maps
 ShowPermanentLabels  = true ;  // https://github.com/alkissack/Dump1090-OpenLayers3-html/wiki/7.-Permanent-labels
 ShowHoverOverLabels  = true ;  // https://github.com/alkissack/Dump1090-OpenLayers3-html/wiki/6.-Hover-over-labels
-ShowMaxRange         = true ;  // https://github.com/alkissack/Dump1090-OpenLayers3-html/wiki/8.-Maximum-range-plot
-			       // If showing ranges, set SiteLat/SiteLon as these are the zero range positions till plot is drawn
+
+// Show maximum range plot overlay on map. If showing ranges, set SiteLat/SiteLon as these are the zero range positions till plot is drawn
+// [enable max range plot, stroke color, stroke with, fill color]
+RangePlot = [true, 'rgba(1,79,78, 1)', 1, 'rgba(1,135,134,0.07)'];
+
 MinRangeHeight	     =    -1 ; // ft - inner range ring - Set -1 to disable
 MinRangeLikely 	     =   170 ; // nm - practical max (to supress spikes from bad data)
 MidRangeHeight	     =    -1 ; // ft - mid range ring - Set -1 to disable
 MidRangeLikely 	     =   220 ; // nm - practical max
 MaxRangeLikely 	     =   300 ; // nm - practical max
-RangeLine	     =     1 ; // Line width for range rings
 // ----------------------------------------------------------------------------------------------------------------------------
 //           UK ONLY :
 // ----------------------------------------------------------------------------------------------------------------------------
@@ -197,4 +190,5 @@ SleafordMySql        = false ;  // Don't set this without reviewing the code - i
 // ----------------------------------------------------------------------------------------------------------------------------
 
 DarkMode        = true; //Enable dark scheme
-PanoramaRingsJson = false; //Terrain limit rings - see script.js
+PanoramaRingsJson = false; //Terrain limit rings - see script.js. To enable provide path to "upintheair.json" file.
+OL3 = false; //set to false for experimental openlayer 6.13.0 support instead of OL3

@@ -460,11 +460,12 @@ function end_load_history() {
 
 	PositionHistoryBuffer = null;
 
-	console.log("Completing init");
 
+	updateMapSize();
 	refreshTableInfo();
 	refreshSelected();
 	reaper();
+	console.log("Completing init");
 
 	// Setup our timer to poll from the server.
 	window.setInterval(fetchData, RefreshInterval);
@@ -974,7 +975,7 @@ function initialize_map() {
 		var rangeLayer = new ol.layer.Vector({});
 	};
 
-	if (ShowMaxRange) { // AKISSACK Maximum Range Plot Ref: AK8D
+	if (RangePlot[0]) { // AKISSACK Maximum Range Plot Ref: AK8D
 		var maxRangeLayer = new ol.layer.Vector({
 			name: 'ranges',
 			type: 'overlay',
@@ -1018,55 +1019,55 @@ function initialize_map() {
 
 	var foundType = false;
 
-  //BUG OL6 TODO
-/*
-	ol.control.LayerSwitcher.forEachRecursive(layers, function(lyr) {
-		if (!lyr.get('name'))
-			return;
+	//OL6 TODO
+	if (OL3) {
+		ol.control.LayerSwitcher.forEachRecursive(layers, function(lyr) {
+			if (!lyr.get('name'))
+				return;
 
-		if (lyr.get('type') === 'base') {
-			if (MapType === lyr.get('name')) {
-				foundType = true;
-				lyr.setVisible(true);
-			} else {
-				lyr.setVisible(false);
+			if (lyr.get('type') === 'base') {
+				if (MapType === lyr.get('name')) {
+					foundType = true;
+					lyr.setVisible(true);
+				} else {
+					lyr.setVisible(false);
+				}
+
+				lyr.on('change:visible', function(evt) {
+					if (evt.target.getVisible()) {
+						MapType = localStorage['MapType'] = evt.target.get('name');
+					}
+				});
+			} else if (lyr.get('type') === 'overlay') {
+				var visible = localStorage['layer_' + lyr.get('name')];
+				if (visible != undefined) {
+					// javascript, why must you taunt me with gratuitous type problems
+					lyr.setVisible(visible === "true");
+				}
+
+				lyr.on('change:visible', function(evt) {
+					localStorage['layer_' + evt.target.get('name')] = evt.target.getVisible();
+				});
 			}
+		})
 
-			lyr.on('change:visible', function(evt) {
-				if (evt.target.getVisible()) {
-					MapType = localStorage['MapType'] = evt.target.get('name');
+		if (!foundType) {
+			ol.control.LayerSwitcher.forEachRecursive(layers, function(lyr) {
+				if (foundType)
+					return;
+				if (lyr.get('type') === 'base') {
+					lyr.setVisible(true);
+					foundType = true;
 				}
 			});
-		} else if (lyr.get('type') === 'overlay') {
-			var visible = localStorage['layer_' + lyr.get('name')];
-			if (visible != undefined) {
-				// javascript, why must you taunt me with gratuitous type problems
-				lyr.setVisible(visible === "true");
-			}
-
-			lyr.on('change:visible', function(evt) {
-				localStorage['layer_' + evt.target.get('name')] = evt.target.getVisible();
-			});
 		}
-	})
-
-	if (!foundType) {
-		ol.control.LayerSwitcher.forEachRecursive(layers, function(lyr) {
-			if (foundType)
-				return;
-			if (lyr.get('type') === 'base') {
-				lyr.setVisible(true);
-				foundType = true;
-			}
-		});
 	}
-*/
+
 	OLMap = new ol.Map({
 		target: 'map_canvas',
 		layers: layers,
 		view: new ol.View({
 			center: ol.proj.fromLonLat([CenterLon, CenterLat]),
-			//zoomFactor: 2,
 			zoom: ZoomLvl
 		}),
 		controls: [new ol.control.Zoom(),
@@ -1484,131 +1485,125 @@ function initialize_map() {
 		}
 	}
 
-	// Add terrain-limit rings. To enable this:
-	//
-	//  create a panorama for your receiver location on heywhatsthat.com
-	//
-	//  note the "view" value from the URL at the top of the panorama
-	//    i.e. the XXXX in http://www.heywhatsthat.com/?view=XXXX
-	//
-	// fetch a json file from the API for the altitudes you want to see:
-	//
-	//  wget -O /usr/share/dump1090-mutability/html/upintheair.json \
-	//    'http://www.heywhatsthat.com/api/upintheair.json?id=XXXX&refraction=0.25&alts=3048,9144'
-	//
-	// NB: altitudes are in _meters_, you can specify a list of altitudes
-
-	// kick off an ajax request that will add the rings when it's done
-	if (!PanoramaRingsJson === false) {
-		var request = $.ajax({
-			url: PanoramaRingsJson,
-			timeout: 5000,
-			cache: true,
-			dataType: 'json'
-		});
+	if (OL3) {
+		// TODO OL6
+		// Add terrain-limit rings.
+		// kick off an ajax request that will add the rings when it's done
+		if (!PanoramaRingsJson === false) {
+			var request = $.ajax({
+				url: PanoramaRingsJson,
+				timeout: 5000,
+				cache: true,
+				dataType: 'json'
+			});
 
 
-		request.done(function(data) {
-			var ringStyle;
+			request.done(function(data) {
+				var ringStyle;
 
-			if (UseDefaultTerrianRings) {
-				ringStyle = new ol.style.Style({
-					fill: null,
-					stroke: new ol.style.Stroke({
-						color: '#000000',
-						lineDash: UseTerrianLineDash ? [4, 4] : null,
-						width: TerrianLineWidth
-					})
-				});
-			} else {
-				ringStyle = [];
-
-				for (var i = 0; i < TerrianAltitudes.length; ++i) {
-					ringStyle.push(new ol.style.Style({
+				if (UseDefaultTerrianRings) {
+					ringStyle = new ol.style.Style({
 						fill: null,
 						stroke: new ol.style.Stroke({
-							color: getTerrianColorByAlti(TerrianAltitudes[i]),
+							color: '#000000',
 							lineDash: UseTerrianLineDash ? [4, 4] : null,
 							width: TerrianLineWidth
 						})
-					}));
-				}
-			}
+					});
+				} else {
+					ringStyle = [];
 
-			for (var i = 0; i < data.rings.length; ++i) {
-				var geom = new ol.geom.LineString();
-				var points = data.rings[i].points;
-				if (points.length > 0) {
-					for (var j = 0; j < points.length; ++j) {
-						geom.appendCoordinate([points[j][1], points[j][0]]);
+					for (var i = 0; i < TerrianAltitudes.length; ++i) {
+						ringStyle.push(new ol.style.Style({
+							fill: null,
+							stroke: new ol.style.Stroke({
+								color: getTerrianColorByAlti(TerrianAltitudes[i]),
+								lineDash: UseTerrianLineDash ? [4, 4] : null,
+								width: TerrianLineWidth
+							})
+						}));
 					}
-					geom.appendCoordinate([points[0][1], points[0][0]]);
-					geom.transform('EPSG:4326', 'EPSG:3857');
-
-					var feature = new ol.Feature(geom);
-					if (UseDefaultTerrianRings) {
-						feature.setStyle(ringStyle);
-					} else {
-						feature.setStyle(ringStyle[i]);
-					}
-					StaticFeatures.push(feature);
 				}
-			}
-		});
 
-		request.fail(function(jqxhr, status, error) {
-			// no rings available, do nothing
-		});
+				for (var i = 0; i < data.rings.length; ++i) {
+					var geom = new ol.geom.LineString();
+					var points = data.rings[i].points;
+					if (points.length > 0) {
+						for (var j = 0; j < points.length; ++j) {
+							geom.appendCoordinate([points[j][1], points[j][0]]);
+						}
+						geom.appendCoordinate([points[0][1], points[0][0]]);
+						geom.transform('EPSG:4326', 'EPSG:3857');
+
+						var feature = new ol.Feature(geom);
+						if (UseDefaultTerrianRings) {
+							feature.setStyle(ringStyle);
+						} else {
+							feature.setStyle(ringStyle[i]);
+						}
+						StaticFeatures.push(feature);
+					}
+				}
+			});
+
+			request.fail(function(jqxhr, status, error) {
+				// no rings available, do nothing
+			});
+		}
 	}
 }
 
+
 function createSiteCircleFeatures() {
-	// Clear existing circles first
-	SiteCircleFeatures.forEach(function(circleFeature) {
-		StaticFeatures.remove(circleFeature);
-	});
-	SiteCircleFeatures.clear();
-	if (ShowMyPreferences) { // Personal preferences Ref: AK9V
-		var rangeWid = 0.25;
-	} else {
-		var rangeWid = 1;
-	}
-	var circleStyle = function(distance) {
-		return new ol.style.Style({
-			fill: null,
-			stroke: new ol.style.Stroke({
-				color: '#000000',
-				width: rangeWid //
-			}),
-			text: new ol.style.Text({
-				font: 'bold 10px Helvetica Neue, sans-serif',
-				fill: new ol.style.Fill({
-					color: '#000000'
-				}),
-				offsetY: -8,
-				offsetX: 1,
-				text: ShowSiteRingDistanceText ? format_distance_long(distance, DisplayUnits, 0) : ''
-
-			})
+	if (OL3) {
+		//TODO OL6
+		// Clear existing circles first
+		SiteCircleFeatures.forEach(function(circleFeature) {
+			StaticFeatures.remove(circleFeature);
 		});
-	};
+		SiteCircleFeatures.clear();
+		if (ShowMyPreferences) { // Personal preferences Ref: AK9V
+			var rangeWid = 0.25;
+		} else {
+			var rangeWid = 1;
+		}
+		var circleStyle = function(distance) {
+			return new ol.style.Style({
+				fill: null,
+				stroke: new ol.style.Stroke({
+					color: '#000000',
+					width: rangeWid //
+				}),
+				text: new ol.style.Text({
+					font: 'bold 10px Helvetica Neue, sans-serif',
+					fill: new ol.style.Fill({
+						color: '#000000'
+					}),
+					offsetY: -8,
+					offsetX: 1,
+					text: ShowSiteRingDistanceText ? format_distance_long(distance, DisplayUnits, 0) : ''
 
-	var conversionFactor = 1000.0;
-	if (DisplayUnits === "nautical") {
-		conversionFactor = 1852.0;
-	} else if (DisplayUnits === "imperial") {
-		conversionFactor = 1609.0;
+				})
+			});
+		};
+
+		var conversionFactor = 1000.0;
+		if (DisplayUnits === "nautical") {
+			conversionFactor = 1852.0;
+		} else if (DisplayUnits === "imperial") {
+			conversionFactor = 1609.0;
+		}
+
+		for (var i = 0; i < SiteCirclesDistances.length; ++i) {
+			var distance = SiteCirclesDistances[i] * conversionFactor;
+			var circle = make_geodesic_circle(SitePosition, distance, 360);
+			circle.transform('EPSG:4326', 'EPSG:3857');
+			var feature = new ol.Feature(circle);
+			feature.setStyle(circleStyle(distance));
+			StaticFeatures.push(feature);
+			SiteCircleFeatures.push(feature);
+		}
 	}
-/*
-	for (var i = 0; i < SiteCirclesDistances.length; ++i) {
-		var distance = SiteCirclesDistances[i] * conversionFactor;
-		var circle = make_geodesic_circle(SitePosition, distance, 360);
-		circle.transform('EPSG:4326', 'EPSG:3857');
-		var feature = new ol.Feature(circle);
-		feature.setStyle(circleStyle(distance));
-		StaticFeatures.push(feature);
-		SiteCircleFeatures.push(feature);
-	}*/
 }
 
 // This looks for planes to reap out of the master Planes variable
@@ -1877,9 +1872,9 @@ function refreshTableInfo() {
 
 			var classes = "plane_table_row";
 
-      if (tableplane.position !== null) {
-        classes += " vPosition";
-      }
+			if (tableplane.position !== null) {
+				classes += " vPosition";
+			}
 
 			if (tableplane.position !== null && tableplane.seen_pos < 60) {
 				++TrackedAircraftPositions;
@@ -2002,11 +1997,11 @@ function refreshTableInfo() {
 	// MAXIMUM ------------------------------------
 	var style = new ol.style.Style({
 		stroke: new ol.style.Stroke({
-			color: 'rgba(0,0,128, 1)',
-			width: RangeLine
+			color: RangePlot[1],
+			width: RangePlot[2],
 		}),
 		fill: new ol.style.Fill({
-			color: 'rgba(0,0,255, 0.05)'
+			color: RangePlot[3]
 		})
 	});
 
@@ -2019,7 +2014,7 @@ function refreshTableInfo() {
 
 	})
 	rangeFeature.setStyle(style)
-	if (ShowMaxRange) {
+	if (RangePlot[0]) {
 		MaxRangeFeatures.push(rangeFeature)
 	};
 
@@ -2027,7 +2022,7 @@ function refreshTableInfo() {
 	var style = new ol.style.Style({
 		stroke: new ol.style.Stroke({
 			color: 'rgba(0,128,0, 0.5)',
-			width: RangeLine
+			width: RangePlot[2]
 		}),
 		fill: new ol.style.Fill({
 			color: 'rgba(0,255,0, 0.05)'
@@ -2050,7 +2045,7 @@ function refreshTableInfo() {
 	var style = new ol.style.Style({
 		stroke: new ol.style.Stroke({
 			color: 'rgba(128,0,0, 0.5)',
-			width: RangeLine
+			width: RangePlot[2]
 		}),
 		fill: new ol.style.Fill({
 			color: 'rgba(255,0,0, 0.05)'
@@ -2756,7 +2751,7 @@ function darkMode() {
 		$('link[href="style.css"]').attr('href', 'style-darkMode.css');
 		localStorage.setItem('darkMode', 'true');
 
-    //can make negative of any map but the output is usally ugly
+		//can make negative of any map but the output is usally ugly
 		//document.querySelector('canvas').style.filter = "invert(85%)";
 	} else if (localStorage.getItem('darkMode') === 'true' || $('link[href="style.css"]').attr('href') === 'style-darkMode.css') {
 		$('link[href="style-darkMode.css"]').attr('href', 'style.css');
