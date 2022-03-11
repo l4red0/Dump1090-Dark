@@ -479,11 +479,14 @@ function end_load_history() {
 // that is a closed circle on the sphere such that the
 // great circle distance from 'center' to each point is
 // 'radius' meters
+/*
 function make_geodesic_circle(center, radius, points) {
+
 	var angularDistance = radius / 6378137.0;
 	var lon1 = center[0] * Math.PI / 180.0;
 	var lat1 = center[1] * Math.PI / 180.0;
-	var geom = new ol.geom.LineString();
+	var geom = new ol.geom.LineString(0, 0);
+
 	for (var i = 0; i <= points; ++i) {
 		var bearing = i * 2 * Math.PI / points;
 
@@ -498,6 +501,7 @@ function make_geodesic_circle(center, radius, points) {
 	}
 	return geom;
 }
+*/
 
 // Initalizes the map and starts up our timers to call various functions
 function initialize_map() {
@@ -1014,6 +1018,8 @@ function initialize_map() {
 
 	var foundType = false;
 
+  //BUG OL6 TODO
+/*
 	ol.control.LayerSwitcher.forEachRecursive(layers, function(lyr) {
 		if (!lyr.get('name'))
 			return;
@@ -1054,7 +1060,7 @@ function initialize_map() {
 			}
 		});
 	}
-
+*/
 	OLMap = new ol.Map({
 		target: 'map_canvas',
 		layers: layers,
@@ -1593,7 +1599,7 @@ function createSiteCircleFeatures() {
 	} else if (DisplayUnits === "imperial") {
 		conversionFactor = 1609.0;
 	}
-
+/*
 	for (var i = 0; i < SiteCirclesDistances.length; ++i) {
 		var distance = SiteCirclesDistances[i] * conversionFactor;
 		var circle = make_geodesic_circle(SitePosition, distance, 360);
@@ -1602,7 +1608,7 @@ function createSiteCircleFeatures() {
 		feature.setStyle(circleStyle(distance));
 		StaticFeatures.push(feature);
 		SiteCircleFeatures.push(feature);
-	}
+	}*/
 }
 
 // This looks for planes to reap out of the master Planes variable
