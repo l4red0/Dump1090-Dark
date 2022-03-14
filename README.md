@@ -6,6 +6,10 @@ This is fork of [alkissack's Dump1090-OpenLayers3-html](https://github.com/alkis
 #### Please keep in mind that this is bug heavy, pre-release project with experimental features. Currently developed (and compatible) with stock pi24 dump1090-mutabily with plan to support other dump1090 versions with broader `aircraft.json` data.
 
 ### Changelog
+**14.03.22 - 0.12**
+- range rings rewritten to OL6
+- added historical max distance
+
 **11.03.22 - 0.12**
 - redesigned aircraft detailed data window, added icons for clarity
 - initial migration to openlayers 6 for webgl goodies. For now working but buggy and with regression to some features.

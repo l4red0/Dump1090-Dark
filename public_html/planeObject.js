@@ -581,17 +581,12 @@ PlaneObject.prototype.updateData = function(receiver_timestamp, data) {
 	if (typeof data.lat !== "undefined") {
 		this.position = [data.lon, data.lat];
 		this.last_position_time = receiver_timestamp - data.seen_pos;
-//TODO OL6
-if(OL3) {
+
 		if (SitePosition !== null) {
-			var WGS84 = new ol.Sphere(6378137);
-			//var WGS84 = new ol.Sphere(6378137);
-			this.sitedist = WGS84.haversineDistance(SitePosition, this.position);
-			//  AKISSACK     - Store a bearing and nm distance for our range plot            Ref AK8G
+			this.sitedist = ol.sphere.getDistance(SitePosition, this.position);
 			this.siteBearing = parseInt(getBearing(SitePosition[1], SitePosition[0], this.position[1], this.position[0]).toFixed(0));
 			this.siteNm = parseInt((this.sitedist / 1852).toFixed(0));
 		}
-  }
 
 		this.position_from_mlat = false;
 		if (typeof data.mlat !== "undefined") {

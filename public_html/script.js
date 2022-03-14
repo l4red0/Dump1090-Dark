@@ -16,6 +16,20 @@ var PlaneFilter = {};
 var SelectedPlane = null;
 var SelectedAllPlanes = false;
 var FollowSelected = false;
+var historyMaxRange = null;
+
+//OL6 vars
+var Overlay = ol.Overlay;
+var View = ol.View;
+var toStringHDMS = ol.coordinate.toStringHDMS;
+var TileLayer = ol.layer.Tile;
+var toLonLat = ol.proj.toLonLat;
+var Circle = ol.geom.Circle;
+var Feature = ol.Feature;
+var Style = ol.style.Style;
+var fromLonLat = ol.proj.fromLonLat;
+var Transform = ol.Transform;
+var Sphere = ol.Sphere;
 
 // --------------------------------------------------------------------------------------
 // AKISSACK - Variables -----------------------------------------------------------------
@@ -66,7 +80,11 @@ var MinRngRange = []; // AKISSACK Range plot    Ref: AK8B
 var MinRngLat = []; // AKISSACK Range plot    Ref: AK8B
 var MinRngLon = []; // AKISSACK Range plot    Ref: AK8B
 
-var SitePosition = null;
+if (SiteLat !== '' && SiteLon !== '') {
+	SitePosition = [SiteLon, SiteLat];
+} else {
+	var SitePosition = null;
+}
 var ReceiverClock = null;
 
 var LastReceiverTimestamp = 0;
@@ -223,40 +241,17 @@ function initialize() {
 	document.title = PageName;
 	MaxRange = 0; // AKISSACK  Display range  Ref: AK9T
 
+	//history max range
+	if (localStorage.getItem('historyMaxRange') === null) {
+		localStorage.setItem('historyMaxRange', format_distance_brief(MaxRange, DisplayUnits))
+	} else {
+		historyMaxRange = localStorage.getItem('historyMaxRange')
+	}
+
 	// $("#infoblock_name").text(PageName); AKISSACK - Ref: AK9W
 	$("#infoblock_name").text('');
 
 	PlaneRowTemplate = document.getElementById("plane_row_template");
-
-	if (!ShowClocks) {
-		$('#timestamps').css('display', 'none');
-	} else {
-		// Create the clocks.
-		new CoolClock({
-			canvasId: "utcclock",
-			skinId: "classic",
-			displayRadius: 40,
-			showSecondHand: true,
-			gmtOffset: "0", // this has to be a string!
-			showDigital: false,
-			logClock: false,
-			logClockRev: false
-		});
-
-		ReceiverClock = new CoolClock({
-			canvasId: "receiverclock",
-			skinId: "classic",
-			displayRadius: 40,
-			showSecondHand: true,
-			gmtOffset: null,
-			showDigital: false,
-			logClock: false,
-			logClockRev: false
-		});
-
-		// disable ticking on the receiver clock, we will update it ourselves
-		ReceiverClock.tick = (function() {})
-	}
 
 	$("#loader").removeClass("hidden");
 
@@ -475,34 +470,6 @@ function end_load_history() {
 	fetchData();
 
 }
-
-// Make a LineString with 'points'-number points
-// that is a closed circle on the sphere such that the
-// great circle distance from 'center' to each point is
-// 'radius' meters
-/*
-function make_geodesic_circle(center, radius, points) {
-
-	var angularDistance = radius / 6378137.0;
-	var lon1 = center[0] * Math.PI / 180.0;
-	var lat1 = center[1] * Math.PI / 180.0;
-	var geom = new ol.geom.LineString(0, 0);
-
-	for (var i = 0; i <= points; ++i) {
-		var bearing = i * 2 * Math.PI / points;
-
-		var lat2 = Math.asin(Math.sin(lat1) * Math.cos(angularDistance) +
-			Math.cos(lat1) * Math.sin(angularDistance) * Math.cos(bearing));
-		var lon2 = lon1 + Math.atan2(Math.sin(bearing) * Math.sin(angularDistance) * Math.cos(lat1),
-			Math.cos(angularDistance) - Math.sin(lat1) * Math.sin(lat2));
-
-		lat2 = lat2 * 180.0 / Math.PI;
-		lon2 = lon2 * 180.0 / Math.PI;
-		geom.appendCoordinate([lon2, lat2]);
-	}
-	return geom;
-}
-*/
 
 // Initalizes the map and starts up our timers to call various functions
 function initialize_map() {
@@ -997,7 +964,9 @@ function initialize_map() {
 				title: 'Site position and range rings',
 				source: new ol.source.Vector({
 					features: StaticFeatures,
-				})
+				}),
+				updateWhileAnimating: true,
+				updateWhileInteracting: true
 			}),
 
 	  new ol.layer.Vector({
@@ -1006,7 +975,9 @@ function initialize_map() {
 				title: 'Selected aircraft trail',
 				source: new ol.source.Vector({
 					features: PlaneTrailFeatures,
-				})
+				}),
+				updateWhileAnimating: true,
+				updateWhileInteracting: true
 			}),
 	  rangeLayer,
 	  maxRangeLayer, // Ref: AK8D
@@ -1553,56 +1524,45 @@ function initialize_map() {
 	}
 }
 
-
 function createSiteCircleFeatures() {
-	if (OL3) {
-		//TODO OL6
-		// Clear existing circles first
-		SiteCircleFeatures.forEach(function(circleFeature) {
-			StaticFeatures.remove(circleFeature);
-		});
-		SiteCircleFeatures.clear();
-		if (ShowMyPreferences) { // Personal preferences Ref: AK9V
-			var rangeWid = 0.25;
-		} else {
-			var rangeWid = 1;
-		}
-		var circleStyle = function(distance) {
-			return new ol.style.Style({
-				fill: null,
-				stroke: new ol.style.Stroke({
-					color: '#000000',
-					width: rangeWid //
+	var radius;
+	var siteCricleStyle = function(distance, offset) {
+
+
+		return new Style({
+			//stroke: new ol.style.Stroke({color: 'rgba(1,135,134,0.8)', width: 1}),
+			//fill: new ol.style.Fill({color: 'rgba(55,0,179,0.05)'}),
+			stroke: new ol.style.Stroke({
+				color: 'rgba(0,62,62,0.4)',
+				width: 1
+			}),
+			text: new ol.style.Text({
+				font: 'normal 10px "Inconsolata", monospace',
+				fill: new ol.style.Fill({
+					color: 'rgba(255,255,255,1)'
 				}),
-				text: new ol.style.Text({
-					font: 'bold 10px Helvetica Neue, sans-serif',
-					fill: new ol.style.Fill({
-						color: '#000000'
-					}),
-					offsetY: -8,
-					offsetX: 1,
-					text: ShowSiteRingDistanceText ? format_distance_long(distance, DisplayUnits, 0) : ''
-
+				stroke: new ol.style.Stroke({
+					color: 'rgba(0,62,62,0.8)',
+					width: 5
+				}),
+				text: ShowSiteRingDistanceText ? format_distance_long(distance, DisplayUnits, 0) : '',
+				placement: 'line',
+				backgroundFill: new ol.style.Fill({
+					color: 'rgba(0,62,62,1)'
 				})
-			});
-		};
+			})
+		});
+	};
 
-		var conversionFactor = 1000.0;
-		if (DisplayUnits === "nautical") {
-			conversionFactor = 1852.0;
-		} else if (DisplayUnits === "imperial") {
-			conversionFactor = 1609.0;
-		}
-
-		for (var i = 0; i < SiteCirclesDistances.length; ++i) {
-			var distance = SiteCirclesDistances[i] * conversionFactor;
-			var circle = make_geodesic_circle(SitePosition, distance, 360);
-			circle.transform('EPSG:4326', 'EPSG:3857');
-			var feature = new ol.Feature(circle);
-			feature.setStyle(circleStyle(distance));
-			StaticFeatures.push(feature);
-			SiteCircleFeatures.push(feature);
-		}
+	for (var i = 0; i < SiteCirclesDistances.length; ++i) {
+		var radius = SiteCirclesDistances[i] * unitsConversionFactor();
+		var siteCricle = new ol.Feature({
+			geometry: ol.geom.Polygon.circular(SitePosition, radius, 128).transform('EPSG:4326', 'EPSG:3857'),
+			name: radius
+		});
+		var ofs = SiteCirclesDistances[i] * unitsConversionFactor();
+		siteCricle.setStyle(siteCricleStyle(radius));
+		StaticFeatures.push(siteCricle);
 	}
 }
 
@@ -1676,6 +1636,7 @@ function refreshSelected() {
 	$('#dump1090_total_ac').text(TrackedAircraft);
 	$('#dump1090_total_ac_positions').text(TrackedAircraftPositions);
 	$('#dump1090_max_range').text(format_distance_brief(MaxRange, DisplayUnits)); // Ref: AK9T
+	$('#dump1090_max_range_history').text(localStorage.getItem('historyMaxRange')); // Ref: AK9T
 	$('#dump1090_total_history').text(TrackedHistorySize);
 
 	if (MessageRate !== null) {
@@ -1858,7 +1819,7 @@ function refreshTableInfo() {
 		} else {
 			TrackedAircraft++;
 			// AKISSACK Range display  Ref: AK9T
-			if (CurMaxRange < tableplane.sitedist) { // AKISSACK
+			if (CurMaxRange < tableplane.sitedist) {
 				CurMaxRange = tableplane.sitedist;
 				if (CurMaxRange > MaxRange) {
 					MaxRange = CurMaxRange;
@@ -1868,6 +1829,10 @@ function refreshTableInfo() {
 			if (tableplane.sitedist && CurMinRange > tableplane.sitedist) { // AKISSACK
 				CurMinRange = tableplane.sitedist;
 				//console.log("-"+CurMinRange);
+			}
+
+			if (parseFloat(localStorage.getItem('historyMaxRange')) < parseFloat(format_distance_brief(MaxRange, DisplayUnits))) {
+				localStorage.setItem('historyMaxRange', format_distance_brief(MaxRange, DisplayUnits));
 			}
 
 			var classes = "plane_table_row";

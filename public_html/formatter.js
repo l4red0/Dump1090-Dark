@@ -189,6 +189,17 @@ function convert_distance(dist, displayUnits) {
 	return (dist / 1852); // meters to nautical miles
 }
 
+function unitsConversionFactor() {
+var conversionFactor = 1000.0;
+if (DisplayUnits === "nautical") {
+	conversionFactor = 1852.0;
+} else if (DisplayUnits === "imperial") {
+	conversionFactor = 1609.0;
+}
+return conversionFactor;
+}
+
+
 // rate in ft/min
 function format_vert_rate_brief(rate, displayUnits) {
 	if (rate === null || rate === undefined) {
@@ -222,6 +233,8 @@ function convert_vert_rate(rate, displayUnits) {
 function format_latlng(p) {
 	return p[1].toFixed(3) + DEGREES + "," + NBSP + p[0].toFixed(3) + DEGREES;
 }
+
+
 
 function format_data_source(source) {
 	switch (source) {
