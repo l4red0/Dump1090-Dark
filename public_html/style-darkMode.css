@@ -1,668 +1,713 @@
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;300;700&family=Ubuntu:wght@300;400;500&display=swap');
 
 html, body {
-  margin: 0;
-  padding: 0;
-  background-color: #212121;
-  font-family: 'Ubuntu', sans-serif;
-  font-size: 1em;
-  overflow: auto;
-  height: 100%;
-  color: #fffffffa;
+	margin: 0;
+	padding: 0;
+	background-color: #212121;
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 1em;
+	overflow: auto;
+	height: 100%;
+	color: #fffffffa;
 }
 
 #layout_container {
-  display: flex;
-  height: 100%;
+	display: flex;
+	height: 100%;
 }
 
 #map_container {
-  flex: 1 1 auto;
-  position: relative;
-  height: 100%;
+	flex: 1 1 auto;
+	position: relative;
+	height: 100%;
 }
 
 #map_canvas {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+	position: absolute;
+	width: 100%;
+	height: 100%;
 }
 
 #toggle_sidebar_control {
-  display: block;
-  position: absolute;
-  top: 10px;
-  right: 10px;
+	display: block;
+	position: absolute;
+	top: 10px;
+	right: 10px;
 }
 
 #show_map_button {
-  position: absolute;
-  right: 10px;
-  z-index: 999;
-}
-
-#toggle_sidebar_button svg, #expand_sidebar_control svg {
-  stroke: rgb(33 33 33);
+	position: absolute;
+	right: 10px;
+	z-index: 999;
 }
 
 #toggle_sidebar_button {
-  float: right;
-  width: 32px;
-  height: 28px;
-  background-size: 32px 28px;
-  background-repeat: no-repeat;
-  background-position: 0px;
-  background-color: transparent;
-  border: none;
+	float: right;
+	width: 30px;
+	height: 30px;
+	background-size: 32px 28px;
+	background-repeat: no-repeat;
+	background-position: 0px;
+	background-color: transparent;
+	border: none;
 }
 
 #expand_sidebar_control {
-  display: block;
-  position: absolute;
-  top: 48px;
-  right: 10px;
+	display: block;
+	position: absolute;
+	top: 48px;
+	right: 10px;
 }
 
 #expand_sidebar_button {
-  float: right;
-  width: 32px;
-  height: 28px;
-  background-size: 32px 28px;
-  background-repeat: no-repeat;
-  background-position: 0px;
-  background-color: transparent;
-  border: none;
+	float: right;
+	width: 30px;
+	height: 30px;
+	background-size: 32px 28px;
+	background-repeat: no-repeat;
+	background-position: 0px;
+	background-color: transparent;
+	border: none;
 }
 
 #sidebar_container {
-  display: flex;
-  width: 30vw;
-  min-width: 560px;
-  left: 0 !important;
+	display: flex;
+	width: 30vw;
+	min-width: 560px;
+	left: 0 !important;
 }
 
 #splitter {
-  flex: 0 0 6px;
-  cursor: col-resize;
-  background-color: #464646;
-  left: 0 !important;
+	flex: 0 0 6px;
+	cursor: col-resize;
+	background-color: #464646;
+	left: 0 !important;
 }
 
 #splitter:after {
-  content: '\2807';
-  color: #303030;
-  font-size: 28px;
-  line-height: 100vh;
-  margin-left: -3px;
+	content: '\2807';
+	color: #303030;
+	font-size: 28px;
+	line-height: 100vh;
+	margin-left: -3px;
 }
 
 #sidebar_canvas {
-  flex: 1 1 auto;
-  padding: 10px;
-  display: flex;
-  overflow: auto;
-  flex-direction: column;
+	flex: 1 1 auto;
+	padding: 10px;
+	display: flex;
+	overflow: auto;
+	flex-direction: column;
 }
 
 div#SpecialSquawkWarning {
-  position: absolute;
-  bottom: 25px;
-  left: 100px;
-  border: 2px solid red;
-  background-color: #FFFFA3;
-  opacity: 0.95;
-  filter: alpha(opacity=95);
-  padding: 5px;
-  text-align: center;
-  color: #212121;
+	position: absolute;
+	bottom: 25px;
+	left: 100px;
+	border: 2px solid red;
+	background-color: #FFFFA3;
+	opacity: 0.95;
+	filter: alpha(opacity=95);
+	padding: 5px;
+	text-align: center;
+	color: #212121;
 }
 
 div#update_error {
-  position: absolute;
-  bottom: 25px;
-  left: 25px;
-  border: 2px solid red;
-  background-color: #ff9494;
-  opacity: 0.95;
-  filter: alpha(opacity=95);
-  padding: 5px;
-  text-align: center;
-  color: #212121;
+	position: absolute;
+	bottom: 25px;
+	left: 25px;
+	border: 2px solid red;
+	background-color: #ff9494;
+	opacity: 0.95;
+	filter: alpha(opacity=95);
+	padding: 5px;
+	text-align: center;
+	color: #212121;
 }
 
 #loader {
-  z-index: 110;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  background: #000000d1;
-  ;
+	z-index: 110;
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	background: #000000d1;
+	;
 }
 
 #loaderProgress {
-  width: 250px;
-  height: 20px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: 60px 0 0 -125px;
-  border-radius: 0px;
+	width: 250px;
+	height: 20px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: 60px 0 0 -125px;
+	border-radius: 0px;
 }
 
 .radioSpinner svg {
-  width: 40px;
-  height: 40px;
+	width: 40px;
+	height: 40px;
 }
 
 .radioSpinner {
-  margin: 0 auto;
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  top: 50%;
-  left: calc(50% - 20px);
+	margin: 0 auto;
+	width: 40px;
+	height: 40px;
+	position: absolute;
+	top: 50%;
+	left: calc(50% - 20px);
 }
 
 progress::-webkit-progress-value {
-  background-color: #fff !important;
+	background-color: #fff !important;
 }
 
 progress::-moz-progress-bar {
-  color: #014f4e;
+	color: #014f4e;
 }
 
 progress {
-  color: #014f4e;
+	color: #014f4e;
 }
 
 @-webkit-keyframes rotating {
-  from {
-    -webkit-transform: rotate(0deg);
-  }
+	from {
+		-webkit-transform: rotate(0deg);
+	}
 
-  to {
-    -webkit-transform: rotate(360deg);
-  }
+	to {
+		-webkit-transform: rotate(360deg);
+	}
 }
 
 .rotating {
-  -webkit-animation: rotating 1.3s linear infinite;
+	-webkit-animation: rotating 1.3s linear infinite;
 }
 
 #tableinfo {
-  font-size: 13px;
-  font-family: 'Inconsolata', monospace;
-  border-collapse: collapse;
+	font-size: 13px;
+	font-family: 'Inconsolata', monospace;
+	border-collapse: collapse;
 }
 
 #tableinfo a {
-  color: #B3ffffff;
-  text-decoration: none;
-  font-size: 90%;
+	color: #B3ffffff;
+	text-decoration: none;
+	font-size: 90%;
 }
 
 #tableinfo a:hover {
-  color: #80ffffff;
+	color: #80ffffff;
 }
 
 #tableinfo tr td {
-  padding: 1px 4px 1px 4px;
-  border: 1px solid #1c1c1c;
+	padding: 1px 4px 1px 4px;
+	border: 1px solid #1c1c1c;
 }
 
 .aircraft_table_header {
-  background-color: #018786;
-  color: #FFFFFF;
-  cursor: pointer;
-  font-weight: 700;
+	background-color: #018786;
+	color: #FFFFFF;
+	cursor: pointer;
+	font-weight: 700;
 }
 
 .aircraft_table_header td {
-  padding: 5px;
-  text-align: center;
+	padding: 5px;
+	text-align: center;
 }
 
 #myAcAc {
-  min-width: 60px;
+	min-width: 60px;
 }
 
 #sudo_buttons {
-  display: flex;
-  justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
 #units_container,
 #altitude_filter_form {
-  font-size: small;
-  margin: 10px 0 10px 0;
+	font-size: small;
+	margin: 10px 0 10px 0;
 }
 
 .verticalRateTriangle {
-  padding: 2px;
+	padding: 2px;
 }
 
 .icaoCodeColumn {
-  text-transform: uppercase;
-  text-align: center;
-  font-size: 14px;
+	text-transform: uppercase;
+	text-align: center;
+	font-size: 14px;
 }
 
 .tableAcName {
-  font-size: 11px;
-  text-overflow: ellipsis;
+	font-size: 11px;
+	text-overflow: ellipsis;
 }
 
 #plane_row_template td {
-  heigh: 34px;
+	heigh: 34px;
 }
 
 #plane_row_template.plane_table_row {
-  cursor: pointer;
-  background: #2c2c2c;
+	cursor: pointer;
+	background: #2c2c2c;
 }
 
 #plane_row_template.selected {
-  /*background-color: #5b172f !important;*/
-  box-shadow: inset 0px 0px 3px 3px #00000057;
-  font-weight: 700;
+	/*background-color: #5b172f !important;*/
+	box-shadow: inset 0px 0px 3px 3px #00000057;
+	font-weight: 700;
 }
 
 #plane_row_template.vPosition {
-  background: #014f4e;
+	background: #014f4e;
 }
 
 #plane_row_template.vposMlat {
-  background: #003e3d;
+	background: #003e3d;
 }
 
 #plane_row_template.mlat {
-  background-color: #3700B3;
+	background-color: #3700B3;
 }
 
 /* ----------------------------------------------------------------------------------------- ref: AK1B Ends */
 /* AKISSACK -  HOVER OVER LABELS (also in script.js/PlaneObject.js/index.html) ----------- ref: AK6C starts */
 #plane_row_template.ofInterest {
-  color: #ff4646;
-  font-weight: 600;
+	color: #ff4646;
+	font-weight: 600;
 }
 
 #plane_row_template.nopos {
-  background: #2c2c2c;
-  color: #9f9f9f
+	background: #2c2c2c;
+	color: #9f9f9f
 }
 
 #plane_row_template.nopos img {
-  filter: grayscale(100%);
+	filter: grayscale(100%);
 }
 
 #plane_row_template.squawk7500 {
-  font-weight: bold;
-  background-color: #ff5555;
+	font-weight: bold;
+	background-color: #ff5555;
 }
 
 #plane_row_template.squawk7600 {
-  font-weight: bold;
-  background-color: #00ffff;
+	font-weight: bold;
+	background-color: #00ffff;
 }
 
 #plane_row_template.squawk7700 {
-  font-weight: bold;
-  background-color: #ffff00;
+	font-weight: bold;
+	background-color: #ffff00;
 }
 
 .hidden {
-  display: none;
+	display: none;
 }
 
 #selected_infoblock {
-  position: relative;
-  width: auto;
-  background: #2a2a2a;
-  z-index: 99;
-  max-height: 35vh;
-  overflow: auto;
-  margin-top: auto;
-  margin-right: -9px;
-  margin-left: -3px;
-  margin-bottom: -10px;
+	position: relative;
+	width: auto;
+	background: #2a2a2a;
+	z-index: 99;
+	max-height: 35vh;
+	overflow: auto;
+	margin-top: auto;
+	margin-right: -9px;
+	margin-left: -3px;
+	margin-bottom: -10px;
 }
 
 #selected_infoblock a {
-  color: #84d1d0;
-  text-decoration: none;
-  font-size: 12px;
-  font-family: 'Inconsolata', monospace;
+	color: #84d1d0;
+	text-decoration: none;
+	font-size: 12px;
+	font-family: 'Inconsolata', monospace;
 }
 
 #selected_infoblock a:hover {
-  color: #5aa5a4;
+	color: #5aa5a4;
 }
 
 .acInfoHeader {
-  margin: 8px;
-  font-size: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+	margin: 8px;
+	font-size: 12px;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
 }
 
 .acInfoHeader h2 {
-  display: flex;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+	display: flex;
+	margin-block-start: 0px;
+	margin-block-end: 0px;
 }
 
 .acInfoHeaderAdditional {
-  display: block;
+	display: block;
 }
 
 .acInfoHeaderAdditional #selected_links {
-  display: block;
+	display: block;
 }
 
 .acInfoHeaderAdditional #selected_links a:hover, #selected_icao:hover {
-  background: #1c1c1c;
+	background: #1c1c1c;
 }
 
 .acInfoHeaderAdditional #selected_links a, #selected_icao {
-  display: inline-block;
-  background: #3c3b3b;
-  padding: 2px;
-  margin-right: 4px;
+	display: inline-block;
+	background: #3c3b3b;
+	padding: 2px;
+	margin-right: 4px;
 }
 
 #acDetailsTable {
-  font-size: 12px;
-  border-collapse: collapse;
-  width: -webkit-fill-available;
-  margin: 0px 4px 8px 0px;
+	font-size: 12px;
+	border-collapse: collapse;
+	width: -webkit-fill-available;
+	margin: 0px 4px 8px 0px;
 }
 
 #acDetailsTable td {
-  border: 1px solid #343434;
-  padding: 3px;
+	border: 1px solid #343434;
+	padding: 3px;
 }
 
 #acDetailsTable td svg {
-  height: 18px;
-  margin: -2px -2px -4px -5px;
-  stroke: #8f8f8f;
+	height: 18px;
+	margin: -2px -2px -4px -5px;
+	stroke: #8f8f8f;
 }
 
 #acDetailsTable .acDetailsTableLabel {
-  font-family: 'Inconsolata', monospace;
-  text-transform: uppercase;
-  font-weight: 600;
-  background: #222;
+	font-family: 'Inconsolata', monospace;
+	text-transform: uppercase;
+	font-weight: 600;
+	background: #222;
 }
 
 #acDetailsTable .acDetailsTableValue {
-  font-family: 'Inconsolata', monospace;
+	font-family: 'Inconsolata', monospace;
 }
 
 #selected_flag img {
-  height: 18px;
-  width: auto;
-  margin-right: 5px;
-  image-rendering: auto;
+	height: 18px;
+	width: auto;
+	margin-right: 5px;
+	image-rendering: auto;
 }
 
 #selected_follow svg {
-  margin-left: 5px;
-  width: 24px;
-  height: 24px;
+	margin-left: 5px;
+	width: 24px;
+	height: 24px;
 }
 
 .trackIcon svg {
-  width: 18px;
-  height: 18px;
+	width: 18px;
+	height: 18px;
 }
 
 .trackIcon {
-  display: block;
-  margin: 0px;
+	display: block;
+	margin: 0px;
 }
 
 .psImage {
-  display: block;
-  width: 200px;
-  height: 133px;
-  float: left;
-  position: relative;
-  margin-left: 8px;
-  margin-right: 4px;
-  text-align: center;
-  background: #363636;
-  color: #161616;
+	display: block;
+	width: 200px;
+	height: 133px;
+	float: left;
+	position: relative;
+	margin-left: 8px;
+	margin-right: 4px;
+	text-align: center;
+	background: #363636;
+	color: #161616;
 }
 
 .psImage svg {
-  margin-top: 20%;
+	margin-top: 20%;
 }
 
 .psImage img {
-  width: 100%;
-  height: auto;
+	width: 100%;
+	height: auto;
 }
 
 .psImage img:hover {
-  position: relative;
-  width: 200%;
-  height: auto;
-  display: block;
-  transition: 0.2s;
+	position: relative;
+	width: 200%;
+	height: auto;
+	display: block;
+	transition: 0.2s;
 }
 
 .psPhotoInfo {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  display: block;
-  background: #0000008f;
-  width: auto;
-  padding: 5px;
-  font-size: 10px;
-  color: #fff;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	display: block;
+	background: #0000008f;
+	width: auto;
+	padding: 5px;
+	font-size: 10px;
+	color: #fff;
 }
 
 .psPhotoInfo a {
-  font-size: 10px;
+	font-size: 10px;
 }
 
 .infoblock_heading {
-  font-size: larger;
+	font-size: larger;
 }
 
 .infoblock_heading a {
-  text-decoration: none;
-  color: blue;
-  font-size: x-small;
+	text-decoration: none;
+	color: blue;
+	font-size: x-small;
 }
 
 .dim {
-  opacity: 0.3;
-  filter: alpha(opacity=30);
-  /* For IE8 and earlier */
+	opacity: 0.3;
+	filter: alpha(opacity=30);
+	/* For IE8 and earlier */
 }
 
 .pointer {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .sidebarButton {
-  background-color: #014f4e;
-  padding: .4em .5em;
-  margin: .2em;
-  color: #FFFFFF;
-  font-weight: 400;
-  font-size: 14px;
-  border: 1px solid #095e5d;
-  display: flex;
-  align-items: center;
-  text-align: center;
+	background-color: #014f4e;
+	padding: .4em .5em;
+	margin: .2em;
+	color: #FFFFFF;
+	font-weight: 400;
+	font-size: 14px;
+	border: 1px solid #095e5d;
+	display: flex;
+	align-items: center;
+	text-align: center;
 }
 
 .sidebarButton:hover {
-  background-color: #013a39;
+	background-color: #013a39;
 }
 
 .sidebarButton span {
-  display: block;
-  width: 100%;
+	display: block;
+	width: 100%;
 }
 
 .altitudeFilterInput {
-  width: 50px;
+	width: 50px;
 }
 
 select.error, textarea.error, input.error {
-  color: #FF0000;
+	color: #FF0000;
+}
+
+#toggle_sidebar_button svg, #expand_sidebar_control svg {
+	stroke: rgb(33 33 33);
 }
 
 .layer-switcher {
-  top: 86px !important;
-  right: 10px !important;
+	top: 86px;
+	right: 10px;
 }
-
-.layer-switcher.shown.layer-switcher-activation-mode-click > button {
-  color: #fff;
-  background-color: #2c2c2c !important;
+.layer-switcher button {
+      background-image: none;
+}
+.layer-switcher.shown.layer-switcher-activation-mode-click>button {
+	color: #fff;
+	background-color: #2c2c2c;
 }
 
 .layer-switcher.shown .panel {
-  display: block;
-  background: #212121;
+	display: block;
+	background: #212121;
+  border: none;
+  border-radius: 0px;
+}
+
+.ol-control button {
+	background-color: #014f4edb;
+	border-radius: 0px;
+  height: 30px;
+    width: 30px;
+}
+.ol-control:hover {
+    background-color: #0187864d;
+}
+
+.ol-control {
+	position: absolute;
+	background-color: #014f4e33;
+  border-radius: 0px;
+}
+
+.layer-switcher .group button {
+  background-image: none;
+}
+
+.layer-switcher .group button::after {
+  content: '>';
+  font-weight: 800;
+}
+.layer-switcher.shown button:focus, .layer-switcher.shown button:hover {
+  background-color: #026e6d;
+}
+
+.ol-control button:focus, .ol-control button:hover {
+    text-decoration: none;
+    background-color: #014f4ec2;
+
+}
+
+.ol-scale-line {
+    background: #014f4ebd;
+    border-radius: 0;
+    font-family: 'Inconsolata', monospace;
+    text-transform: uppercase;
 }
 
 /* AKISSACK - ref: AK1B Starts ---------------------------------------------------------------------------- */
 div#mouseposition {
-  position: absolute;
-  top: 0px;
-  left: 20px;
-  opacity: 1;
-  text-align: left;
-  color: blue;
+	position: absolute;
+	top: 0px;
+	left: 20px;
+	opacity: 1;
+	text-align: left;
+	color: blue;
 }
 
 div.mp {
-  width: 210px;
+	width: 210px;
 }
 
 #popinfo {
-  max-width: 200px;
-  background-color: white;
-  color: black;
-  opacity: 0.850;
-  font-size: 8pt;
-  font-family: sans-serif;
-  margin: 5px;
-  border: 1px solid black;
-  border-radius: 10px 10px 10px 0;
-  padding: 2px 5px 2px 5px;
-  white-space: pre-wrap;
+	max-width: 200px;
+	background-color: white;
+	color: black;
+	opacity: 0.850;
+	font-size: 8pt;
+	font-family: sans-serif;
+	margin: 5px;
+	border: 1px solid black;
+	border-radius: 10px 10px 10px 0;
+	padding: 2px 5px 2px 5px;
+	white-space: pre-wrap;
 }
 
 /* AKISSACK -  HOVER OVER LABELS (also in script.js/PlaneObject.js/index.html) ------------ ref: AK6C ends */
 #currentStats {
-  display: flex;
-  justify-content: center;
-  font-size: 10px;
-  width: 100%;
-  color: #cbcbcb;
+	display: flex;
+	justify-content: center;
+	font-size: 10px;
+	width: 100%;
+	color: #cbcbcb;
 }
 
 #currentStats .currentStatsLabel {
-  margin-left: .5em;
-  padding: 2px;
-  color: #dddddd;
-  align-items: center;
+	margin-left: .5em;
+	padding: 2px;
+	color: #dddddd;
+	align-items: center;
 }
 
 #currentStats div {
-  display: inline-flex;
+	display: inline-flex;
 }
 
 #currentStats span {
-  margin-left: .2em;
-  display: inline-flex;
-  font-weight: 700;
-  font-size: 13px;
-  background: #000;
-  padding: 2px;
+	margin-left: .2em;
+	display: inline-flex;
+	font-weight: 700;
+	font-size: 13px;
+	background: #000;
+	padding: 2px;
 }
 
 .flag {
-  width: 20px;
-  height: 12px;
-  margin: 2px;
+	width: 20px;
+	height: 12px;
+	margin: 2px;
 }
 
 .rssiIndicator svg {
-  height: 18px;
+	height: 18px;
 }
 
 .shadow {
-  text-shadow: 0 0 2px #000;
-  -moz-text-shadow: 0 0 2px #000;
-  -webkit-text-shadow: 0 0 2px #000;
+	text-shadow: 0 0 2px #000;
+	-moz-text-shadow: 0 0 2px #000;
+	-webkit-text-shadow: 0 0 2px #000;
 }
 
 .green {
-  color: #3a6c1b;
+	color: #3a6c1b;
 }
 
 .red {
-  color: #0f8b67;
+	color: #0f8b67;
 }
 
 .progressBarWrapper {
-  width: 100%;
+	width: 100%;
 }
 
 .progressBar {
-  width: 100%;
-  background-color: #464646;
-  border-radius: 0px;
-  box-shadow: inset 0 1px 3px rgb(0 0 0 / 20%);
+	width: 100%;
+	background-color: #464646;
+	border-radius: 0px;
+	box-shadow: inset 0 1px 3px rgb(0 0 0 / 20%);
 }
 
 .progressBarFill {
-  display: block;
-  height: 10px;
-  background-color: #ffffffdb;
-  border-radius: 0px;
-  transition: width 500ms ease-in-out;
+	display: block;
+	height: 10px;
+	background-color: #ffffffdb;
+	border-radius: 0px;
+	transition: width 500ms ease-in-out;
 }
 
 .planes_table {
-  max-height: 70vh;
-  overflow-y: auto;
+	max-height: 70vh;
+	overflow-y: auto;
 }
 
 /*styled scrollbar*/
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+	width: 10px;
+	height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+	background: rgba(0, 0, 0, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.9);
+	background: rgba(0, 0, 0, 0.9);
 }
 
 :root {
-  scrollbar-face-color: rgba(0, 0, 0, 0.9);
-  ;
-  /* Firefox 63 compatibility */
-  scrollbar-track-color: rgba(0, 0, 0, 0.1);
-  ;
-  /* Firefox 63 compatibility */
-  scrollbar-color: rgba(0, 0, 0, 0.1);
-  rgba(0, 0, 0, 0.9);
-  scrollbar-width: thin;
+	scrollbar-face-color: rgba(0, 0, 0, 0.9);
+	;
+	/* Firefox 63 compatibility */
+	scrollbar-track-color: rgba(0, 0, 0, 0.1);
+	;
+	/* Firefox 63 compatibility */
+	scrollbar-color: rgba(0, 0, 0, 0.1);
+	rgba(0, 0, 0, 0.9);
+	scrollbar-width: thin;
 }

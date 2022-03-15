@@ -513,6 +513,8 @@ function createBaseLayers() {
 			})
 		});
 		ukmilLayer.setVisible(false);
+
+
 	}
 
 	// --------------------------------------------------------------
@@ -522,7 +524,7 @@ function createBaseLayers() {
 	if (ShowMyFindsLayer && SleafordMySql) { // AKISSACK Ref: AK9U
 		var myLayer = new ol.layer.Vector({
 			name: 'my_layer',
-			type: 'overlay',
+			type: 'base',
 			title: 'My Layer',
 			source: new ol.source.Vector({
 				features: MyFeatures,
@@ -535,7 +537,9 @@ function createBaseLayers() {
 		}));
 	};
 
-//layerswitcher config main
+
+
+	//layerswitcher config main
 	layers.push(new ol.layer.Group({
 		name: 'country',
 		title: 'Country specific',
@@ -576,18 +580,15 @@ function createBaseLayers() {
 			]
 	}));
 
-
-
-
 	return layers;
 }
 
 //AC Position layer
-	var iconsLayer = new ol.layer.Vector({
-		name: 'ac_positions',
-		type: 'overlay',
-		title: 'Aircraft positions',
-		source: new ol.source.Vector({
-			features: PlaneIconFeatures,
-		})
-	});
+var iconsLayer = new ol.layer.Vector({
+	name: 'ac_positions',
+	type: 'overlay',
+	title: 'Aircraft positions',
+	source: new ol.source.Vector({
+		features: PlaneIconFeatures,
+	})
+});

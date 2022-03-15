@@ -605,8 +605,8 @@ function initialize_map() {
 			zoom: ZoomLvl
 		}),
 		controls: [new ol.control.Zoom(),
-	  new ol.control.ZoomSlider(),
-	  new ol.control.Rotate(),
+	  //new ol.control.ZoomSlider(),
+	  new ol.control.Rotate(true),
 	  new ol.control.Attribution({
 				collapsed: true
 			}),
@@ -621,11 +621,15 @@ function initialize_map() {
 	var layerSwitcher = new ol.control.LayerSwitcher({
 		tipLabel: 'Layers',
 		groupSelectStyle: 'group', // Can be 'children' [default], 'group' or 'none'
-		collapseLabel: '\u00BB',
 		activationMode: 'click'
 	});
 
 	OLMap.addControl(layerSwitcher);
+	$('.layer-switcher button').html('<i icon-name="layers"></i>');
+	//todo
+	$('button[aria-label="Layers"]').click( function() {
+		$('button[aria-label="Layers"]').html('<i icon-name="layers"></i>');
+});
 
 //Save layers settings in local storage
 	var foundType = false;
@@ -754,7 +758,7 @@ if (ShowMouseLatLong) OLMap.addControl(mousePosition);
 // as a polygon.  This will be update as positions are logged and will therefore become more
 // accurate, although rouge spikes will need to be manually removed from the database
 // Expanded to include the 2 other rings too, if required
-
+/*
 var polyCoordsMax = [];
 var polyCoordsMid = [];
 var polyCoordsMin = [];
@@ -831,6 +835,7 @@ function processMrData(allRData) {
 		SleafordRangeFeatures.push(rfeatureMin);
 	}
 }
+*/
 //------------------------------------------------------------------------------------
 // Ref: AK8X Ends ----------------------------------------------------------- AKISSACK
 //------------------------------------------------------------------------------------
