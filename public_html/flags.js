@@ -204,28 +204,28 @@ var ICAO_Ranges = [
         { start: 0x08A000, end: 0x08AFFF, country: "Zambia", flag_image: "Zambia.png" },
         { start: 0x004000, end: 0x0043FF, country: "Zimbabwe", flag_image: "Zimbabwe.png" },
 
-        { start: 0xF00000, end: 0xF07FFF, country: "ICAO (temporary assignments)", flag_image: "blank.png" },
-        { start: 0x899000, end: 0x8993FF, country: "ICAO (special use)", flag_image: "blank.png" },
-        { start: 0xF09000, end: 0xF093FF, country: "ICAO (special use)", flag_image: "blank.png" },
+        { start: 0xF00000, end: 0xF07FFF, country: "ICAO (temporary assignments)", flag_image: "noflag.png" },
+        { start: 0x899000, end: 0x8993FF, country: "ICAO (special use)", flag_image: "noflag.png" },
+        { start: 0xF09000, end: 0xF093FF, country: "ICAO (special use)", flag_image: "noflag.png" },
 
         // Block assignments mentioned in Chapter 9 section 4, at the end so they are only used if
         // nothing above applies
-        { start: 0x200000, end: 0x27FFFF, country: "Unassigned (AFI region)", flag_image: "blank.png" },
-        { start: 0x280000, end: 0x28FFFF, country: "Unassigned (SAM region)", flag_image: "blank.png" },
-        { start: 0x500000, end: 0x5FFFFF, country: "Unassigned (EUR / NAT regions)", flag_image: "blank.png" },
-        { start: 0x600000, end: 0x67FFFF, country: "Unassigned (MID region)", flag_image: "blank.png" },
-        { start: 0x680000, end: 0x6FFFFF, country: "Unassigned (ASIA region)", flag_image: "blank.png" },
-        { start: 0x900000, end: 0x9FFFFF, country: "Unassigned (NAM / PAC regions)", flag_image: "blank.png" },
+        { start: 0x200000, end: 0x27FFFF, country: "Unassigned (AFI region)", flag_image: "noflag.png" },
+        { start: 0x280000, end: 0x28FFFF, country: "Unassigned (SAM region)", flag_image: "noflag.png" },
+        { start: 0x500000, end: 0x5FFFFF, country: "Unassigned (EUR / NAT regions)", flag_image: "noflag.png" },
+        { start: 0x600000, end: 0x67FFFF, country: "Unassigned (MID region)", flag_image: "noflag.png" },
+        { start: 0x680000, end: 0x6FFFFF, country: "Unassigned (ASIA region)", flag_image: "noflag.png" },
+        { start: 0x900000, end: 0x9FFFFF, country: "Unassigned (NAM / PAC regions)", flag_image: "noflag.png" },
 // AKISSACK - ALLOW FOR ADDITIONAL USAF USE ---------------------------------------------------------  AK9B Starts
 	// AKISSACK - Possible, but not confirmed, USAF use
-        { start: 0xB00000, end: 0xB196FF, country: "Unassigned (reserved for future use)", flag_image: "blank.png" },
+        { start: 0xB00000, end: 0xB196FF, country: "Unassigned (reserved for future use)", flag_image: "noflag.png" },
         { start: 0xB19700, end: 0xB197FF, country: "United States", flag_image: "United_States_of_America.png" },
-        { start: 0xB19800, end: 0xBFFFFF, country: "Unassigned (reserved for future use)", flag_image: "blank.png" },
-        //{ start: 0xB00000, end: 0xBFFFFF, country: "Unassigned (reserved for future use)", flag_image: "blank.png" },
+        { start: 0xB19800, end: 0xBFFFFF, country: "Unassigned (reserved for future use)", flag_image: "noflag.png" },
+        //{ start: 0xB00000, end: 0xBFFFFF, country: "Unassigned (reserved for future use)", flag_image: "noflag.png" },
 // ---------------------------------------------------------------------------------------- AK9B Ends
-        { start: 0xEC0000, end: 0xEFFFFF, country: "Unassigned (CAR region)", flag_image: "blank.png" },
-        { start: 0xD00000, end: 0xDFFFFF, country: "Unassigned (reserved for future use)", flag_image: "blank.png" },
-        { start: 0xF00000, end: 0xFFFFFF, country: "Unassigned (reserved for future use)", flag_image: "blank.png" },
+        { start: 0xEC0000, end: 0xEFFFFF, country: "Unassigned (CAR region)", flag_image: "noflag.png" },
+        { start: 0xD00000, end: 0xDFFFFF, country: "Unassigned (reserved for future use)", flag_image: "noflag.png" },
+        { start: 0xF00000, end: 0xFFFFFF, country: "Unassigned (reserved for future use)", flag_image: "noflag.png" },
 ];
 
 var unassigned_range = {
