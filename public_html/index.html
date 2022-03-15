@@ -22,8 +22,9 @@
 	<script type="text/javascript" src="planeObject.js"></script>
 	<script type="text/javascript" src="formatter.js"></script>
 	<script type="text/javascript" src="flags.js"></script>
-	<script type="text/javascript" src="layers.js"></script>
+
 	<script type="text/javascript" src="script.js"></script>
+		<script type="text/javascript" src="layers.js"></script>
 	<script type="text/javascript" src="jquery/lucide.min.js"></script>
 	<title>FlightAware dump1090</title>
 </head>
@@ -91,15 +92,15 @@
 			<div id="sidebar_canvas">
 				<!--statistic panel-->
 				<div id="currentStats">
-					<div class="currentStatsLabel">Aircraft (total):<span id="dump1090_total_ac">n/a</span></div>
-					<div class="currentStatsLabel">Aircraft (positions):<span id="dump1090_total_ac_positions">n/a</span></div>
-					<div class="currentStatsLabel">Max distance:<span id="dump1090_max_range">n/a</span>
+					<div class="currentStatsLabel">AC (total):<span id="dump1090_total_ac">n/a</span></div>
+					<div class="currentStatsLabel">AC (positions):<span id="dump1090_total_ac_positions">n/a</span></div>
+					<div class="currentStatsLabel">Max. RNG<span id="dump1090_max_range">n/a</span>
 						<div class="distanceUnit"></div>
 					</div>
-					<div class="currentStatsLabel">History max distance:<span id="dump1090_max_range_history">n/a</span>
+					<div class="currentStatsLabel">Total max. RNG<span id="dump1090_max_range_history">n/a</span>
 						<div class="distanceUnit"></div>
 					</div>
-					<div class="currentStatsLabel">Messages:<span id="dump1090_message_rate">n/a</span>/s</div>
+					<div class="currentStatsLabel">MSG<span id="dump1090_message_rate">n/a</span>/s</div>
 				</div>
 
 				<!--configuration panel-->
