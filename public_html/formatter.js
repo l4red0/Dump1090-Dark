@@ -169,7 +169,7 @@ function format_distance_brief(dist, displayUnits) {
 }
 
 // dist in meters
-function format_distance_long(dist, displayUnits) {
+function format_distance_long(dist, displayUnits, round) {
 	if (dist === null) {
 		return "n/a";
 	}
@@ -190,13 +190,13 @@ function convert_distance(dist, displayUnits) {
 }
 
 function unitsConversionFactor() {
-var conversionFactor = 1000.0;
-if (DisplayUnits === "nautical") {
-	conversionFactor = 1852.0;
-} else if (DisplayUnits === "imperial") {
-	conversionFactor = 1609.0;
-}
-return conversionFactor;
+	var conversionFactor = 1000.0;
+	if (DisplayUnits === "nautical") {
+		conversionFactor = 1852.0;
+	} else if (DisplayUnits === "imperial") {
+		conversionFactor = 1609.0;
+	}
+	return conversionFactor;
 }
 
 

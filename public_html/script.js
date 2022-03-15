@@ -501,396 +501,6 @@ function initialize_map() {
 
 	var layers = createBaseLayers();
 
-	// --------------------------------------------------------------
-	// AKISSACK - ADD LAYERS ----------------------  ref: AK4A starts
-	// --------------------------------------------------------------
-
-	if (ShowUKCivviLayers) {
-
-		var vordmeLayer = new ol.layer.Vector({
-			name: 'vordme',
-			type: 'overlay',
-			title: 'VOR/DME',
-			source: new ol.source.Vector({
-				url: 'layers/UK_VOR+DME+NDB+TACAN.geojson',
-				format: new ol.format.GeoJSON({
-					defaultDataProjection: 'EPSG:4326',
-					projection: 'EPSG:3857'
-				})
-			}),
-			style: (function() {
-				var style = new ol.style.Style({
-					image: new ol.style.Icon({
-						src: 'layers/img/vor+ndb.png'
-					}),
-					text: new ol.style.Text({
-						text: 'field-1',
-						scale: 1,
-						offsetX: 1,
-						offsetY: -11,
-						fill: new ol.style.Fill({
-							color: '#003300'
-						}),
-						//stroke: new ol.style.Stroke({
-						//	color: '#ccffcc',
-						//	width: 3.5
-						//})
-					})
-				});
-				var styles = [style];
-				return function(feature, resolution) {
-					style.getText().setText(feature.get("field_2"));
-					return styles;
-				};
-			})()
-		});
-		vordmeLayer.setVisible(false);
-
-		//UK_NavigationPoints.geojson
-		var navPointsLayer = new ol.layer.Vector({
-			name: 'navigation',
-			type: 'overlay',
-			title: 'Nav Points',
-			source: new ol.source.Vector({
-				url: 'layers/UK_NavigationPoints.geojson',
-				format: new ol.format.GeoJSON({
-					defaultDataProjection: 'EPSG:4326',
-					projection: 'EPSG:3857'
-				})
-			}),
-
-			style: (function() {
-				var style = new ol.style.Style({
-					image: new ol.style.Icon({
-						src: 'layers/img/point.png'
-					}),
-					text: new ol.style.Text({
-						text: 'field-1',
-						scale: 0.75,
-						offsetX: -1,
-						offsetY: 10,
-						fill: new ol.style.Fill({
-							color: '#003300'
-						}),
-					})
-				});
-
-				var styles = [style];
-				return function(feature, resolution) {
-					style.getText().setText(feature.get("field_2"));
-					return styles;
-				};
-			})()
-		});
-		navPointsLayer.setVisible(false);
-
-		var airwaysLayer = new ol.layer.Vector({
-			name: 'airways',
-			type: 'overlay',
-			title: 'Airways',
-			source: new ol.source.Vector({
-				url: 'layers/UK_Airways.geojson',
-				format: new ol.format.GeoJSON({
-					defaultDataProjection: 'EPSG:4326',
-					projection: 'EPSG:3857'
-				})
-			}),
-			style: new ol.style.Style({
-				fill: new ol.style.Fill({
-					color: 'rgba(0, 102,0, 0.07)'
-				}),
-				stroke: new ol.style.Stroke({
-					color: 'rgba(0, 64,0, 0.5)',
-					width: 0.2
-				})
-			})
-		});
-		airwaysLayer.setVisible(false);
-
-		var airwaysMRCLayer = new ol.layer.Vector({
-			name: 'airwaysMRC',
-			type: 'overlay',
-			title: 'Radar Corridors',
-			source: new ol.source.Vector({
-				url: 'layers/UK_Mil_RC.geojson',
-				format: new ol.format.GeoJSON({
-					defaultDataProjection: 'EPSG:4326',
-					projection: 'EPSG:3857'
-				})
-			}),
-			style: new ol.style.Style({
-				fill: new ol.style.Fill({
-					color: 'rgba(102, 0,0, 0.07)'
-				}),
-				stroke: new ol.style.Stroke({
-					color: 'rgba(255, 0,0, 0.5)',
-					width: 0.2
-				})
-			})
-		});
-		airwaysMRCLayer.setVisible(false);
-
-		var ukCTALayer = new ol.layer.Vector({
-			name: 'ukcta',
-			type: 'overlay',
-			title: 'CTA/TMA',
-			source: new ol.source.Vector({
-				url: 'layers/UK_AT_Areas.geojson',
-				format: new ol.format.GeoJSON({
-					defaultDataProjection: 'EPSG:4326',
-					projection: 'EPSG:3857'
-				})
-			}),
-			style: new ol.style.Style({
-				fill: new ol.style.Fill({
-					color: 'rgba(0, 127,0, 0.03)'
-				}),
-				stroke: new ol.style.Stroke({
-					color: 'rgba(0,64,0, 0.2)',
-					width: 1
-				})
-			})
-
-		});
-		ukCTALayer.setVisible(false);
-
-		var atzLayer = new ol.layer.Vector({
-			name: 'atz',
-			type: 'overlay',
-			title: 'CTR',
-			source: new ol.source.Vector({
-				url: 'layers/UK_ATZ.geojson',
-				format: new ol.format.GeoJSON({
-					defaultDataProjection: 'EPSG:4326',
-					projection: 'EPSG:3857'
-				})
-			}),
-			style: new ol.style.Style({
-				fill: new ol.style.Fill({
-					color: 'rgba(0,255,0, 0.03)'
-				}),
-				stroke: new ol.style.Stroke({
-					color: 'rgba(0, 80, 0, 0.5)',
-					width: 1
-				})
-			})
-
-		});
-
-		var airportLayer = new ol.layer.Vector({
-			name: 'airways',
-			type: 'overlay',
-			title: 'Airports',
-			source: new ol.source.Vector({
-				url: 'layers/UK_Civi_Airports.geojson',
-				format: new ol.format.GeoJSON({
-					defaultDataProjection: 'EPSG:4326',
-					projection: 'EPSG:3857'
-				})
-			}),
-			style: new ol.style.Style({
-				stroke: new ol.style.Stroke({
-					color: 'rgba(200,16,64, 0.5)',
-					width: 1.5
-				})
-			})
-		});
-
-		var ukairspaceLayer = new ol.layer.Vector({
-			name: 'ukair',
-			type: 'overlay',
-			title: 'UK Airspace',
-			source: new ol.source.Vector({
-				url: 'layers/UK_Airspace.geojson',
-				format: new ol.format.GeoJSON({
-					defaultDataProjection: 'EPSG:4326',
-					projection: 'EPSG:3857'
-				})
-			}),
-			style: new ol.style.Style({
-				stroke: new ol.style.Stroke({
-					color: 'rgba(0,102,0, 0.2)',
-					width: 3
-				})
-			})
-		});
-		ukairspaceLayer.setVisible(false)
-
-		layers.push(new ol.layer.Group({
-			title: 'UK',
-			layers: [
-		ukairspaceLayer,
-		airwaysLayer,
-		airwaysMRCLayer,
-		airportLayer,
-		atzLayer,
-		ukCTALayer,
-		vordmeLayer,
-		navPointsLayer
-	  ]
-		}));
-	}
-
-	// --------------------------------------------------------------
-	// AKISSACK - ADD LAYERS ----------------------  ref: AK4A ends
-	// --------------------------------------------------------------
-
-	// --------------------------------------------------------------
-	// AKISSACK - ADD LAYERS ----------------------  ref: AK5A starts
-	// --------------------------------------------------------------
-
-	if (ShowUKMilLayers) {
-		var dangerLayer = new ol.layer.Vector({
-			name: 'danger',
-			type: 'overlay',
-			title: 'Danger Areas',
-			source: new ol.source.Vector({
-				url: 'layers/UK_Danger_Areas.geojson',
-				format: new ol.format.GeoJSON({
-					defaultDataProjection: 'EPSG:4326',
-					projection: 'EPSG:3857'
-				})
-			}),
-			style: new ol.style.Style({
-				fill: new ol.style.Fill({
-					color: 'rgba(255, 0,0, 0.05)'
-				}),
-				stroke: new ol.style.Stroke({
-					color: 'rgba(255, 0,0, 0.5)',
-					width: 0.75
-				})
-			})
-		});
-		dangerLayer.setVisible(false);
-
-		var AARLayer = new ol.layer.Vector({
-			name: 'aar',
-			type: 'overlay',
-			title: 'AAR Areas',
-			source: new ol.source.Vector({
-				url: 'layers/UK_Mil_AAR_Zones.geojson',
-				format: new ol.format.GeoJSON({
-					defaultDataProjection: 'EPSG:4326',
-					projection: 'EPSG:3857'
-				})
-			}),
-			style: new ol.style.Style({
-				fill: new ol.style.Fill({
-					color: 'rgba(0,0,255, 0.05)'
-				}),
-				stroke: new ol.style.Stroke({
-					color: 'rgba(0,0,128, 0.5)',
-					width: 0.75
-				})
-			})
-
-		});
-		AARLayer.setVisible(false);
-
-		var matzLayer = new ol.layer.Vector({
-			name: 'matz',
-			type: 'overlay',
-			title: 'MATZ',
-			source: new ol.source.Vector({
-				url: 'layers/UK_MATZ.geojson',
-				format: new ol.format.GeoJSON({
-					defaultDataProjection: 'EPSG:4326',
-					projection: 'EPSG:3857'
-				})
-			}),
-			style: new ol.style.Style({
-				fill: new ol.style.Fill({
-					color: 'rgba(0,0,255, 0.05)'
-				}),
-				stroke: new ol.style.Stroke({
-					color: 'rgba(128,0,0, 0.5)',
-					width: 0.75
-				})
-			})
-		});
-
-		var matzafLayer = new ol.layer.Vector({
-			name: 'matzaf',
-			type: 'overlay',
-			title: 'Airfields',
-			source: new ol.source.Vector({
-				url: 'layers/UK_Mil_Airfield_runways.geojson',
-				format: new ol.format.GeoJSON({
-					defaultDataProjection: 'EPSG:4326',
-					projection: 'EPSG:3857'
-				})
-			}),
-			style: new ol.style.Style({
-				stroke: new ol.style.Stroke({
-					color: 'rgba(200,16,64, 0.5)',
-					width: 1
-				})
-			})
-		});
-
-		var ukmilLayer = new ol.layer.Vector({
-			name: 'ukmil',
-			type: 'overlay',
-			title: 'TACAN Routes',
-			source: new ol.source.Vector({
-				url: 'layers/UK_Military_TACAN_Routes.geojson',
-				format: new ol.format.GeoJSON({
-					defaultDataProjection: 'EPSG:4326',
-					projection: 'EPSG:3857'
-				})
-			}),
-			style: new ol.style.Style({
-				stroke: new ol.style.Stroke({
-					color: 'rgba(0,0,102,0.2)',
-					width: 3
-				})
-			})
-		});
-		ukmilLayer.setVisible(false);
-
-		layers.push(new ol.layer.Group({
-			title: 'UK Military',
-			layers: [
-		matzLayer,
-		matzafLayer,
-		dangerLayer,
-		ukmilLayer,
-		AARLayer
-	  ]
-		}));
-
-	}
-
-	if (ShowMyFindsLayer && SleafordMySql) { // AKISSACK Ref: AK9U
-		var myLayer = new ol.layer.Vector({
-			name: 'my_layer',
-			type: 'overlay',
-			title: 'My Layer',
-			source: new ol.source.Vector({
-				features: MyFeatures,
-			})
-		});
-
-		layers.push(new ol.layer.Group({
-			title: 'Private',
-			layers: [myLayer]
-		}));
-	};
-
-
-	// --------------------------------------------------------------
-	// AKISSACK - ADD LAYERS ----------------------  ref: AK5A ends
-	// --------------------------------------------------------------
-
-	var iconsLayer = new ol.layer.Vector({
-		name: 'ac_positions',
-		type: 'overlay',
-		title: 'Aircraft positions',
-		source: new ol.source.Vector({
-			features: PlaneIconFeatures,
-		})
-	});
-
 	if (ShowSleafordRange) { // AKISSACK  Ref: AK8Y
 		// This is just to show a range ring (based on actual experience)
 		// for my home QTH. Not usefull for anyone else other than as a technique
@@ -957,8 +567,9 @@ function initialize_map() {
 
 	layers.push(new ol.layer.Group({
 		title: 'Overlays',
+		fold: 'closed',
 		layers: [
-	  new ol.layer.Vector({
+		new ol.layer.Vector({
 				name: 'site_pos',
 				type: 'overlay',
 				title: 'Site position and range rings',
@@ -969,7 +580,7 @@ function initialize_map() {
 				updateWhileInteracting: true
 			}),
 
-	  new ol.layer.Vector({
+		new ol.layer.Vector({
 				name: 'ac_trail',
 				type: 'overlay',
 				title: 'Selected aircraft trail',
@@ -979,60 +590,12 @@ function initialize_map() {
 				updateWhileAnimating: true,
 				updateWhileInteracting: true
 			}),
-	  rangeLayer,
-	  maxRangeLayer, // Ref: AK8D
-	  SleafordRangeLayer, // Ref: AK8Y
-	  iconsLayer
+		rangeLayer,
+		maxRangeLayer, // Ref: AK8D
+		SleafordRangeLayer, // Ref: AK8Y
+		iconsLayer
 	]
 	}));
-
-
-
-	var foundType = false;
-
-	//OL6 TODO
-	if (OL3) {
-		ol.control.LayerSwitcher.forEachRecursive(layers, function(lyr) {
-			if (!lyr.get('name'))
-				return;
-
-			if (lyr.get('type') === 'base') {
-				if (MapType === lyr.get('name')) {
-					foundType = true;
-					lyr.setVisible(true);
-				} else {
-					lyr.setVisible(false);
-				}
-
-				lyr.on('change:visible', function(evt) {
-					if (evt.target.getVisible()) {
-						MapType = localStorage['MapType'] = evt.target.get('name');
-					}
-				});
-			} else if (lyr.get('type') === 'overlay') {
-				var visible = localStorage['layer_' + lyr.get('name')];
-				if (visible != undefined) {
-					// javascript, why must you taunt me with gratuitous type problems
-					lyr.setVisible(visible === "true");
-				}
-
-				lyr.on('change:visible', function(evt) {
-					localStorage['layer_' + evt.target.get('name')] = evt.target.getVisible();
-				});
-			}
-		})
-
-		if (!foundType) {
-			ol.control.LayerSwitcher.forEachRecursive(layers, function(lyr) {
-				if (foundType)
-					return;
-				if (lyr.get('type') === 'base') {
-					lyr.setVisible(true);
-					foundType = true;
-				}
-			});
-		}
-	}
 
 	OLMap = new ol.Map({
 		target: 'map_canvas',
@@ -1042,7 +605,7 @@ function initialize_map() {
 			zoom: ZoomLvl
 		}),
 		controls: [new ol.control.Zoom(),
-	  //new ol.control.ZoomSlider(),
+	  new ol.control.ZoomSlider(),
 	  new ol.control.Rotate(),
 	  new ol.control.Attribution({
 				collapsed: true
@@ -1050,485 +613,426 @@ function initialize_map() {
 	  new ol.control.ScaleLine({
 				units: DisplayUnits
 			}),
-	  new ol.control.LayerSwitcher()
 	],
 		loadTilesWhileAnimating: true,
 		loadTilesWhileInteracting: true
 	});
 
-	// Listeners for newly created Map
-	OLMap.getView().on('change:center', function(event) {
-		var center = ol.proj.toLonLat(OLMap.getView().getCenter(), OLMap.getView().getProjection());
-		localStorage['CenterLon'] = center[0]
-		localStorage['CenterLat'] = center[1]
-		if (FollowSelected) {
-			// On manual navigation, disable follow
-			var selected = Planes[SelectedPlane];
-			if (Math.abs(center[0] - selected.position[0]) > 0.0001 &&
-				Math.abs(center[1] - selected.position[1]) > 0.0001) {
-				FollowSelected = false;
-				refreshSelected();
+	var layerSwitcher = new ol.control.LayerSwitcher({
+		tipLabel: 'Layers',
+		groupSelectStyle: 'group', // Can be 'children' [default], 'group' or 'none'
+		collapseLabel: '\u00BB',
+		activationMode: 'click'
+	});
+
+	OLMap.addControl(layerSwitcher);
+
+//Save layers settings in local storage
+	var foundType = false;
+	ol.control.LayerSwitcher.forEachRecursive(OLMap, function(lyr) {
+		if (!lyr.get('name'))
+			return;
+		if (lyr.get('type') === 'base') {
+			if (MapType === lyr.get('name')) {
+				foundType = true;
+				lyr.setVisible(true);
+			} else {
+				lyr.setVisible(false);
 			}
-		}
-	});
 
-	OLMap.getView().on('change:resolution', function(event) {
-		ZoomLvl = localStorage['ZoomLvl'] = OLMap.getView().getZoom();
-		for (var plane in Planes) {
-			Planes[plane].updateMarker(false);
-		};
-	});
-
-	OLMap.on(['click', 'dblclick'], function(evt) {
-		var hex = evt.map.forEachFeatureAtPixel(evt.pixel,
-			function(feature, layer) {
-				return feature.hex;
-			},
-			null,
-			function(layer) {
-				return (layer === iconsLayer);
-			},
-			null);
-		if (hex) {
-			selectPlaneByHex(hex, (evt.type === 'dblclick'));
-			evt.stopPropagation();
-		} else {
-			deselectAllPlanes();
-			evt.stopPropagation();
-		}
-	});
-
-
-	//------------------------------------------------------------------------------------
-	// AKISSACK - MOUSE POSITION ----------------------------------- ---- Ref: AK1C starts
-	//------------------------------------------------------------------------------------
-	var llFormat = function(dgts) {
-		return (
-			function(coord1) {
-				var coord2 = [coord1[1], coord1[0]];
-				// AKISSACK - also add range and bearing if site is known --  Ref: AK1D
-				var akret = ol.coordinate.toStringXY(coord2, dgts);
-				if (SitePosition !== null) {
-					var akbrn = (parseInt(getBearing(SitePosition[1], SitePosition[0], coord1[1], coord1[0]))).toString();
-					var akWGS84 = new ol.Sphere(6378137);
-					var akrng = akWGS84.haversineDistance(SitePosition, coord1);
-					return akret + " " + akbrn + "\u00B0 " + format_distance_long(akrng, DisplayUnits, 0);
-				} else { // no range or bearing required, just return akret
-					return akret;
+			lyr.on('change:visible', function(evt) {
+				if (evt.target.getVisible()) {
+					MapType = localStorage['MapType'] = evt.target.get('name');
 				}
 			});
-	}
+		} else if (lyr.get('type') === 'overlay') {
+			var visible = localStorage['layer_' + lyr.get('name')];
+			if (visible != undefined) {
+				// javascript, why must you taunt me with gratuitous type problems
+				lyr.setVisible(visible === "true");
+			}
 
+			lyr.on('change:visible', function(evt) {
+				localStorage['layer_' + evt.target.get('name')] = evt.target.getVisible();
+			});
+		}
+	})
 
-	var mousePosition = new ol.control.MousePosition({
-		coordinateFormat: llFormat(3), // ol.coordinate.createStringXY(4),
-		projection: 'EPSG:4326',
-		//target: document.getElementById('mouseposition').innerHTML = "X "+ akLat,
-		target: document.getElementById('mouseposition'),
-		undefinedHTML: '&nbsp;'
+	if (!foundType) {
+		ol.control.LayerSwitcher.forEachRecursive(OLMap, function(lyr) {
+		if (foundType)
+			return;
+		if (lyr.get('type') === 'base') {
+			lyr.setVisible(true);
+			foundType = true;
+		}
 	});
-
-	if (ShowMouseLatLong) OLMap.addControl(mousePosition);
-	//------------------------------------------------------------------------------------
-	// Ref: AK1C Ends ----------------------------------------------------------- AKISSACK
-	//------------------------------------------------------------------------------------
-
-	//------------------------------------------------------------------------------------
-	// // AKISSACK Ref: AK8X -------------------------------------------------------------
-	//------------------------------------------------------------------------------------
-	// Read the stored maximum range (lat/long) from my mySql database and then plot these
-	// as a polygon.  This will be update as positions are logged and will therefore become more
-	// accurate, although rouge spikes will need to be manually removed from the database
-	// Expanded to include the 2 other rings too, if required
-
-	var polyCoordsMax = [];
-	var polyCoordsMid = [];
-	var polyCoordsMin = [];
+}
 
 
-	$(function() {
-		$.ajax({
-			url: 'sql/sql-best-ranges.php',
-			data: "",
-			dataType: 'json',
-			success: function(data) {
-				processMrData(data)
+// Listeners for newly created Map
+OLMap.getView().on('change:center', function(event) {
+	var center = ol.proj.toLonLat(OLMap.getView().getCenter(), OLMap.getView().getProjection());
+	localStorage['CenterLon'] = center[0]
+	localStorage['CenterLat'] = center[1]
+	if (FollowSelected) {
+		// On manual navigation, disable follow
+		var selected = Planes[SelectedPlane];
+		if (Math.abs(center[0] - selected.position[0]) > 0.0001 &&
+			Math.abs(center[1] - selected.position[1]) > 0.0001) {
+			FollowSelected = false;
+			refreshSelected();
+		}
+	}
+});
+
+OLMap.getView().on('change:resolution', function(event) {
+	ZoomLvl = localStorage['ZoomLvl'] = OLMap.getView().getZoom();
+	for (var plane in Planes) {
+		Planes[plane].updateMarker(false);
+	};
+});
+
+OLMap.on(['click', 'dblclick'], function(evt) {
+	var hex = evt.map.forEachFeatureAtPixel(evt.pixel,
+		function(feature, layer) {
+			return feature.hex;
+		},
+		null,
+		function(layer) {
+			return (layer === iconsLayer);
+		},
+		null);
+	if (hex) {
+		selectPlaneByHex(hex, (evt.type === 'dblclick'));
+		evt.stopPropagation();
+	} else {
+		deselectAllPlanes();
+		evt.stopPropagation();
+	}
+});
+
+
+//------------------------------------------------------------------------------------
+// AKISSACK - MOUSE POSITION ----------------------------------- ---- Ref: AK1C starts
+//------------------------------------------------------------------------------------
+var llFormat = function(dgts) {
+	return (
+		function(coord1) {
+			var coord2 = [coord1[1], coord1[0]];
+			// AKISSACK - also add range and bearing if site is known --  Ref: AK1D
+			var akret = ol.coordinate.toStringXY(coord2, dgts);
+			if (SitePosition !== null) {
+				var akbrn = (parseInt(getBearing(SitePosition[1], SitePosition[0], coord1[1], coord1[0]))).toString();
+				var akWGS84 = new ol.Sphere(6378137);
+				var akrng = akWGS84.haversineDistance(SitePosition, coord1);
+				return akret + " " + akbrn + "\u00B0 " + format_distance_long(akrng, DisplayUnits, 0);
+			} else { // no range or bearing required, just return akret
+				return akret;
 			}
 		});
+}
+
+
+var mousePosition = new ol.control.MousePosition({
+	coordinateFormat: llFormat(3), // ol.coordinate.createStringXY(4),
+	projection: 'EPSG:4326',
+	//target: document.getElementById('mouseposition').innerHTML = "X "+ akLat,
+	target: document.getElementById('mouseposition'),
+	undefinedHTML: '&nbsp;'
+});
+
+if (ShowMouseLatLong) OLMap.addControl(mousePosition);
+//------------------------------------------------------------------------------------
+// Ref: AK1C Ends ----------------------------------------------------------- AKISSACK
+//------------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------
+// // AKISSACK Ref: AK8X -------------------------------------------------------------
+//------------------------------------------------------------------------------------
+// Read the stored maximum range (lat/long) from my mySql database and then plot these
+// as a polygon.  This will be update as positions are logged and will therefore become more
+// accurate, although rouge spikes will need to be manually removed from the database
+// Expanded to include the 2 other rings too, if required
+
+var polyCoordsMax = [];
+var polyCoordsMid = [];
+var polyCoordsMin = [];
+
+
+$(function() {
+	$.ajax({
+		url: 'sql/sql-best-ranges.php',
+		data: "",
+		dataType: 'json',
+		success: function(data) {
+			processMrData(data)
+		}
 	});
+});
 
-	function processMrData(allRData) {
+function processMrData(allRData) {
 
-		for (var i in allRData) {
-			var oneRPoint = allRData[i];
-			polyCoordsMax.push(ol.proj.transform([parseFloat(oneRPoint[9]), parseFloat(oneRPoint[8])], 'EPSG:4326', 'EPSG:3857'));
-			polyCoordsMid.push(ol.proj.transform([parseFloat(oneRPoint[6]), parseFloat(oneRPoint[5])], 'EPSG:4326', 'EPSG:3857'));
-			polyCoordsMin.push(ol.proj.transform([parseFloat(oneRPoint[3]), parseFloat(oneRPoint[2])], 'EPSG:4326', 'EPSG:3857'));
-		};
+	for (var i in allRData) {
+		var oneRPoint = allRData[i];
+		polyCoordsMax.push(ol.proj.transform([parseFloat(oneRPoint[9]), parseFloat(oneRPoint[8])], 'EPSG:4326', 'EPSG:3857'));
+		polyCoordsMid.push(ol.proj.transform([parseFloat(oneRPoint[6]), parseFloat(oneRPoint[5])], 'EPSG:4326', 'EPSG:3857'));
+		polyCoordsMin.push(ol.proj.transform([parseFloat(oneRPoint[3]), parseFloat(oneRPoint[2])], 'EPSG:4326', 'EPSG:3857'));
+	};
 
-		var styleMax = new ol.style.Style({
+	var styleMax = new ol.style.Style({
+		stroke: new ol.style.Stroke({
+			color: 'rgba(0,0,255, 1)',
+			width: 0.5
+		}),
+		fill: new ol.style.Fill({
+			color: 'rgba(0,0,255, 0.01)'
+		})
+	})
+	var rfeatureMax = new ol.Feature({
+		geometry: new ol.geom.Polygon([polyCoordsMax])
+	});
+	rfeatureMax.setStyle(styleMax)
+	SleafordRangeFeatures.push(rfeatureMax);
+
+	if (MidRangeHeight > 0) {
+		var styleMid = new ol.style.Style({
 			stroke: new ol.style.Stroke({
-				color: 'rgba(0,0,255, 1)',
+				color: 'rgba(0,64,0, 1)',
 				width: 0.5
 			}),
 			fill: new ol.style.Fill({
-				color: 'rgba(0,0,255, 0.01)'
+				color: 'rgba(0,255,0, 0.01)'
 			})
 		})
-		var rfeatureMax = new ol.Feature({
-			geometry: new ol.geom.Polygon([polyCoordsMax])
+
+		var rfeatureMid = new ol.Feature({
+			geometry: new ol.geom.Polygon([polyCoordsMid])
 		});
-		rfeatureMax.setStyle(styleMax)
-		SleafordRangeFeatures.push(rfeatureMax);
-
-		if (MidRangeHeight > 0) {
-			var styleMid = new ol.style.Style({
-				stroke: new ol.style.Stroke({
-					color: 'rgba(0,64,0, 1)',
-					width: 0.5
-				}),
-				fill: new ol.style.Fill({
-					color: 'rgba(0,255,0, 0.01)'
-				})
-			})
-
-			var rfeatureMid = new ol.Feature({
-				geometry: new ol.geom.Polygon([polyCoordsMid])
-			});
-			rfeatureMid.setStyle(styleMid)
-			SleafordRangeFeatures.push(rfeatureMid);
-		}
-
-		if (MinRangeHeight > 0) {
-			var styleMin = new ol.style.Style({
-				stroke: new ol.style.Stroke({
-					color: 'rgba(64,0,0, 1)',
-					width: 0.5
-				}),
-				fill: new ol.style.Fill({
-					color: 'rgba(255,0,0, 0.01)'
-				})
-			})
-
-			var rfeatureMin = new ol.Feature({
-				geometry: new ol.geom.Polygon([polyCoordsMin])
-			});
-			rfeatureMin.setStyle(styleMin)
-			SleafordRangeFeatures.push(rfeatureMin);
-		}
+		rfeatureMid.setStyle(styleMid)
+		SleafordRangeFeatures.push(rfeatureMid);
 	}
-	//------------------------------------------------------------------------------------
-	// Ref: AK8X Ends ----------------------------------------------------------- AKISSACK
-	//------------------------------------------------------------------------------------
+
+	if (MinRangeHeight > 0) {
+		var styleMin = new ol.style.Style({
+			stroke: new ol.style.Stroke({
+				color: 'rgba(64,0,0, 1)',
+				width: 0.5
+			}),
+			fill: new ol.style.Fill({
+				color: 'rgba(255,0,0, 0.01)'
+			})
+		})
+
+		var rfeatureMin = new ol.Feature({
+			geometry: new ol.geom.Polygon([polyCoordsMin])
+		});
+		rfeatureMin.setStyle(styleMin)
+		SleafordRangeFeatures.push(rfeatureMin);
+	}
+}
+//------------------------------------------------------------------------------------
+// Ref: AK8X Ends ----------------------------------------------------------- AKISSACK
+//------------------------------------------------------------------------------------
 
 
-	//------------------------------------------------------------------------------------
-	// // AKISSACK Ref: AK9U -------------------------------------------------------------
-	//------------------------------------------------------------------------------------
-	// This section can be ignored.  It is just a test to show my metal detecting finds
-	//------------------------------------------------------------------------------------
-	if (ShowMyFindsLayer && SleafordMySql) { // AKISSACK Ref: AK9U
+//------------------------------------------------------------------------------------
+// AKISSACK - HOVER OVER LABELS ------------------------------------- ref: AK6D starts
+//------------------------------------------------------------------------------------
+if (ShowHoverOverLabels) {
+	var overlay = new ol.Overlay({
+		element: document.getElementById('popinfo'),
+		positioning: 'bottom-left'
+	});
+	overlay.setMap(OLMap);
 
-		var fCoin = new ol.style.Style({
-			image: new ol.style.Icon({
-				src: 'sql/img/coin.png'
-			})
-		});
-		var fCoins = new ol.style.Style({
-			image: new ol.style.Icon({
-				src: 'sql/img/coins.png'
-			})
-		});
-		var fCoinr = new ol.style.Style({
-			image: new ol.style.Icon({
-				src: 'sql/img/coinr.png'
-			})
-		});
+	// trap mouse moving over
+	//var hitTolerance = 100;
+	OLMap.on('pointermove', function(evt) {
+		//console.log(evt.pixel);
+		var feature = OLMap.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+			overlay.setPosition(evt.coordinate);
+			var popname = feature.get('name');
 
-		var fSpade = new ol.style.Style({
-			image: new ol.style.Icon({
-				src: 'sql/img/spade.png'
-			})
-		});
-		var fSpader = new ol.style.Style({
-			image: new ol.style.Icon({
-				src: 'sql/img/spader.png'
-			})
-		});
-		var fSpec = new ol.style.Style({
-			image: new ol.style.Icon({
-				src: 'sql/img/spec.png'
-			})
-		});
-		var fMil = new ol.style.Style({
-			image: new ol.style.Icon({
-				src: 'sql/img/mil.png'
-			})
-		});
 
-		$(function()
-			//-----------------------------------------------------------------------
-			// Send a http request with AJAX http://api.jquery.com/jQuery.ajax/
-			// install: apt-get install mysql-client php5-mysql
-			//-----------------------------------------------------------------------
-			{
-				$.ajax({
-					url: 'sql/new-sql-finds-layer.php',
-					data: "",
-					dataType: 'json',
-					success: function(data) {
-						processMdData(data)
-					}
-				});
-			});
-
-		function processMdData(allFindData) {
-			// New SQL Database etc Feb 2022
-			//console.log(allFindData);
-			for (var i in allFindData) {
-				var oneFind = allFindData[i];
-				for (var y in oneFind) { // Get elements of JSON array
-					if (y == "Lat") {
-						var findlat = oneFind[y];
-					} else if (y == "Long") {
-						var findlon = oneFind[y];
-					} else if (y == "Name") {
-						var findname = oneFind[y];
-					} else if (y == "Number") {
-						var findnumber = oneFind[y];
-					} else if (y == "icon") {
-						var findicon = oneFind[y];
-					} else if (y == "desc") {
-						var finddesc = oneFind[y];
-					} else if (y == "Score") {
-						var findscore = oneFind[y];
-					}
-					var f = new ol.Feature({
-						geometry: new ol.geom.Point(ol.proj.transform([+findlon, +findlat], 'EPSG:4326', 'EPSG:3857')),
-						name: findname + '<br>' + findnumber
-					});
-					if (findicon === 'coin') {
-						f.setStyle(fCoin);
-					} else if (findicon === 'coins') {
-						f.setStyle(fCoins);
-					} else if (findicon === 'coinr') {
-						f.setStyle(fCoinr);
-					} else if (findicon === 'mil') {
-						f.setStyle(fMil);
-					} else if (findicon === 'spec') {
-						f.setStyle(fSpec);
-					} else if (findicon === 'spader') {
-						f.setStyle(fSpader);
+			if (ShowMyFindsLayer && (typeof popname != 'undefined') && popname != '~') {
+				overlay.getElement().innerHTML = (popname ? popname : '');
+				return feature;
+			}
+			if (popname === '~') {
+				var vsi = '';
+				if (Planes[feature.hex].vert_rate !== 'undefined') { // Correct odd errors
+					if (Planes[feature.hex].vert_rate > 256) {
+						vsi = 'climbing';
 					} else {
-						f.setStyle(fSpade);
-					}
-				}
-				MyFeatures.push(f);
-			} // end of i in all find data
-		}
-		//------------------------------------------------------------------------------------
-		// // AKISSACK Ref: AK9U ---------------------------------------------------- END
-		//------------------------------------------------------------------------------------
-	}
-
-	//------------------------------------------------------------------------------------
-	// AKISSACK - HOVER OVER LABELS ------------------------------------- ref: AK6D starts
-	//------------------------------------------------------------------------------------
-	if (ShowHoverOverLabels) {
-		var overlay = new ol.Overlay({
-			element: document.getElementById('popinfo'),
-			positioning: 'bottom-left'
-		});
-		overlay.setMap(OLMap);
-
-		// trap mouse moving over
-		//var hitTolerance = 100;
-		OLMap.on('pointermove', function(evt) {
-			//console.log(evt.pixel);
-			var feature = OLMap.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
-				overlay.setPosition(evt.coordinate);
-				var popname = feature.get('name');
-
-
-				if (ShowMyFindsLayer && (typeof popname != 'undefined') && popname != '~') {
-					overlay.getElement().innerHTML = (popname ? popname : '');
-					return feature;
-				}
-				if (popname === '~') {
-					var vsi = '';
-					if (Planes[feature.hex].vert_rate !== 'undefined') { // Correct odd errors
-						if (Planes[feature.hex].vert_rate > 256) {
-							vsi = 'climbing';
-						} else {
-							if (Planes[feature.hex].vert_rate < -256) {
-								vsi = 'descending';
-							} else vsi = 'level';
-						};
+						if (Planes[feature.hex].vert_rate < -256) {
+							vsi = 'descending';
+						} else vsi = 'level';
 					};
-					if (ShowAdditionalData) {
-						//LINE ONE
-						popname = (Planes[feature.hex].ac_aircraft ? Planes[feature.hex].ac_aircraft : '-');
-						if (popname === '-') {
-							//  Let's try an alternative to ID -> https://github.com/alkissack/Dump1090-OpenLayers3-html/issues/3
-							popname = (Planes[feature.hex].icaotype ? Planes[feature.hex].icaotype : 'Unknown aircraft type');
-						}
-						popname = popname + ' [' + (Planes[feature.hex].category ? Planes[feature.hex].category : '?') + ']';
-						//LINE TWO
-						popname = popname + '\n(' + (Planes[feature.hex].flight ? Planes[feature.hex].flight.trim() : 'No Call') + ')';
-						popname = popname + ' #' + feature.hex.toUpperCase();
-						popname = popname + ' [' + Planes[feature.hex].registration + ']';
-
-						//LINE THREE
-						popname = popname + '\n' + (Planes[feature.hex].altitude ? parseInt(Planes[feature.hex].altitude) : '?');
-						popname = popname + ' ft and ' + vsi;
-						//LINE FOUR
-						popname = popname + '\n' + (Planes[feature.hex].country ? Planes[feature.hex].country : '');
-						popname = popname + ' ' + (Planes[feature.hex].operator ? Planes[feature.hex].operator : '');
-						popname = popname + ' ' + (Planes[feature.hex].siteNm ? Planes[feature.hex].siteNm + "nm" : '');
-						popname = popname + ' ' + (Planes[feature.hex].siteBearing ? Planes[feature.hex].siteBearing + "\u00B0" : '');
-
-					} else {
-						popname = 'ICAO: ' + Planes[feature.hex].icao;
-						popname = popname + '\nFlt:  ' + (Planes[feature.hex].flight ? Planes[feature.hex].flight : '?');
-						popname = popname + '\nType: ' + (Planes[feature.hex].icaotype ? Planes[feature.hex].icaotype : '?');
-						popname = popname + '\nReg:  ' + (Planes[feature.hex].registration ? Planes[feature.hex].registration : '?');
-						popname = popname + '\nFt:   ' + (Planes[feature.hex].altitude ? parseInt(Planes[feature.hex].altitude) : '?');
+				};
+				if (ShowAdditionalData) {
+					//LINE ONE
+					popname = (Planes[feature.hex].ac_aircraft ? Planes[feature.hex].ac_aircraft : '-');
+					if (popname === '-') {
+						//  Let's try an alternative to ID -> https://github.com/alkissack/Dump1090-OpenLayers3-html/issues/3
+						popname = (Planes[feature.hex].icaotype ? Planes[feature.hex].icaotype : 'Unknown aircraft type');
 					}
-					overlay.getElement().innerHTML = (popname ? popname : '');
-					return feature;
-				} else {
-					//overlay.getElement().innerHTML = (popname  ?  popname   :'' );
-					//return feature;
-					return null;
-				}
-			}, function(layer) {
-				if (ShowMyFindsLayer) {
-					return (layer == iconsLayer, MyFeatures);
-				} else {
-					return (layer == iconsLayer);
-				}
-			}); //OLMap.forEachFeatureAtPixel
+					popname = popname + ' [' + (Planes[feature.hex].category ? Planes[feature.hex].category : '?') + ']';
+					//LINE TWO
+					popname = popname + '\n(' + (Planes[feature.hex].flight ? Planes[feature.hex].flight.trim() : 'No Call') + ')';
+					popname = popname + ' #' + feature.hex.toUpperCase();
+					popname = popname + ' [' + Planes[feature.hex].registration + ']';
 
-			overlay.getElement().style.display = feature ? '' : 'none'; // EAK--> Needs GMAP/INDEX.HTML
-			document.body.style.cursor = feature ? 'pointer' : '';
-		});
-	} else { // Labels are not required
-		var overlay = new ol.Overlay({
-			element: document.getElementById('popinfo'),
-			positioning: 'bottom-left'
-		});
-		overlay.setMap(OLMap);
+					//LINE THREE
+					popname = popname + '\n' + (Planes[feature.hex].altitude ? parseInt(Planes[feature.hex].altitude) : '?');
+					popname = popname + ' ft and ' + vsi;
+					//LINE FOUR
+					popname = popname + '\n' + (Planes[feature.hex].country ? Planes[feature.hex].country : '');
+					popname = popname + ' ' + (Planes[feature.hex].operator ? Planes[feature.hex].operator : '');
+					popname = popname + ' ' + (Planes[feature.hex].siteNm ? Planes[feature.hex].siteNm + "nm" : '');
+					popname = popname + ' ' + (Planes[feature.hex].siteBearing ? Planes[feature.hex].siteBearing + "\u00B0" : '');
+
+				} else {
+					popname = 'ICAO: ' + Planes[feature.hex].icao;
+					popname = popname + '\nFlt:  ' + (Planes[feature.hex].flight ? Planes[feature.hex].flight : '?');
+					popname = popname + '\nType: ' + (Planes[feature.hex].icaotype ? Planes[feature.hex].icaotype : '?');
+					popname = popname + '\nReg:  ' + (Planes[feature.hex].registration ? Planes[feature.hex].registration : '?');
+					popname = popname + '\nFt:   ' + (Planes[feature.hex].altitude ? parseInt(Planes[feature.hex].altitude) : '?');
+				}
+				overlay.getElement().innerHTML = (popname ? popname : '');
+				return feature;
+			} else {
+				//overlay.getElement().innerHTML = (popname  ?  popname   :'' );
+				//return feature;
+				return null;
+			}
+		}, function(layer) {
+			if (ShowMyFindsLayer) {
+				return (layer == iconsLayer, MyFeatures);
+			} else {
+				return (layer == iconsLayer);
+			}
+		}); //OLMap.forEachFeatureAtPixel
+
+		overlay.getElement().style.display = feature ? '' : 'none'; // EAK--> Needs GMAP/INDEX.HTML
+		document.body.style.cursor = feature ? 'pointer' : '';
+	});
+} else { // Labels are not required
+	var overlay = new ol.Overlay({
+		element: document.getElementById('popinfo'),
+		positioning: 'bottom-left'
+	});
+	overlay.setMap(OLMap);
+}
+//------------------------------------------------------------------------------------
+// -------------------------------------------------------------------- ref: AK6D ends
+//------------------------------------------------------------------------------------
+
+
+// Add home marker if requested
+if (SitePosition) {
+	if (ShowMyPreferences) { // Personal preferences Ref: AK9V
+		var homeRad = 2;
+		var homeWid = 1;
+	} else {
+		var homeRad = 7;
+		var homeWid = 2;
 	}
-	//------------------------------------------------------------------------------------
-	// -------------------------------------------------------------------- ref: AK6D ends
-	//------------------------------------------------------------------------------------
-
-
-	// Add home marker if requested
-	if (SitePosition) {
-		if (ShowMyPreferences) { // Personal preferences Ref: AK9V
-			var homeRad = 2;
-			var homeWid = 1;
-		} else {
-			var homeRad = 7;
-			var homeWid = 2;
-		}
-		var markerStyle = new ol.style.Style({
-			image: new ol.style.Circle({
-				radius: homeRad, // Ref: AK9V
-				snapToPixel: false,
-				fill: new ol.style.Fill({
-					color: 'black'
-				}),
-				stroke: new ol.style.Stroke({
-					color: 'white',
-					width: homeWid // Ref: AK9V
-				})
+	var markerStyle = new ol.style.Style({
+		image: new ol.style.Circle({
+			radius: homeRad, // Ref: AK9V
+			snapToPixel: false,
+			fill: new ol.style.Fill({
+				color: 'black'
+			}),
+			stroke: new ol.style.Stroke({
+				color: 'white',
+				width: homeWid // Ref: AK9V
 			})
+		})
+	});
+
+	var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat(SitePosition)));
+	feature.setStyle(markerStyle);
+	StaticFeatures.push(feature);
+
+	if (SiteCircles) {
+		createSiteCircleFeatures();
+	}
+}
+
+if (OL3) {
+	// TODO OL6
+	// Add terrain-limit rings.
+	// kick off an ajax request that will add the rings when it's done
+	if (!PanoramaRingsJson === false) {
+		var request = $.ajax({
+			url: PanoramaRingsJson,
+			timeout: 5000,
+			cache: true,
+			dataType: 'json'
 		});
 
-		var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat(SitePosition)));
-		feature.setStyle(markerStyle);
-		StaticFeatures.push(feature);
 
-		if (SiteCircles) {
-			createSiteCircleFeatures();
-		}
-	}
+		request.done(function(data) {
+			var ringStyle;
 
-	if (OL3) {
-		// TODO OL6
-		// Add terrain-limit rings.
-		// kick off an ajax request that will add the rings when it's done
-		if (!PanoramaRingsJson === false) {
-			var request = $.ajax({
-				url: PanoramaRingsJson,
-				timeout: 5000,
-				cache: true,
-				dataType: 'json'
-			});
+			if (UseDefaultTerrianRings) {
+				ringStyle = new ol.style.Style({
+					fill: null,
+					stroke: new ol.style.Stroke({
+						color: '#000000',
+						lineDash: UseTerrianLineDash ? [4, 4] : null,
+						width: TerrianLineWidth
+					})
+				});
+			} else {
+				ringStyle = [];
 
-
-			request.done(function(data) {
-				var ringStyle;
-
-				if (UseDefaultTerrianRings) {
-					ringStyle = new ol.style.Style({
+				for (var i = 0; i < TerrianAltitudes.length; ++i) {
+					ringStyle.push(new ol.style.Style({
 						fill: null,
 						stroke: new ol.style.Stroke({
-							color: '#000000',
+							color: getTerrianColorByAlti(TerrianAltitudes[i]),
 							lineDash: UseTerrianLineDash ? [4, 4] : null,
 							width: TerrianLineWidth
 						})
-					});
-				} else {
-					ringStyle = [];
-
-					for (var i = 0; i < TerrianAltitudes.length; ++i) {
-						ringStyle.push(new ol.style.Style({
-							fill: null,
-							stroke: new ol.style.Stroke({
-								color: getTerrianColorByAlti(TerrianAltitudes[i]),
-								lineDash: UseTerrianLineDash ? [4, 4] : null,
-								width: TerrianLineWidth
-							})
-						}));
-					}
+					}));
 				}
+			}
 
-				for (var i = 0; i < data.rings.length; ++i) {
-					var geom = new ol.geom.LineString();
-					var points = data.rings[i].points;
-					if (points.length > 0) {
-						for (var j = 0; j < points.length; ++j) {
-							geom.appendCoordinate([points[j][1], points[j][0]]);
-						}
-						geom.appendCoordinate([points[0][1], points[0][0]]);
-						geom.transform('EPSG:4326', 'EPSG:3857');
-
-						var feature = new ol.Feature(geom);
-						if (UseDefaultTerrianRings) {
-							feature.setStyle(ringStyle);
-						} else {
-							feature.setStyle(ringStyle[i]);
-						}
-						StaticFeatures.push(feature);
+			for (var i = 0; i < data.rings.length; ++i) {
+				var geom = new ol.geom.LineString();
+				var points = data.rings[i].points;
+				if (points.length > 0) {
+					for (var j = 0; j < points.length; ++j) {
+						geom.appendCoordinate([points[j][1], points[j][0]]);
 					}
-				}
-			});
+					geom.appendCoordinate([points[0][1], points[0][0]]);
+					geom.transform('EPSG:4326', 'EPSG:3857');
 
-			request.fail(function(jqxhr, status, error) {
-				// no rings available, do nothing
-			});
-		}
+					var feature = new ol.Feature(geom);
+					if (UseDefaultTerrianRings) {
+						feature.setStyle(ringStyle);
+					} else {
+						feature.setStyle(ringStyle[i]);
+					}
+					StaticFeatures.push(feature);
+				}
+			}
+		});
+
+		request.fail(function(jqxhr, status, error) {
+			// no rings available, do nothing
+		});
 	}
+}
 }
 
 function createSiteCircleFeatures() {
 	var radius;
-	var siteCricleStyle = function(distance, offset) {
-
-
+	var siteCricleStyle = function(radius) {
+		var radius = convert_distance(radius, DisplayUnits) + " " + get_unit_label("distance", DisplayUnits);
 		return new Style({
 			//stroke: new ol.style.Stroke({color: 'rgba(1,135,134,0.8)', width: 1}),
 			//fill: new ol.style.Fill({color: 'rgba(55,0,179,0.05)'}),
@@ -1545,13 +1049,14 @@ function createSiteCircleFeatures() {
 					color: 'rgba(0,62,62,0.8)',
 					width: 5
 				}),
-				text: ShowSiteRingDistanceText ? format_distance_long(distance, DisplayUnits, 0) : '',
+				text: ShowSiteRingDistanceText ? radius : '',
 				placement: 'line',
 				backgroundFill: new ol.style.Fill({
 					color: 'rgba(0,62,62,1)'
 				})
 			})
 		});
+
 	};
 
 	for (var i = 0; i < SiteCirclesDistances.length; ++i) {
@@ -1560,7 +1065,6 @@ function createSiteCircleFeatures() {
 			geometry: ol.geom.Polygon.circular(SitePosition, radius, 128).transform('EPSG:4326', 'EPSG:3857'),
 			name: radius
 		});
-		var ofs = SiteCirclesDistances[i] * unitsConversionFactor();
 		siteCricle.setStyle(siteCricleStyle(radius));
 		StaticFeatures.push(siteCricle);
 	}
@@ -2600,14 +2104,16 @@ function updatePlaneFilter() {
 }
 
 function getVariousLinksFlight() {
-	if (Planes[SelectedPlane].icao !== null && Planes[SelectedPlane].icao !== "" && Planes[SelectedPlane].icao !== 'undefined') {
-		$('#selected_links').css('display', 'flex');
-		$('#selected_adsbexchange_link').attr('href', 'https://globe.adsbexchange.com/?icao=' + Planes[SelectedPlane].icao);
-		$('#selected_planefinder_link').attr('href', 'https://planefinder.net/flight/' + Planes[SelectedPlane].flight);
-		$('#selected_opensky_link').attr('href', 'https://opensky-network.org/aircraft-profile?icao24=' + Planes[SelectedPlane].icao);
-		$('#selected_flightaware_link').attr('href', 'https://flightaware.com/live/flight/' + Planes[SelectedPlane].flight);
-	} else {
-		$('#selected_links').css('display', 'none');
+	if (typeof Planes[SelectedPlane] !== "undefined") {
+		if (Planes[SelectedPlane].icao !== null || Planes[SelectedPlane].icao !== "") {
+			$('#selected_links').css('display', 'flex');
+			$('#selected_adsbexchange_link').attr('href', 'https://globe.adsbexchange.com/?icao=' + Planes[SelectedPlane].icao);
+			$('#selected_planefinder_link').attr('href', 'https://planefinder.net/flight/' + Planes[SelectedPlane].flight);
+			$('#selected_opensky_link').attr('href', 'https://opensky-network.org/aircraft-profile?icao24=' + Planes[SelectedPlane].icao);
+			$('#selected_flightaware_link').attr('href', 'https://flightaware.com/live/flight/' + Planes[SelectedPlane].flight);
+		} else {
+			$('#selected_links').css('display', 'none');
+		}
 	}
 }
 
