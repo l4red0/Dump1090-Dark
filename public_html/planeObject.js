@@ -321,19 +321,22 @@ PlaneObject.prototype.getMarkerColor = function() {
 	if (this.squawk in SpecialSquawks)
 		return SpecialSquawks[this.squawk].markerColor;
 
-	var h, s, l;
+	var h, s, l, a;
 
 	if (this.altitude === null) {
 		h = ColorByAlt.unknown.h;
 		s = ColorByAlt.unknown.s;
 		l = ColorByAlt.unknown.l;
+    a = 1;
 	} else if (this.altitude === "ground") {
 		h = ColorByAlt.ground.h;
 		s = ColorByAlt.ground.s;
 		l = ColorByAlt.ground.l;
+    a = 1;
 	} else {
 		s = ColorByAlt.air.s;
 		l = ColorByAlt.air.l;
+    a = 1;
 
 		// find the pair of points the current altitude lies between,
 		// and interpolate the hue between those points
@@ -353,9 +356,10 @@ PlaneObject.prototype.getMarkerColor = function() {
 
 	// If we have not seen a recent position update, change color
 	if (this.seen_pos > 15) {
-		h += ColorByAlt.stale.h;
-		s += ColorByAlt.stale.s;
-		l += ColorByAlt.stale.l;
+		h = ColorByAlt.stale.h;
+		s = ColorByAlt.stale.s;
+		l = ColorByAlt.stale.l;
+    a = 0.3;
 	}
 
 	// If this marker is selected, change color
@@ -367,9 +371,9 @@ PlaneObject.prototype.getMarkerColor = function() {
 
 	// If this marker is a mlat position, change color
 	if (this.position_from_mlat) {
-		h += ColorByAlt.mlat.h;
-		s += ColorByAlt.mlat.s;
-		l += ColorByAlt.mlat.l;
+		h = ColorByAlt.mlat.h;
+		s = ColorByAlt.mlat.s;
+		l = ColorByAlt.mlat.l;
 	}
 
 	if (h < 0) {
@@ -393,7 +397,7 @@ PlaneObject.prototype.getMarkerColor = function() {
 		return myColour;
 	} else {
 		// ---------------------------   AKISSACK mono colour  Ref: AK9C ends
-		return 'hsl(' + (h / 5).toFixed(0) * 5 + ',' + (s / 5).toFixed(0) * 5 + '%,' + (l / 5).toFixed(0) * 5 + '%)'
+		return 'hsl(' + (h / 5).toFixed(0) * 5 + ',' + (s / 5).toFixed(0) * 5 + '%,' + (l / 5).toFixed(0) * 5 + '%,'+ a +')'
 	}
 }
 
@@ -401,7 +405,7 @@ PlaneObject.prototype.updateIcon = function() {
 	var scaleFactor = Math.max(0.2, Math.min(1.2, 0.15 * Math.pow(1.25, ZoomLvl))).toFixed(1);
 
 	var col = this.getMarkerColor();
-	var opacity = 1.0;
+	var opacity = 1;
 	var outline = (this.position_from_mlat ? OutlineMlatColor : OutlineADSBColor);
 	var baseMarker = getBaseMarker(this.category, this.icaotype, this.typeDescription, this.wtc);
 	if (ShowMyPreferences) { // Ref: AK9D starts
@@ -613,13 +617,13 @@ PlaneObject.prototype.updateTick = function(receiver_timestamp, last_timestamp) 
 
 	// If no packet in over 58 seconds, clear the plane.
 	if (this.seen > 58) {
-		if (this.visible) {
-			//console.log("hiding " + this.icao);
-			this.clearMarker();
-			this.visible = false;
-			if (SelectedPlane == this.icao)
-				selectPlaneByHex(null, false);
-		}
+    if (this.visible) {
+      //console.log("hiding " + this.icao);
+      this.clearMarker();
+      this.visible = false;
+      if (SelectedPlane == this.icao)
+        selectPlaneByHex(null, false);
+      }
 	} else {
 		if (this.position !== null && (this.selected || this.seen_pos < 60)) {
 			this.visible = true;
@@ -846,7 +850,7 @@ PlaneObject.prototype.updateLines = function() {
 
 	var groundStyle = new ol.style.Style({
 		stroke: new ol.style.Stroke({
-			color: '#408040',
+			color: '#5e5e5e',
 			width: 0.75 // Reduced width Ref: AK9A
 		})
 	});

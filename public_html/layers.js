@@ -31,6 +31,7 @@ function createBaseLayers() {
 			name: 'osm light',
 			title: 'OpenStreetMap Light',
 			type: 'base',
+			preload: Infinity,
 		}));
 	}
 
@@ -86,6 +87,7 @@ function createBaseLayers() {
 			name: 'bing_aerial',
 			title: 'Bing Aerial',
 			type: 'base',
+			preload: Infinity,
 		}));
 
 		world.push(new ol.layer.Tile({
@@ -98,9 +100,6 @@ function createBaseLayers() {
 			name: 'bing_roads',
 			title: 'Bing Roads',
 			type: 'base',
-			settings: {
-				"landColor": "#FFFFFF"
-			},
 
 		}));
 	}
