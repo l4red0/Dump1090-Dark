@@ -311,7 +311,7 @@ PlaneObject.prototype.getDataSource = function() {
 	}
 
 	// Otherwise Mode S
-	return 'mode_s';
+	return 'mode_s/unknown';
 
 	// TODO: add support for Mode A/C
 };

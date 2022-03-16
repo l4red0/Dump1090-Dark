@@ -1198,7 +1198,7 @@ function refreshSelected() {
 		emerg.className = 'hidden';
 	}
 
-	$('#selected_source').text(format_data_source(selected.addrtype));
+	$('#selected_source').text(Planes[SelectedPlane].getDataSource().toUpperCase());
 	$("#selected_altitude").text(format_altitude_long(selected.altitude, selected.vert_rate, DisplayUnits));
 
 	if (selected.squawk === null || selected.squawk === '0000') {
