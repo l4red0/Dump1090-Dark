@@ -705,11 +705,10 @@ function initialize_map() {
 			function(feature, layer) {
 				return feature.hex;
 			},
-			48,
 			function(layer) {
 				return (layer === iconsLayer);
-			},
-			true);
+			}, 48, true);
+
 		if (hex) {
 			selectPlaneByHex(hex, (evt.type === 'dblclick'));
 			evt.stopPropagation();
@@ -1784,6 +1783,7 @@ function selectPlaneByHex(hex, autofollow) {
 		Planes[SelectedPlane].updateLines();
 		Planes[SelectedPlane].updateMarker();
 		$(Planes[SelectedPlane].tr).addClass("selected");
+		getPlaneSpottersApiData(hex);
 	} else {
 		SelectedPlane = null;
 	}
