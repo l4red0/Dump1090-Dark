@@ -1470,11 +1470,11 @@ function refreshTableInfo() {
 }
 
 function drawBlindCone() {
-	var coords = [[SiteLon, SiteLat - 2], [SiteLon, SiteLat], [SiteLon, SiteLat + 2]];
+	var coords = [[SiteLon, SiteLat - 1.5], [SiteLon, SiteLat], [SiteLon, SiteLat + 1.5]];
 	var bcline = new ol.geom.LineString(coords);
 	//var coordsHalfWay = bcline.getCoordinateAt(0.5);
 
-	bcline.rotate(BlindCone * (Math.PI/180), [SiteLon, SiteLat]);
+	bcline.rotate((-BlindCone * (Math.PI/180)).toFixed(4), [SiteLon, SiteLat]);
 	bcline.transform('EPSG:4326', 'EPSG:3857');
 
 	var lineStyle = new ol.style.Style({
