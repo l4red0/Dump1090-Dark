@@ -316,10 +316,10 @@ function initialize() {
 		.done(function(data) {
 			if (typeof data.lat !== "undefined" && SiteLat == "" && SiteLon == "") {
 				SiteShow = true;
-					SiteLat = data.lat;
-					SiteLon = data.lon;
-					DefaultCenterLat = data.lat;
-					DefaultCenterLon = data.lon;
+				SiteLat = data.lat;
+				SiteLon = data.lon;
+				DefaultCenterLat = data.lat;
+				DefaultCenterLon = data.lon;
 			}
 
 			Dump1090Version = data.version;
@@ -1246,11 +1246,12 @@ function refreshSelected() {
 			$('#selected_position').text(mlat_bit + format_latlng(selected.position));
 		}
 		$('#selected_follow').removeClass('hidden');
+
 		if (FollowSelected) {
 			$('#selected_follow').html('<span title="Stop following"><i icon-name="locate-off"></i></span>');
 			lucide.createIcons();
-			OLMap.getView().setCenter(ol.proj.fromLonLat(selected.position));
-		} else {
+			mapAnimateToCoord(selected.position, 12, false);
+		} else if (!FollowSelected) {
 			$('#selected_follow').html('<span title="Locate on map and follow"><i icon-name="locate-fixed"></i></span>');
 			lucide.createIcons();
 		}
@@ -1474,7 +1475,7 @@ function drawBlindCone() {
 	var bcline = new ol.geom.LineString(coords);
 	//var coordsHalfWay = bcline.getCoordinateAt(0.5);
 
-	bcline.rotate((-BlindCone * (Math.PI/180)).toFixed(4), [SiteLon, SiteLat]);
+	bcline.rotate((-BlindCone * (Math.PI / 180)).toFixed(4), [SiteLon, SiteLat]);
 	bcline.transform('EPSG:4326', 'EPSG:3857');
 
 	var lineStyle = new ol.style.Style({
@@ -1494,7 +1495,9 @@ function drawBlindCone() {
 	StaticFeatures.push(feature);
 }
 
-if(BlindCone) {drawBlindCone();}
+if (BlindCone) {
+	drawBlindCone();
+}
 
 // AKISSACK - Range Plot Ref: AK8E
 function drawRangePlot() {
@@ -1795,7 +1798,7 @@ function selectPlaneByHex(hex, autofollow) {
 	if (SelectedPlane !== null && autofollow) {
 		FollowSelected = true;
 		if (OLMap.getView().getZoom() <= 8)
-			OLMap.getView().setZoom(11);
+			mapAnimateToCoord(Planes[SelectedPlane].position, 12, true);
 	} else {
 		FollowSelected = false;
 	}
@@ -1857,7 +1860,6 @@ function selectMilPlanes() {
 			}
 		}
 	}
-
 	refreshSelected();
 }
 
@@ -1873,7 +1875,6 @@ function deselectMilPlanes() {
 	SelectedMilPlanes = false;
 	refreshSelected();
 }
-// ----------------- AKISSACK
 
 // on refreshes, try to find new planes and mark them as selected
 function selectNewPlanes() {
@@ -1907,10 +1908,80 @@ function deselectAllPlanes() {
 	refreshSelected();
 }
 
+function mapAnimateToCoord(coord, zoomFact, zoomOut) {
+
+	var fromLonLat = ol.proj.fromLonLat;
+	var coord = fromLonLat(coord);
+	var easeOut = ol.easing.easeOut;
+	var easeIn = ol.easing.easeIn;
+
+	const duration = 800;
+	const zoom = OLMap.getView().getZoom();
+	let parts = 2;
+	let called = false;
+
+	function callback(complete) {
+		--parts;
+		if (called) {
+			return;
+		}
+		if (parts === 0 || !complete) {
+			called = true;
+			done(complete);
+		}
+	}
+
+	OLMap.getView().animate({
+			center: coord,
+			zoom: zoomFact,
+			duration: duration,
+			easing: easeOut
+		},
+		callback
+	);
+
+	if (zoomOut) {
+		OLMap.getView().animate({
+				zoom: zoom - 1,
+				duration: duration / 2,
+				easing: easeIn
+			}, {
+				zoom: zoom,
+				duration: duration / 2,
+				easing: easeOut
+			},
+			callback
+		);
+	} else {
+		OLMap.getView().animate({
+				duration: duration / 2,
+			}, {
+				duration: duration / 2,
+			},
+			callback
+		);
+	}
+
+	function done() {
+		if (typeof Planes[SelectedPlane] !== 'undefined') {
+			if (Planes[SelectedPlane].seen_pos <= 5) {
+				FollowSelected = true;
+			} else {
+				FollowSelected = !FollowSelected;
+			}
+		}
+
+		console.log(FollowSelected);
+		OLMap.getView().setZoom(zoomFact);
+	}
+
+}
+
 function toggleFollowSelected() {
-	FollowSelected = !FollowSelected;
+	FollowSelected = true;
 	if (FollowSelected && OLMap.getView().getZoom() <= 8)
-		OLMap.getView().setZoom(11);
+		//OLMap.getView().setZoom(11);
+		mapAnimateToCoord(Planes[SelectedPlane].position, 12, true);
 	refreshSelected();
 }
 
@@ -1921,9 +1992,8 @@ function resetMap() {
 	localStorage['ZoomLvl'] = ZoomLvl = DefaultZoomLvl;
 
 	// Set and refresh
-	OLMap.getView().setZoom(ZoomLvl);
-	OLMap.getView().setCenter(ol.proj.fromLonLat([CenterLon, CenterLat]));
-
+	FollowSelected = false;
+	mapAnimateToCoord([CenterLon, CenterLat], ZoomLvl, true);
 	selectPlaneByHex(null, false);
 }
 
