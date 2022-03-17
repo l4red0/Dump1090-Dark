@@ -43,10 +43,10 @@ DefaultCenterLon = SiteLon;
 // All color values are given as Hue (0-359) / Saturation (0-100) / Lightness (0-100)
 ColorByAlt = {
         // HSL for planes with unknown altitude:
-        unknown : { h: 0,   s: 0,   l: 40 },
+        unknown : { h: 0,   s: 0,   l: 0 },
 
         // HSL for planes that are on the ground:
-        ground  : { h: 120, s: 100, l: 30 },
+        ground  : { h: 0, s: 0, l: 40 },
 
         air : {
                 // These define altitude-to-hue mappings
@@ -73,10 +73,10 @@ ColorByAlt = {
         selected : { h: 60, s: +10, l: 0 },
 
         // Changes added to the color of planes that have stale position info
-        stale :    { h: 0, s: -20, l: -20 },
+        stale :    { h: 0, s: 0, l: 55 },
 
         // Changes added to the color of planes that have positions from mlat
-        mlat :     { h: 0, s: -10, l: -50 }
+        mlat :     { h: 258, s: 100, l: 50 }
 };
 
 // For a monochrome display try this:
@@ -98,9 +98,6 @@ OutlineMlatColor = '#32bf6a';
 SiteCircles = true; // true to show circles (only shown if the center marker is shown)
 // In miles, nautical miles, or km (depending settings value 'DisplayUnits')
 SiteCirclesDistances = new Array(50,100,150,200);
-
-// Show the clocks at the top of the righthand pane? You can disable the clocks if you want here
-ShowClocks = false;
 
 // Controls page title, righthand pane when nothing is selected
 PageName = "DUMP1090";
@@ -192,3 +189,6 @@ SleafordMySql        = false ;  // Don't set this without reviewing the code - i
 DarkMode        = true; //Enable dark scheme
 PanoramaRingsJson = false; //Terrain limit rings - see script.js. To enable provide path to "upintheair.json" file.
 OL3 = false; //set to false for experimental openlayer 6.13.0 support instead of OL3. Changes to paths of css and js required in index.xtml
+
+//Default false. Antenna blind cone in degrees. In case the antenna is not mounted freely (e.g. from a window of a multi-storey building) by entering the azimuth of the building wall given in degrees, you will create a line for the dark area of the antenna coverage. This is called Antenna blind cone.
+BlindCone = false;

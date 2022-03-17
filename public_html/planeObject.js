@@ -359,7 +359,7 @@ PlaneObject.prototype.getMarkerColor = function() {
 		h = ColorByAlt.stale.h;
 		s = ColorByAlt.stale.s;
 		l = ColorByAlt.stale.l;
-    a = 0.3;
+    a = 0.4;
 	}
 
 	// If this marker is selected, change color

@@ -314,12 +314,12 @@ function initialize() {
 		})
 
 		.done(function(data) {
-			if (typeof data.lat !== "undefined") {
+			if (typeof data.lat !== "undefined" && SiteLat == "" && SiteLon == "") {
 				SiteShow = true;
-				SiteLat = data.lat;
-				SiteLon = data.lon;
-				DefaultCenterLat = data.lat;
-				DefaultCenterLon = data.lon;
+					SiteLat = data.lat;
+					SiteLon = data.lon;
+					DefaultCenterLat = data.lat;
+					DefaultCenterLon = data.lon;
 			}
 
 			Dump1090Version = data.version;
@@ -597,7 +597,7 @@ function initialize_map() {
 	]
 	}));
 
-OLMap = new ol.Map({
+	OLMap = new ol.Map({
 		target: 'map_canvas',
 		layers: layers,
 		view: new ol.View({
@@ -612,9 +612,9 @@ OLMap = new ol.Map({
 			}),
 	  new ol.control.ScaleLine({
 				units: DisplayUnits,
-				bar: true,
+				bar: false,
 				steps: 4,
-				minWidth: 130
+				minWidth: 100
 			}),
 	],
 		loadTilesWhileAnimating: true,
@@ -705,11 +705,10 @@ OLMap = new ol.Map({
 			function(feature, layer) {
 				return feature.hex;
 			},
-			48,
 			function(layer) {
 				return (layer === iconsLayer);
-			},
-			true);
+			}, 48, true);
+
 		if (hex) {
 			selectPlaneByHex(hex, (evt.type === 'dblclick'));
 			evt.stopPropagation();
@@ -1466,13 +1465,36 @@ function refreshTableInfo() {
 	} else {
 		$("#SpecialSquawkWarning").css('display', 'none');
 	}
-
 	resortTable();
 	drawRangePlot();
-
 }
 
+function drawBlindCone() {
+	var coords = [[SiteLon, SiteLat - 2], [SiteLon, SiteLat], [SiteLon, SiteLat + 2]];
+	var bcline = new ol.geom.LineString(coords);
+	//var coordsHalfWay = bcline.getCoordinateAt(0.5);
 
+	bcline.rotate(BlindCone * (Math.PI/180), [SiteLon, SiteLat]);
+	bcline.transform('EPSG:4326', 'EPSG:3857');
+
+	var lineStyle = new ol.style.Style({
+		stroke: new ol.style.Stroke({
+			color: '#0187867a',
+			width: 1,
+			lineDash: [5, 3]
+		})
+	});
+
+	var feature = new ol.Feature({
+		geometry: bcline,
+		name: 'blindConeLine',
+	});
+
+	feature.setStyle(lineStyle);
+	StaticFeatures.push(feature);
+}
+
+if(BlindCone) {drawBlindCone();}
 
 // AKISSACK - Range Plot Ref: AK8E
 function drawRangePlot() {
@@ -1765,6 +1787,7 @@ function selectPlaneByHex(hex, autofollow) {
 		Planes[SelectedPlane].updateLines();
 		Planes[SelectedPlane].updateMarker();
 		$(Planes[SelectedPlane].tr).addClass("selected");
+		getPlaneSpottersApiData(hex);
 	} else {
 		SelectedPlane = null;
 	}
