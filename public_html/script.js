@@ -1168,9 +1168,7 @@ function refreshSelected() {
 		$('#selected_squawk').text(selected.squawk);
 	}
 
-
-
-
+	if (FollowSelected) {	mapAnimateToCoord(Planes[SelectedPlane].position, 13, false);	}
 
 	$('#selected_speed').text(format_speed_long(selected.speed, DisplayUnits));
 	$('#selected_vertical_rate').text(format_vert_rate_long(selected.vert_rate, DisplayUnits));
@@ -1204,15 +1202,6 @@ function refreshSelected() {
 			$('#selected_position').text(mlat_bit + format_latlng(selected.position));
 		}
 		$('#selected_follow').removeClass('hidden');
-
-		if (FollowSelected) {
-			$('#selected_follow').html('<span title="Stop following"><i icon-name="locate-off"></i></span>');
-			lucide.createIcons();
-			mapAnimateToCoord(selected.position, 13, false);
-		} else if (!FollowSelected) {
-			$('#selected_follow').html('<span title="Locate on map and follow"><i icon-name="locate-fixed"></i></span>');
-			lucide.createIcons();
-		}
 	}
 
 	$('#selected_sitedist').text(format_distance_long(selected.sitedist, DisplayUnits));
@@ -1950,16 +1939,27 @@ function mapAnimateToCoord(coord, zoomFact, zoomOut) {
 			}
 		}
 		OLMap.getView().setZoom(zoomFact);
-	}
 
+	}
+console.log(FollowSelected);
 }
 
 function toggleFollowSelected() {
-	FollowSelected = true;
+
+	FollowSelected = !FollowSelected;
+
+	if (FollowSelected) {
+		$('#selected_follow').html('<span title="Stop following"><i icon-name="locate-off"></i></span>');
+		lucide.createIcons();
+	} else if (!FollowSelected) {
+		$('#selected_follow').html('<span title="Locate on map and follow"><i icon-name="locate-fixed"></i></span>');
+		lucide.createIcons();
+	}
+
 	if (FollowSelected && OLMap.getView().getZoom() <= 8)
 		//OLMap.getView().setZoom(11);
 		mapAnimateToCoord(Planes[SelectedPlane].position, 12, true);
-	refreshSelected();
+
 }
 
 function resetMap() {
