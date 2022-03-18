@@ -667,9 +667,9 @@ function initialize_map() {
 		}
 
 		if (FollowSelected) {
-				FollowSelected = false;
-				refreshSelected();
-			}
+			FollowSelected = false;
+			refreshSelected();
+		}
 	});
 
 
@@ -1047,7 +1047,9 @@ function reaper() {
 			plane.tr = null;
 			delete Planes[plane.icao];
 			plane.destroy();
-			if ($('tr#plane_row_template').hasClass('hidden')) {$(plane.tr).remove();}
+			if ($('tr#plane_row_template').hasClass('hidden')) {
+				$(plane.tr).remove();
+			}
 		} else {
 			// Keep it.
 			newPlanes.push(plane);
@@ -1168,7 +1170,9 @@ function refreshSelected() {
 		$('#selected_squawk').text(selected.squawk);
 	}
 
-	if (FollowSelected) {	mapAnimateToCoord(Planes[SelectedPlane].position, 13, false);	}
+	if (FollowSelected) {
+		mapAnimateToCoord(Planes[SelectedPlane].position, 13, false);
+	}
 
 	$('#selected_speed').text(format_speed_long(selected.speed, DisplayUnits));
 	$('#selected_vertical_rate').text(format_vert_rate_long(selected.vert_rate, DisplayUnits));
@@ -1279,15 +1283,12 @@ function refreshTableInfo() {
 				tableplane.tr.className = "plane_table_row hidden";
 			});
 
-		} else if(tableplane.seen_pos >= 60) {
+		} else if (tableplane.seen_pos >= 60) {
 			$(PlanesOrdered[i].tr).fadeOut("400", function() {
 				tableplane.tr.className = "plane_table_row hidden";
 			});
 
-		}
-
-
-		else {
+		} else {
 			TrackedAircraft++;
 			// AKISSACK Range display  Ref: AK9T
 			if (CurMaxRange < tableplane.sitedist) {
@@ -1333,7 +1334,7 @@ function refreshTableInfo() {
 			if (tableplane.position == null && tableplane.seen_pos == null && !tableplane.position_from_mlat)
 				classes += " nopos";
 			if (tableplane.seen_pos > 30)
-					classes += " nopos";
+				classes += " nopos";
 
 			if (tableplane.squawk in SpecialSquawks) {
 				classes = classes + " " + SpecialSquawks[tableplane.squawk].cssClass;
@@ -1939,9 +1940,7 @@ function mapAnimateToCoord(coord, zoomFact, zoomOut) {
 			}
 		}
 		OLMap.getView().setZoom(zoomFact);
-
 	}
-console.log(FollowSelected);
 }
 
 function toggleFollowSelected() {
@@ -1956,10 +1955,9 @@ function toggleFollowSelected() {
 		lucide.createIcons();
 	}
 
-	if (FollowSelected && OLMap.getView().getZoom() <= 8)
-		//OLMap.getView().setZoom(11);
+	if (FollowSelected && OLMap.getView().getZoom() <= 8) {
 		mapAnimateToCoord(Planes[SelectedPlane].position, 12, true);
-
+	}
 }
 
 function resetMap() {
