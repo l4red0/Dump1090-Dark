@@ -250,6 +250,13 @@ progress {
 	text-overflow: ellipsis;
 }
 
+#plane_row_template {
+	-webkit-transition: all 0.4s ease;
+	-moz-transition: all 0.4s ease;
+	-o-transition: all 0.4s ease;
+	transition: all 0.4s ease;
+}
+
 #plane_row_template td {
 	heigh: 34px;
 }
@@ -525,9 +532,11 @@ select.error, textarea.error, input.error {
 	top: 86px;
 	right: 10px;
 }
+
 .layer-switcher button {
-      background-image: none;
+	background-image: none;
 }
+
 .layer-switcher.shown.layer-switcher-activation-mode-click>button {
 	color: #fff;
 	background-color: #2c2c2c;
@@ -536,49 +545,50 @@ select.error, textarea.error, input.error {
 .layer-switcher.shown .panel {
 	display: block;
 	background: #212121;
-  border: none;
-  border-radius: 0px;
+	border: none;
+	border-radius: 0px;
 }
 
 .ol-control button {
 	background-color: #014f4edb;
 	border-radius: 0px;
-  height: 30px;
-    width: 30px;
+	height: 30px;
+	width: 30px;
 }
+
 .ol-control:hover {
-    background-color: #0187864d;
+	background-color: #0187864d;
 }
 
 .ol-control {
 	position: absolute;
 	background-color: #014f4e33;
-  border-radius: 0px;
+	border-radius: 0px;
 }
 
 .layer-switcher .group button {
-  background-image: none;
+	background-image: none;
 }
 
 .layer-switcher .group button::after {
-  content: '>';
-  font-weight: 800;
+	content: '>';
+	font-weight: 800;
 }
+
 .layer-switcher.shown button:focus, .layer-switcher.shown button:hover {
-  background-color: #026e6d;
+	background-color: #026e6d;
 }
 
 .ol-control button:focus, .ol-control button:hover {
-    text-decoration: none;
-    background-color: #014f4ec2;
-
+	text-decoration: none;
+	background-color: #014f4ec2;
 }
 
 .ol-scale-line {
-    background: #014f4ebd;
-    border-radius: 0;
-    font-family: 'Inconsolata', monospace;
-    text-transform: uppercase;
+	background: #014f4ebd;
+	border-radius: 0;
+	font-family: 'Inconsolata', monospace;
+	text-transform: uppercase;
 }
 
 /* AKISSACK - ref: AK1B Starts ---------------------------------------------------------------------------- */

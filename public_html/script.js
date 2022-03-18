@@ -336,7 +336,7 @@ function initialize() {
 	// AKISSACK Range plot - Now able to read from local storage if available Ref: AK8C
 
 	if (localStorage.getItem('MaxRngLon') && localStorage.getItem('MaxRngLat') && localStorage.getItem('MaxRngRange')) {
-		console.log("Loading max range");
+		//console.log("Loading max range");
 		MaxRngLat = JSON.parse(localStorage.getItem('MaxRngLat'));
 		MaxRngLon = JSON.parse(localStorage.getItem('MaxRngLon'));
 		MaxRngRange = JSON.parse(localStorage.getItem('MaxRngRange'));
@@ -348,7 +348,7 @@ function initialize() {
 		}
 	}
 	if (localStorage.getItem('MidRngLon') && localStorage.getItem('MidRngLat') && localStorage.getItem('MidRngRange')) {
-		console.log("Loading mid range");
+		//console.log("Loading mid range");
 		MidRngLat = JSON.parse(localStorage.getItem('MidRngLat'));
 		MidRngLon = JSON.parse(localStorage.getItem('MidRngLon'));
 		MidRngRange = JSON.parse(localStorage.getItem('MidRngRange'));
@@ -360,7 +360,7 @@ function initialize() {
 		}
 	}
 	if (localStorage.getItem('MinRngLon') && localStorage.getItem('MinRngLat') && localStorage.getItem('MinRngRange')) {
-		console.log("Loading min range");
+		//console.log("Loading min range");
 		MinRngLat = JSON.parse(localStorage.getItem('MinRngLat'));
 		MinRngLon = JSON.parse(localStorage.getItem('MinRngLon'));
 		MinRngRange = JSON.parse(localStorage.getItem('MinRngRange'));
@@ -500,57 +500,7 @@ function initialize_map() {
 	// Initialize OL3
 
 	var layers = createBaseLayers();
-
-	if (ShowSleafordRange) { // AKISSACK  Ref: AK8Y
-		// This is just to show a range ring (based on actual experience)
-		// for my home QTH. Not usefull for anyone else other than as a technique
-		// These points are stored in mySql as seen, and retrieved to draw this
-
-		var SleafordRangeLayer = new ol.layer.Vector({
-			name: 'mrange',
-			type: 'overlay',
-			title: 'Max Seen',
-			source: new ol.source.Vector({
-				features: SleafordRangeFeatures,
-				//}),
-				//style: new ol.style.Style({
-				//	stroke: new ol.style.Stroke({
-				//       		color: 'rgba(64,0,0, 1)',
-				//       		width: 0.5
-				//	})
-			})
-		});
-	} else {
-		var SleafordRangeLayer = new ol.layer.Vector({});
-	};
-
-	if (ShowSleafordRange) { // AKISSACK Ref: AK9T
-
-		// This is just to show a range ring (based on actual experience)
-		// for my home QTH. Not usefull for anyone else other than as a technique
-		// This is pre-drawn geojson file.
-
-		var rangeLayer = new ol.layer.Vector({
-			name: 'range',
-			type: 'overlay',
-			title: 'Range',
-			source: new ol.source.Vector({
-				url: 'layers/AK_range.geojson',
-				format: new ol.format.GeoJSON({
-					defaultDataProjection: 'EPSG:4326',
-					projection: 'EPSG:3857'
-				})
-			}),
-			style: new ol.style.Style({
-				stroke: new ol.style.Stroke({
-					color: 'rgba(255, 0, 0, 1)',
-					width: 0.25
-				})
-			})
-		});
-	} else {
-		var rangeLayer = new ol.layer.Vector({});
-	};
+	var rangeLayer = new ol.layer.Vector({});
 
 	if (MaxRangePlot[0]) { // AKISSACK Maximum Range Plot Ref: AK8D
 		var maxRangeLayer = new ol.layer.Vector({
@@ -592,7 +542,6 @@ function initialize_map() {
 			}),
 		rangeLayer,
 		maxRangeLayer, // Ref: AK8D
-		SleafordRangeLayer, // Ref: AK8Y
 		iconsLayer
 	]
 	}));
@@ -716,6 +665,11 @@ function initialize_map() {
 			deselectAllPlanes();
 			evt.stopPropagation();
 		}
+
+		if (FollowSelected) {
+				FollowSelected = false;
+				refreshSelected();
+			}
 	});
 
 
@@ -1086,17 +1040,21 @@ function reaper() {
 	var newPlanes = [];
 	for (var i = 0; i < PlanesOrdered.length; ++i) {
 		var plane = PlanesOrdered[i];
+
 		if (plane.seen > 300) {
 			// Reap it.
 			plane.tr.parentNode.removeChild(plane.tr);
 			plane.tr = null;
 			delete Planes[plane.icao];
 			plane.destroy();
+			if ($('tr#plane_row_template').hasClass('hidden')) {$(plane.tr).remove();}
 		} else {
 			// Keep it.
 			newPlanes.push(plane);
 		}
 	};
+
+
 
 	PlanesOrdered = newPlanes;
 	refreshTableInfo();
@@ -1250,7 +1208,7 @@ function refreshSelected() {
 		if (FollowSelected) {
 			$('#selected_follow').html('<span title="Stop following"><i icon-name="locate-off"></i></span>');
 			lucide.createIcons();
-			mapAnimateToCoord(selected.position, 12, false);
+			mapAnimateToCoord(selected.position, 13, false);
 		} else if (!FollowSelected) {
 			$('#selected_follow').html('<span title="Locate on map and follow"><i icon-name="locate-fixed"></i></span>');
 			lucide.createIcons();
@@ -1328,8 +1286,19 @@ function refreshTableInfo() {
 		var tableplane = PlanesOrdered[i];
 		TrackedHistorySize += tableplane.history_size;
 		if (tableplane.seen >= 120 || tableplane.isFiltered()) {
-			tableplane.tr.className = "plane_table_row hidden";
-		} else {
+			$(PlanesOrdered[i].tr).fadeOut("400", function() {
+				tableplane.tr.className = "plane_table_row hidden";
+			});
+
+		} else if(tableplane.seen_pos >= 60) {
+			$(PlanesOrdered[i].tr).fadeOut("400", function() {
+				tableplane.tr.className = "plane_table_row hidden";
+			});
+
+		}
+
+
+		else {
 			TrackedAircraft++;
 			// AKISSACK Range display  Ref: AK9T
 			if (CurMaxRange < tableplane.sitedist) {
@@ -1374,6 +1343,8 @@ function refreshTableInfo() {
 
 			if (tableplane.position == null && tableplane.seen_pos == null && !tableplane.position_from_mlat)
 				classes += " nopos";
+			if (tableplane.seen_pos > 30)
+					classes += " nopos";
 
 			if (tableplane.squawk in SpecialSquawks) {
 				classes = classes + " " + SpecialSquawks[tableplane.squawk].cssClass;
@@ -1433,7 +1404,11 @@ function refreshTableInfo() {
 				} else {
 					tableplane.tr.cells[22].innerHTML = getFlightAwarePhotoLink(tableplane.registration);
 				}
-				tableplane.tr.className = classes;
+
+				$(tableplane.tr).fadeIn("400", function() {
+					tableplane.tr.className = classes;
+					//console.log(tableplane.icao);
+				});
 			} else {
 				tableplane.tr.cells[3].textContent = (tableplane.registration !== null ? tableplane.registration : "");
 				tableplane.tr.cells[4].textContent = (tableplane.icaotype !== null ? tableplane.icaotype : "");
@@ -1456,7 +1431,10 @@ function refreshTableInfo() {
 				} else {
 					tableplane.tr.cells[19].innerHTML = getFlightAwarePhotoLink(tableplane.registration);
 				}
-				tableplane.tr.className = classes;
+
+				$(tableplane.tr).fadeIn("200", function() {
+					tableplane.tr.className = classes;
+				});
 			}
 		}
 	}
@@ -1798,7 +1776,7 @@ function selectPlaneByHex(hex, autofollow) {
 	if (SelectedPlane !== null && autofollow) {
 		FollowSelected = true;
 		if (OLMap.getView().getZoom() <= 8)
-			mapAnimateToCoord(Planes[SelectedPlane].position, 12, true);
+			mapAnimateToCoord(Planes[SelectedPlane].position, 13, true);
 	} else {
 		FollowSelected = false;
 	}
@@ -1964,14 +1942,13 @@ function mapAnimateToCoord(coord, zoomFact, zoomOut) {
 
 	function done() {
 		if (typeof Planes[SelectedPlane] !== 'undefined') {
-			if (Planes[SelectedPlane].seen_pos <= 5) {
+			if (Planes[SelectedPlane].seen_pos <= 30) {
 				FollowSelected = true;
+				zoomOut = false;
 			} else {
 				FollowSelected = !FollowSelected;
 			}
 		}
-
-		console.log(FollowSelected);
 		OLMap.getView().setZoom(zoomFact);
 	}
 
