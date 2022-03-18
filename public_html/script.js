@@ -1226,7 +1226,7 @@ function getPlaneSpottersApiData(hex) {
 			url: "https://api.planespotters.net/pub/photos/hex/" + hex,
 			type: 'GET',
 			dataType: 'json',
-			cors: true,
+			cors: false,
 			contentType: 'application/json',
 			secure: true,
 			headers: {
@@ -1242,6 +1242,10 @@ function getPlaneSpottersApiData(hex) {
 				} else {
 					$('#selected_infoblock .psImage').html('<i icon-name="image-off"></i><br>NO MEDIA');
 				}
+			},
+
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				console.log("[i] Image cound not be delivered: " + errorThrown + textStatus);
 			}
 		})
 	}
@@ -1936,7 +1940,7 @@ function mapAnimateToCoord(coord, zoomFact, zoomOut) {
 				FollowSelected = true;
 				zoomOut = false;
 			} else {
-				FollowSelected = !FollowSelected;
+				toggleFollowSelected();
 			}
 		}
 		OLMap.getView().setZoom(zoomFact);
