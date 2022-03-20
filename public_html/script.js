@@ -1763,6 +1763,7 @@ function selectPlaneByHex(hex, autofollow) {
 		Planes[SelectedPlane].updateMarker();
 		$(Planes[SelectedPlane].tr).addClass("selected");
 		getPlaneSpottersApiData(hex);
+		getVariousLinksFlight();
 	} else {
 		SelectedPlane = null;
 	}
@@ -1954,7 +1955,7 @@ function toggleFollowSelected() {
 	if (FollowSelected) {
 		$('#selected_follow').html('<span title="Stop following"><i icon-name="locate-off"></i></span>');
 		lucide.createIcons();
-	} else if (!FollowSelected) {
+	} else {
 		$('#selected_follow').html('<span title="Locate on map and follow"><i icon-name="locate-fixed"></i></span>');
 		lucide.createIcons();
 	}
