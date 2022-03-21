@@ -516,9 +516,97 @@ function createBaseLayers() {
 
 	}
 
-	// --------------------------------------------------------------
-	// AKISSACK - ADD LAYERS ----------------------  ref: AK4A ends
-	// --------------------------------------------------------------
+	//PL last updated 2018-05-01
+	//Source: https://www.google.com/maps/d/viewer?hl=pl&z=7&mid=1STEikPe5IwRNA84Q6OQEnzbui0c&ll=52.06643630147709%2C19.38760333344835
+	/*var PLairwaysLayer = new ol.layer.Vector({
+		name: 'plairways',
+		type: 'overlay',
+		title: 'Airfields and aerodromes',
+		source: new ol.source.Vector({
+			url: 'layers/PL_airfields_aerodromes.geojson',
+			format: new ol.format.GeoJSON({
+				defaultDataProjection: 'EPSG:4326',
+				projection: 'EPSG:3857'
+			})
+		}),
+		style: new ol.style.Style({
+			fill: new ol.style.Fill({
+				color: 'rgba(0, 102,0, 0.07)'
+			}),
+			stroke: new ol.style.Stroke({
+				color: 'rgba(0, 64,0, 0.5)',
+				width: 2
+			})
+		})
+	});
+	PLairwaysLayer.setVisible(false);
+*/
+
+	var PLairports = new ol.layer.WebGLPoints({
+		name: 'plairports',
+		type: 'overlay',
+		title: 'Airfields and airports',
+		source: new ol.source.Vector({
+			url: 'layers/PL_airfields_airports.geojson',
+			attributions: '<small>(2018-05-01) <a htrf="https://www.google.com/maps/d/viewer?hl=pl&z=7&mid=1STEikPe5IwRNA84Q6OQEnzbui0c&ll=51.95067483096746%2C19.944381598244323">Lotniska i lądowiska oraz "Nasze Trawniki</small>"</a>',
+			format: new ol.format.GeoJSON({
+				defaultDataProjection: 'EPSG:4326',
+				projection: 'EPSG:3857'
+			})
+		}),
+		style: {
+			symbol: {
+				symbolType: 'circle',
+				size: ['case', ['==', "#0f6829", ['get', 'styleUrl']], ['/', ['zoom'], 1.2], ['==', "#21b04b", ['get', 'styleUrl']], ['/', ['zoom'], 1.4], ['/', ['zoom'], 2]],
+				//size: 10,
+				color: ['case', ['==', "#0f6829", ['get', 'styleUrl']], "#0f6829", ['==', "#21b04b", ['get', 'styleUrl']], "#21b04b", ['==', "#cb6c00", ['get', 'styleUrl']], "#cb6c00", ['==', "#00a1e7", ['get', 'styleUrl']], "#00a1e7" ,"#000"],
+				title: ['get', 'name'],
+				opacity: 0.6,
+			},
+		},
+	});
+	PLairports.setVisible(false);
+
+
+	var PLzones = new ol.layer.Vector({
+		name: 'plzones',
+		type: 'overlay',
+		title: 'Permament zones (GND)',
+		source: new ol.source.Vector({
+			url: 'layers/PL_air_zones.geojson',
+			attributions: '<small>zones: <span style="background:#4186f0">CTR</span> <span style="background:#097138">MCTR</span> <span style="background:#f1d961">EPR</span> <span style="background:#673ab7">ATZ</span> <span style="background:#a8dd56">MATZ</span> <span style="background:#cf4747">EPP</span></small>',
+			format: new ol.format.GeoJSON({
+				defaultDataProjection: 'EPSG:4326',
+				projection: 'EPSG:3857'
+			})
+		}),
+		style: (function() {
+			var style = new ol.style.Style({
+				fill: new ol.style.Fill({
+					color: 'rgba(0, 102,0, 0.07)',
+				}),
+				stroke: new ol.style.Stroke({
+					color: 'rgba(0, 64,0, 0.1)',
+					width: 0.6
+				}),
+				text: new ol.style.Text({
+					text: 'name',
+					fill: new ol.style.Fill({
+						color: '#00330055'
+					})
+				})
+			});
+			var styles = [style];
+			return function(feature, resolution) {
+				style.getText().setText(feature.get("name"));
+				const color = feature.get('fill') || '#fafafa';
+				style.getFill().setColor(color+'22');
+				return styles;
+			};
+		})()
+	});
+	PLzones.setVisible(false);
+
 
 	if (ShowMyFindsLayer && SleafordMySql) { // AKISSACK Ref: AK9U
 		var myLayer = new ol.layer.Vector({
@@ -569,6 +657,16 @@ function createBaseLayers() {
 										AARLayer
 										]
 			}),
+
+				new ol.layer.Group({
+				title: 'PL',
+				fold: 'closed',
+				layers: [
+										PLairports,
+										PLzones
+										]
+			}),
+
 				new ol.layer.Group({
 				name: 'us',
 				visible: false,
