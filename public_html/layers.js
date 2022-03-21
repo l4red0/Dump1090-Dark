@@ -559,7 +559,7 @@ function createBaseLayers() {
 				symbolType: 'circle',
 				size: ['case', ['==', "#0f6829", ['get', 'styleUrl']], ['/', ['zoom'], 1.2], ['==', "#21b04b", ['get', 'styleUrl']], ['/', ['zoom'], 1.4], ['/', ['zoom'], 2]],
 				//size: 10,
-				color: ['case', ['==', "#0f6829", ['get', 'styleUrl']], "#0f6829", ['==', "#21b04b", ['get', 'styleUrl']], "#21b04b", ['==', "#cb6c00", ['get', 'styleUrl']], "#cb6c00", ['==', "#00a1e7", ['get', 'styleUrl']], "#00a1e7" ,"#000"],
+				color: ['case', ['==', "#0f6829", ['get', 'styleUrl']], "#0f6829", ['==', "#21b04b", ['get', 'styleUrl']], "#21b04b", ['==', "#cb6c00", ['get', 'styleUrl']], "#cb6c00", ['==', "#00a1e7", ['get', 'styleUrl']], "#00a1e7", "#000"],
 				title: ['get', 'name'],
 				opacity: 0.6,
 			},
@@ -567,6 +567,36 @@ function createBaseLayers() {
 	});
 	PLairports.setVisible(false);
 
+	var PLairportsLabels = new ol.layer.Vector({
+		name: 'plairportslabels',
+		type: 'overlay',
+		title: 'Airfields and airports (labels)',
+		source: new ol.source.Vector({
+			url: 'layers/PL_airfields_airports.geojson',
+			format: new ol.format.GeoJSON({
+				defaultDataProjection: 'EPSG:4326',
+				projection: 'EPSG:3857'
+			})
+		}),
+		style: (function() {
+			var style = new ol.style.Style({
+				text: new ol.style.Text({
+					text: 'name',
+					offsetY: 12,
+					font: 'bold '+ 10 + 'px "Inconsolata", monospace',
+					fill: new ol.style.Fill({
+						color: '#000000bb',
+					})
+				})
+			});
+			var styles = [style];
+			return function(feature, resolution) {
+				style.getText().setText(feature.get("name"));
+				return styles;
+			};
+		})()
+	});
+	PLairportsLabels.setVisible(false);
 
 	var PLzones = new ol.layer.Vector({
 		name: 'plzones',
@@ -600,7 +630,7 @@ function createBaseLayers() {
 			return function(feature, resolution) {
 				style.getText().setText(feature.get("name"));
 				const color = feature.get('fill') || '#fafafa';
-				style.getFill().setColor(color+'22');
+				style.getFill().setColor(color + '22');
 				return styles;
 			};
 		})()
@@ -663,6 +693,7 @@ function createBaseLayers() {
 				fold: 'closed',
 				layers: [
 										PLairports,
+										PLairportsLabels,
 										PLzones
 										]
 			}),
