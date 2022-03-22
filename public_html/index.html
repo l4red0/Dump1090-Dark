@@ -105,8 +105,9 @@
 
 				<!--configuration panel-->
 				<span class="sidebarButton pointer" onclick="toggleOptions('sudo_buttons');" title="Settings"><i icon-name="settings"></i><span>Settings</span></span>
-				<div id="sudo_buttons" style="display: none;">
+				<div id="sudo_buttons" style="">
 					<span class="sidebarButton darkModeBtn pointer" onclick="darkMode();" title="Light/Dark Mode"><i icon-name="moon"></i></span>
+					<span class="sidebarButton proximityBtn pointer" onclick="sndAlert(true);" title="Proximity alert"><i icon-name="bell-ring"></i></span>
 					<span class="sidebarButton pointer" onclick="selectAllPlanes();"><i icon-name="plane" title="Select all Aircraft"></i><span>Select All</span></span>
 					<span class="sidebarButton pointer" onclick="selectMilPlanes();" title="Select only special Aircraft"><i icon-name="plane"></i><span>Select Special</span></span> <!-- AKISSACK Ref: AK9G -->
 					<span class="sidebarButton pointer" onclick="deselectAllPlanes();" title="Deselect all"><i icon-name="plane"></i><span>Deselect</span></span>

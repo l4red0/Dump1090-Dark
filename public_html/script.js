@@ -17,6 +17,7 @@ var SelectedPlane = null;
 var SelectedAllPlanes = false;
 var FollowSelected = false;
 var historyMaxRange = null;
+var sndAlertEnabled = false;
 
 //OL6 vars
 var Overlay = ol.Overlay;
@@ -660,9 +661,11 @@ function initialize_map() {
 
 		if (hex) {
 			selectPlaneByHex(hex, (evt.type === 'dblclick'));
+			FollowSelected = true;
 			evt.stopPropagation();
 		} else {
 			deselectAllPlanes();
+			FollowSelected = false;
 			evt.stopPropagation();
 		}
 
@@ -2372,6 +2375,37 @@ function trackIcon(track) {
 	}
 	return trackIcon;
 }
+
+function sndAlert(toggle, enable, distanceFactor) {
+	var audio = new Audio("assets/radar.mp3");
+
+	if (toggle) {
+		sndAlertEnabled = !sndAlertEnabled;
+	} else if (enable) {
+		sndAlertEnabled = true
+	} else {
+		sndAlertEnabled = false
+	}
+
+	if (sndAlertEnabled) {
+		$('.proximityBtn').html('<i icon-name="bell-off"></i>');
+		lucide.createIcons();
+		if (!audio.duration > 0 && audio.paused) {
+			if (!isNaN(parseFloat(distanceFactor))) {
+				audio.volume = parseFloat(distanceFactor);
+			}
+			audio.loop = false;
+			audio.play();
+		}
+		
+	} else {
+		sndAlertEnabled = false;
+		$('.proximityBtn').html('<i icon-name="bell"></i>');
+		lucide.createIcons();
+	}
+}
+
+
 
 
 $(document).ready(function() {

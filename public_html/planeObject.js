@@ -327,16 +327,16 @@ PlaneObject.prototype.getMarkerColor = function() {
 		h = ColorByAlt.unknown.h;
 		s = ColorByAlt.unknown.s;
 		l = ColorByAlt.unknown.l;
-    a = 1;
+		a = 1;
 	} else if (this.altitude === "ground") {
 		h = ColorByAlt.ground.h;
 		s = ColorByAlt.ground.s;
 		l = ColorByAlt.ground.l;
-    a = 1;
+		a = 1;
 	} else {
 		s = ColorByAlt.air.s;
 		l = ColorByAlt.air.l;
-    a = 1;
+		a = 1;
 
 		// find the pair of points the current altitude lies between,
 		// and interpolate the hue between those points
@@ -359,7 +359,7 @@ PlaneObject.prototype.getMarkerColor = function() {
 		h = ColorByAlt.stale.h;
 		s = ColorByAlt.stale.s;
 		l = ColorByAlt.stale.l;
-    a = 0.4;
+		a = 0.4;
 	}
 
 	// If this marker is selected, change color
@@ -397,7 +397,7 @@ PlaneObject.prototype.getMarkerColor = function() {
 		return myColour;
 	} else {
 		// ---------------------------   AKISSACK mono colour  Ref: AK9C ends
-		return 'hsl(' + (h / 5).toFixed(0) * 5 + ',' + (s / 5).toFixed(0) * 5 + '%,' + (l / 5).toFixed(0) * 5 + '%,'+ a +')'
+		return 'hsl(' + (h / 5).toFixed(0) * 5 + ',' + (s / 5).toFixed(0) * 5 + '%,' + (l / 5).toFixed(0) * 5 + '%,' + a + ')'
 	}
 }
 
@@ -409,7 +409,7 @@ PlaneObject.prototype.updateIcon = function() {
 	var outline = (this.position_from_mlat ? OutlineMlatColor : OutlineADSBColor);
 	var baseMarker = getBaseMarker(this.category, this.icaotype, this.typeDescription, this.wtc);
 	if (ShowMyPreferences) { // Ref: AK9D starts
-		if (ShowMyIcons) { // Ref: AK10B starts
+		if (ExtendedIcons) { // Ref: AK10B starts
 			var baseMarker = getMyBaseMarker(this.category, this.icaotype, this.typeDescription, this.wtc, this.ac_category);
 		} // Ref: AK10B ends
 		var adjWeight = (this.is_interesting ? 0.5 : 0.5)
@@ -617,16 +617,19 @@ PlaneObject.prototype.updateTick = function(receiver_timestamp, last_timestamp) 
 
 	// If no packet in over 58 seconds, clear the plane.
 	if (this.seen > 58) {
-    if (this.visible) {
-      //console.log("hiding " + this.icao);
-      this.clearMarker();
-      this.visible = false;
-      if (SelectedPlane == this.icao)
-        selectPlaneByHex(null, false);
-      }
+		if (this.visible) {
+			//console.log("hiding " + this.icao);
+			this.clearMarker();
+			this.visible = false;
+			if (SelectedPlane == this.icao)
+				selectPlaneByHex(null, false);
+		}
 	} else {
+
 		if (this.position !== null && (this.selected || this.seen_pos < 60)) {
 			this.visible = true;
+			this.proximityAlert();
+
 			if (this.updateTrack(receiver_timestamp - last_timestamp + (this.position_from_mlat ? 30 : 5))) {
 				this.updateLines();
 				this.updateMarker(true);
@@ -700,7 +703,6 @@ PlaneObject.prototype.updateMarker = function(moved) {
 	if (this.marker) {
 		if (moved) {
 			this.marker.setGeometry(new ol.geom.Point(ol.proj.fromLonLat(this.position)));
-
 			// ---------------------------------------------------------------------
 			// AKISSACK - PERMANENT LABEL PART 2 - Update ---------------- ref: AK7A
 			// ---------------------------------------------------------------------
@@ -782,9 +784,7 @@ PlaneObject.prototype.updateMarker = function(moved) {
 				});
 				this.marker.setStyle(newS);
 			}
-			// ----------------------------------------------------------------------------------
 			// ------------------------------------------------------------------------- AKISSACK
-			// ----------------------------------------------------------------------------------
 
 			this.markerStatic.setGeometry(new ol.geom.Point(ol.proj.fromLonLat(this.position)));
 		}
@@ -892,6 +892,34 @@ PlaneObject.prototype.updateLines = function() {
 		}
 	}
 };
+
+//trigger alert if mlat and in close range. Select only closest aircraft if more than one in range.
+PlaneObject.prototype.proximityAlert = function() {
+
+	var lSfloatDist;
+
+	if (localStorage.getItem("ProximitySitedist") === null || SndAlert[1] < lSfloatDist) {
+		localStorage.setItem("ProximitySitedist", JSON.stringify([SndAlert[1], "icao"]));
+	} else {
+		var floatDist = parseFloat(format_distance_brief(this.sitedist.toFixed(2), DisplayUnits));
+		var lSfloatDist = parseFloat(JSON.parse(localStorage.getItem("ProximitySitedist"))[0]);
+		var icao = this.icao;
+		var lSicao = JSON.parse(localStorage.getItem("ProximitySitedist"))[1];
+	}
+
+	if (floatDist < lSfloatDist && this.position_from_mlat) {
+		localStorage.setItem("ProximitySitedist", JSON.stringify([floatDist, this.icao]));
+	} else if (icao == lSicao && floatDist > lSfloatDist) {
+		localStorage.setItem("ProximitySitedist", JSON.stringify([floatDist, this.icao]));
+	}
+
+	if (floatDist < SndAlert[1] && this.position_from_mlat && this.visible && sndAlertEnabled && icao == lSicao) {
+		var distanceFactor = 1 - (floatDist / SndAlert[1]);
+		if (SndAlert[0]) {
+			sndAlert(false, true, distanceFactor.toFixed(2));
+		}
+	}
+}
 
 PlaneObject.prototype.destroy = function() {
 	this.clearLines();

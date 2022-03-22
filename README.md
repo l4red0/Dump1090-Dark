@@ -6,6 +6,10 @@ This is fork of [alkissack's Dump1090-OpenLayers3-html](https://github.com/alkis
 #### Please keep in mind that this is bug heavy, pre-release project with experimental features. Currently developed (and compatible) with stock pi24 dump1090-mutabily with plan to support other dump1090 versions with broader `aircraft.json` data.
 
 ### Changelog
+**22.03.22 - 0.15**
+- added custom map overlays for Poland (airfields, airports, zones etc.)
+- added proximity sound alert function. The sound is played if aircraft position is from MLAT and its range is lower than provided in configuration. Sound volume is relative to proximity. This has to be also enabled by clicking the bell icon in settings menu. This is initial feature with intention to be configurable by the user.
+
 **18.03.22 - 0.14**
 - added antenna blind cone feature. In case the antenna is not mounted freely (e.g. from a window of a multi-storey building) by entering the azimuth of the building wall given in degrees, you will create a line for the dark area of the antenna coverage.
 - added map animation with easing in plane follow mode

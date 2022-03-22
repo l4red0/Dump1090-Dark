@@ -3,7 +3,7 @@ html, body {
     font-size: 10pt; overflow: auto; height: 100%;
 }
 
-#layout_container { 
+#layout_container {
     display: flex;
     height: 100%;
 }
@@ -51,11 +51,11 @@ html, body {
 }
 
 #toggle_sidebar_button.show_sidebar {
-    background-image: url("images/show_sidebar_inactive_48x40.png");
+    background-image: url("assets/show_sidebar_inactive_48x40.png");
 }
 
 #toggle_sidebar_button.show_sidebar:hover {
-    background-image: url("images/show_sidebar_active_48x40.png");
+    background-image: url("assets/show_sidebar_active_48x40.png");
 }
 
 #toggle_sidebar_button.hide_sidebar {
@@ -105,8 +105,8 @@ html, body {
     left: 0 !important;
 }
 
-#sidebar_canvas { 
-    flex: 1 1 auto; 
+#sidebar_canvas {
+    flex: 1 1 auto;
     padding: 10px;
     overflow: scroll;
 }
@@ -138,7 +138,7 @@ div#loader { z-index: 99; position: absolute; left: 0; top: 0; bottom: 0; right:
     margin: 10px 0 10px 0;
 }
 
-.aircraft_table_header { 
+.aircraft_table_header {
     background-color: #409EDF;
     color: #FFFFFF;
     cursor: pointer;

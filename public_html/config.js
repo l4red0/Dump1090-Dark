@@ -191,3 +191,6 @@ OL3 = false; //set to false for experimental openlayer 6.13.0 support instead of
 
 //Default false. Antenna blind cone in degrees. In case the antenna is not mounted freely (e.g. from a window of a multi-storey building) by entering the azimuth of the building wall given in degrees, you will create a line for the dark area of the antenna coverage. This is called Antenna blind cone.
 BlindCone = false;
+
+//[enabled, range in displayUnits] Audio proximity alert. The sound is played if aircraft position is from MLAT and its range is lower than provided in configuration. Sound volume is relative to proximity. This has to be also enabled by clicking the bell icon in settings menu.
+SndAlert = [false, 20];
