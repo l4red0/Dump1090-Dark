@@ -18,7 +18,7 @@ var DOWN_AR = '\u2b63'; // U+25BE DOWN-POINTING Arrow
 // ---------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------ AKISSACK
 // ---------------------------------------------------------------------------------------
-var TrackDirections = ["North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest"];
+var TrackDirections = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
 var UnitLabels = {
 	'altitude': {

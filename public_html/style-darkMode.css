@@ -386,6 +386,8 @@ progress {
 #acDetailsTable td {
 	border: 1px solid #343434;
 	padding: 3px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 #acDetailsTable td svg {
