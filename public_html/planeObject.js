@@ -896,10 +896,14 @@ PlaneObject.prototype.updateLines = function() {
 //trigger alert if mlat and in close range. Select only closest aircraft if more than one in range.
 PlaneObject.prototype.proximityAlert = function() {
 	var lSfloatDist;
-	var lSicao;
+ 	var lSicao;
+
+	function resetStorageProx() {
+		localStorage.setItem("ProximitySitedist", JSON.stringify([SndAlert[1], "icao"]));
+	}
 
 	if (localStorage.getItem("ProximitySitedist") === null || SndAlert[1] < lSfloatDist) {
-		localStorage.setItem("ProximitySitedist", JSON.stringify([SndAlert[1], "icao"]));
+		resetStorageProx();
 	} else {
 		var floatDist = parseFloat(format_distance_brief(this.sitedist.toFixed(2), DisplayUnits));
 		var lSfloatDist = parseFloat(JSON.parse(localStorage.getItem("ProximitySitedist"))[0]);
@@ -913,7 +917,7 @@ PlaneObject.prototype.proximityAlert = function() {
 		} else if (icao == lSicao && floatDist > lSfloatDist) {
 			localStorage.setItem("ProximitySitedist", JSON.stringify([floatDist, this.icao]));
 		}
-	}
+	} else {resetStorageProx();}
 
 	if (floatDist < SndAlert[1] && this.position_from_mlat && this.visible && sndAlertEnabled && icao == lSicao) {
 		var distanceFactor = 1 - (floatDist / SndAlert[1]);
@@ -927,14 +931,6 @@ PlaneObject.prototype.destroy = function() {
 	this.clearLines();
 	this.clearMarker();
 };
-// AKISSACK Ref: AK8I
-function radians(n) {
-	return n * (Math.PI / 180);
-}
-
-function degrees(n) {
-	return n * (180 / Math.PI);
-}
 
 // AKISSACK
 function getBearing(startLat, startLong, endLat, endLong) {
