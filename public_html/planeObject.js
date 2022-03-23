@@ -895,8 +895,8 @@ PlaneObject.prototype.updateLines = function() {
 
 //trigger alert if mlat and in close range. Select only closest aircraft if more than one in range.
 PlaneObject.prototype.proximityAlert = function() {
-
 	var lSfloatDist;
+	var lSicao;
 
 	if (localStorage.getItem("ProximitySitedist") === null || SndAlert[1] < lSfloatDist) {
 		localStorage.setItem("ProximitySitedist", JSON.stringify([SndAlert[1], "icao"]));
@@ -907,10 +907,12 @@ PlaneObject.prototype.proximityAlert = function() {
 		var lSicao = JSON.parse(localStorage.getItem("ProximitySitedist"))[1];
 	}
 
-	if (floatDist < lSfloatDist && this.position_from_mlat) {
-		localStorage.setItem("ProximitySitedist", JSON.stringify([floatDist, this.icao]));
-	} else if (icao == lSicao && floatDist > lSfloatDist) {
-		localStorage.setItem("ProximitySitedist", JSON.stringify([floatDist, this.icao]));
+	if (lSicao in Planes) {
+		if (floatDist < lSfloatDist && this.position_from_mlat) {
+			localStorage.setItem("ProximitySitedist", JSON.stringify([floatDist, this.icao]));
+		} else if (icao == lSicao && floatDist > lSfloatDist) {
+			localStorage.setItem("ProximitySitedist", JSON.stringify([floatDist, this.icao]));
+		}
 	}
 
 	if (floatDist < SndAlert[1] && this.position_from_mlat && this.visible && sndAlertEnabled && icao == lSicao) {
