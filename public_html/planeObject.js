@@ -909,17 +909,18 @@ PlaneObject.prototype.proximityAlert = function() {
 		var lSfloatDist = parseFloat(JSON.parse(localStorage.getItem("ProximitySitedist"))[0]);
 		var icao = this.icao;
 		var lSicao = JSON.parse(localStorage.getItem("ProximitySitedist"))[1];
+		var inCurrentPlanes = Array.from(Object.getOwnPropertyNames(Planes)).includes(lSicao.toString());
 	}
 
-	if (lSicao in Planes) {
 		if (floatDist < lSfloatDist && this.position_from_mlat) {
 			localStorage.setItem("ProximitySitedist", JSON.stringify([floatDist, this.icao]));
 		} else if (icao == lSicao && floatDist > lSfloatDist) {
 			localStorage.setItem("ProximitySitedist", JSON.stringify([floatDist, this.icao]));
+		} else if (!inCurrentPlanes) {
+			resetStorageProx();
 		}
-	} else {resetStorageProx();}
 
-	if (floatDist < SndAlert[1] && this.position_from_mlat && this.visible && sndAlertEnabled && icao == lSicao) {
+	if (floatDist < SndAlert[1] && this.position_from_mlat && this.visible && sndAlertEnabled && icao == lSicao && this.seen_pos < 3) {
 		var distanceFactor = 1 - (floatDist / SndAlert[1]);
 		if (SndAlert[0]) {
 			sndAlert(false, true, distanceFactor.toFixed(2));
