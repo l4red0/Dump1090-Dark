@@ -734,13 +734,13 @@ var graticule = new ol.layer.Graticule({
 	title: 'Graticule',
 	strokeStyle: new ol.style.Stroke({
 		color: 'rgba(0,0,0,0.2)',
-		width: 1.3,
+		width: 1.5,
 		lineDash: [0.5, 4],
 	}),
-	//intervals: [.10],
+	lonLabelPosition: 0.98,
 	showLabels: true,
 	wrapX: false,
-	targetSize: 50,
+	targetSize: 100,
 });
 
 // Initialize OL3
