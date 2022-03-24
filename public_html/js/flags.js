@@ -1,7 +1,7 @@
 "use strict";
 
 // Declare ICAO registration address ranges and country
-// install the flag images in flags-tiny subdirectory.
+// install the flag images in ./assets/flags-tiny subdirectory.
 
 var ICAO_Ranges = [
         // Mostly generated from the assignment table in the appendix to Chapter 9 of

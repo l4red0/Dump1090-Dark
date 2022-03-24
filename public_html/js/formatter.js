@@ -260,3 +260,11 @@ function format_data_source(source) {
 
 	return "";
 }
+
+function radians(n) {
+	return n * (Math.PI / 180);
+}
+
+function degrees(n) {
+	return n * (180 / Math.PI);
+}

@@ -545,10 +545,10 @@ function createBaseLayers() {
 	var PLairports = new ol.layer.WebGLPoints({
 		name: 'plairports',
 		type: 'overlay',
-		title: 'Airfields and airports',
+		title: 'Airfields and airports (webGL)',
 		source: new ol.source.Vector({
 			url: 'layers/PL_airfields_airports.geojson',
-			attributions: '<small>(2018-05-01) <a htrf="https://www.google.com/maps/d/viewer?hl=pl&z=7&mid=1STEikPe5IwRNA84Q6OQEnzbui0c&ll=51.95067483096746%2C19.944381598244323">Lotniska i lądowiska oraz "Nasze Trawniki</small>"</a>',
+			attributions: '<small>(2018-05-01) <a href="https://www.google.com/maps/d/viewer?hl=pl&z=7&mid=1STEikPe5IwRNA84Q6OQEnzbui0c&ll=51.95067483096746%2C19.944381598244323">Lotniska i lądowiska oraz "Nasze Trawniki</small>"</a>',
 			format: new ol.format.GeoJSON({
 				defaultDataProjection: 'EPSG:4326',
 				projection: 'EPSG:3857'
@@ -556,10 +556,10 @@ function createBaseLayers() {
 		}),
 		style: {
 			symbol: {
-				symbolType: 'circle',
+				symbolType: 'square',
 				size: ['case', ['==', "#0f6829", ['get', 'styleUrl']], ['/', ['zoom'], 1.2], ['==', "#21b04b", ['get', 'styleUrl']], ['/', ['zoom'], 1.4], ['/', ['zoom'], 2]],
 				//size: 10,
-				color: ['case', ['==', "#0f6829", ['get', 'styleUrl']], "#0f6829", ['==', "#21b04b", ['get', 'styleUrl']], "#21b04b", ['==', "#cb6c00", ['get', 'styleUrl']], "#cb6c00", ['==', "#00a1e7", ['get', 'styleUrl']], "#00a1e7", "#000"],
+				color: ['case', ['==', "#0f6829", ['get', 'styleUrl']], "#0f6829", ['==', "#21b04b", ['get', 'styleUrl']], "#21b04b", ['==', "#cb6c00", ['get', 'styleUrl']], "#cb6c00", ['==', "#00a1e7", ['get', 'styleUrl']], "#00a1e7", "#212121"],
 				title: ['get', 'name'],
 				opacity: 0.6,
 			},
@@ -570,7 +570,7 @@ function createBaseLayers() {
 	var PLairportsLabels = new ol.layer.Vector({
 		name: 'plairportslabels',
 		type: 'overlay',
-		title: 'Airfields and airports (labels)',
+		title: 'Airfields and airports (+labels)',
 		source: new ol.source.Vector({
 			url: 'layers/PL_airfields_airports.geojson',
 			format: new ol.format.GeoJSON({
@@ -583,11 +583,17 @@ function createBaseLayers() {
 				text: new ol.style.Text({
 					text: 'name',
 					offsetY: 12,
-					font: 'bold '+ 10 + 'px "Inconsolata", monospace',
+					font: 'bold ' + 10 + 'px "Inconsolata", monospace',
 					fill: new ol.style.Fill({
 						color: '#000000bb',
 					})
-				})
+				}),
+				image: new ol.style.Icon({
+					color: 'rgba(255, 255, 0, .5)',
+					//fill: 'rgba(255, 255, 0, .5)',
+					src: 'layers/img/square.svg',
+					scale: .2,
+				}),
 			});
 			var styles = [style];
 			return function(feature, resolution) {
@@ -720,3 +726,68 @@ var iconsLayer = new ol.layer.Vector({
 		features: PlaneIconFeatures,
 	})
 });
+
+//Graticule layer with coordinates labels
+var graticule = new ol.layer.Graticule({
+	name: 'graticule',
+	type: 'overlay',
+	title: 'Graticule',
+	strokeStyle: new ol.style.Stroke({
+		color: 'rgba(0,0,0,0.2)',
+		width: 1.3,
+		lineDash: [0.5, 4],
+	}),
+	//intervals: [.10],
+	showLabels: true,
+	wrapX: false,
+	targetSize: 50,
+});
+
+// Initialize OL3
+var layers = createBaseLayers();
+var rangeLayer = new ol.layer.Vector({});
+
+if (MaxRangePlot[0]) { // AKISSACK Maximum Range Plot Ref: AK8D
+	var maxRangeLayer = new ol.layer.Vector({
+		name: 'ranges',
+		type: 'overlay',
+		title: 'Range Plot',
+		source: new ol.source.Vector({
+			features: MaxRangeFeatures,
+		})
+	});
+} else {
+	var maxRangeLayer = new ol.layer.Vector({});
+};
+
+layers.push(new ol.layer.Group({
+	title: 'Overlays',
+	fold: 'closed',
+	layers: [
+	new ol.layer.Vector({
+			name: 'site_pos',
+			type: 'overlay',
+			title: 'Site position and range rings',
+			source: new ol.source.Vector({
+				features: StaticFeatures,
+			}),
+			updateWhileAnimating: true,
+			updateWhileInteracting: true
+		}),
+
+	new ol.layer.Vector({
+			name: 'ac_trail',
+			type: 'overlay',
+			title: 'Selected aircraft trail',
+			source: new ol.source.Vector({
+				features: PlaneTrailFeatures,
+			}),
+			updateWhileAnimating: true,
+			updateWhileInteracting: true
+		}),
+	rangeLayer,
+	maxRangeLayer,
+	iconsLayer,
+	graticule
+]
+}));

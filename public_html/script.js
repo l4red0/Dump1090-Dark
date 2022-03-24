@@ -10,6 +10,7 @@ var PlaneTrailFeatures = new ol.Collection();
 var MyFeatures = new ol.Collection(); // AKISSACK Ref: AK9U
 var MaxRangeFeatures = new ol.Collection(); // AKISSACK Ref: AK8A
 var SleafordRangeFeatures = new ol.Collection(); // AKISSACK Ref: AK8Z
+var signalPlotLayerFeatures = new ol.Collection();
 var Planes = {};
 var PlanesOrdered = [];
 var PlaneFilter = {};
@@ -18,6 +19,7 @@ var SelectedAllPlanes = false;
 var FollowSelected = false;
 var historyMaxRange = null;
 var sndAlertEnabled = false;
+var currentIcaos = [];
 
 //OL6 vars
 var Overlay = ol.Overlay;
@@ -180,6 +182,7 @@ function processReceiverUpdate(data) {
 
 		// Call the function update
 		plane.updateData(now, ac);
+		localStorage.setItem("currentIcaos", JSON.stringify(Array.from(Object.getOwnPropertyNames(Planes))));
 	}
 }
 
@@ -209,6 +212,7 @@ function fetchData() {
 		selectNewPlanes();
 		refreshTableInfo();
 		refreshSelected();
+		//signalStrenghtPlot();
 
 		if (ReceiverClock) {
 			var rcv = new Date(now * 1000);
@@ -498,55 +502,6 @@ function initialize_map() {
 		document.getElementById("infoblock_country").style.display = 'none'; // hide country row
 	}
 
-	// Initialize OL3
-
-	var layers = createBaseLayers();
-	var rangeLayer = new ol.layer.Vector({});
-
-	if (MaxRangePlot[0]) { // AKISSACK Maximum Range Plot Ref: AK8D
-		var maxRangeLayer = new ol.layer.Vector({
-			name: 'ranges',
-			type: 'overlay',
-			title: 'Range Plot',
-			source: new ol.source.Vector({
-				features: MaxRangeFeatures,
-			})
-		});
-	} else {
-		var maxRangeLayer = new ol.layer.Vector({});
-	};
-
-	layers.push(new ol.layer.Group({
-		title: 'Overlays',
-		fold: 'closed',
-		layers: [
-		new ol.layer.Vector({
-				name: 'site_pos',
-				type: 'overlay',
-				title: 'Site position and range rings',
-				source: new ol.source.Vector({
-					features: StaticFeatures,
-				}),
-				updateWhileAnimating: true,
-				updateWhileInteracting: true
-			}),
-
-		new ol.layer.Vector({
-				name: 'ac_trail',
-				type: 'overlay',
-				title: 'Selected aircraft trail',
-				source: new ol.source.Vector({
-					features: PlaneTrailFeatures,
-				}),
-				updateWhileAnimating: true,
-				updateWhileInteracting: true
-			}),
-		rangeLayer,
-		maxRangeLayer, // Ref: AK8D
-		iconsLayer
-	]
-	}));
-
 	OLMap = new ol.Map({
 		target: 'map_canvas',
 		layers: layers,
@@ -699,7 +654,7 @@ function initialize_map() {
 
 	var mousePosition = new ol.control.MousePosition({
 		coordinateFormat: llFormat(3), // ol.coordinate.createStringXY(4),
-		projection: 'EPSG:4326',
+		projection: OLMap.getView().getProjection(),
 		//target: document.getElementById('mouseposition').innerHTML = "X "+ akLat,
 		target: document.getElementById('mouseposition'),
 		undefinedHTML: '&nbsp;'
@@ -1078,7 +1033,7 @@ function refreshPageTitle() {
 		subtitle += TrackedAircraftPositions + '/' + TrackedAircraft;
 	}
 
-	if (MessageRateInTitle) {
+	if (MessageRateInTitle && $(MessageRate).length) {
 		if (subtitle) subtitle += ' | ';
 		subtitle += MessageRate.toFixed(1) + '/s';
 	}
@@ -1286,11 +1241,13 @@ function refreshTableInfo() {
 		var tableplane = PlanesOrdered[i];
 		TrackedHistorySize += tableplane.history_size;
 		if (tableplane.seen >= 120 || tableplane.isFiltered()) {
+
 			$(PlanesOrdered[i].tr).fadeOut("400", function() {
 				tableplane.tr.className = "plane_table_row hidden";
 			});
 
-		} else if (tableplane.seen_pos >= 60) {
+		} else if ($(PlanesOrdered.tr).length && tableplane.seen_pos >= 60) {
+
 			$(PlanesOrdered[i].tr).fadeOut("400", function() {
 				tableplane.tr.className = "plane_table_row hidden";
 			});
@@ -1620,7 +1577,8 @@ function sortByVerticalRate() {
 function sortByDistance() { // AKISSACK - Order by distance, but show interesting aircraft first in the table  ------------ Ref: AK9F
 	if (ShowMyPreferences) {
 		sortBy('sitedist', compareNumeric, function(x) {
-			return (x.is_interesting == 'Y' ? (x.sitedist + 0) : (x.sitedist == null ? null : (x.sitedist + 1000000)));
+			//return (x.is_interesting == 'Y' ? (x.sitedist + 0) : (x.sitedist == null ? null : (x.sitedist + 1000000)));
+			return x.sitedist;
 		});
 	} else {
 		sortBy('sitedist', compareNumeric, function(x) {
@@ -2311,12 +2269,12 @@ function darkModeInit() {
 
 function darkMode() {
 	if (localStorage.getItem("darkMode") === null || localStorage.getItem('darkMode') === 'false') {
-		$('link[href="style.css"]').attr('href', 'style-darkMode.css');
+		$('link[href="style.css"]').attr('href', 'style-dm.css');
 		localStorage.setItem('darkMode', 'true');
 
 		//can make negative of any map but the output is usally ugly
 		//document.querySelector('canvas').style.filter = "invert(85%)";
-	} else if (localStorage.getItem('darkMode') === 'true' || $('link[href="style.css"]').attr('href') === 'style-darkMode.css') {
+	} else if (localStorage.getItem('darkMode') === 'true' || $('link[href="style.css"]').attr('href') === 'style-dm.css') {
 		$('link[href="style-darkMode.css"]').attr('href', 'style.css');
 		localStorage.setItem('darkMode', 'false');
 	}
@@ -2397,16 +2355,13 @@ function sndAlert(toggle, enable, distanceFactor) {
 			audio.loop = false;
 			audio.play();
 		}
-		
+
 	} else {
 		sndAlertEnabled = false;
 		$('.proximityBtn').html('<i icon-name="bell"></i>');
 		lucide.createIcons();
 	}
 }
-
-
-
 
 $(document).ready(function() {
 	lucide.createIcons();
