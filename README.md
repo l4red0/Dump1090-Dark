@@ -6,6 +6,17 @@ This is fork of [alkissack's Dump1090-OpenLayers3-html](https://github.com/alkis
 #### Please keep in mind that this is bug heavy, pre-release project with experimental features. Currently developed (and compatible) with stock pi24 dump1090-mutabily with plan to support other dump1090 versions with broader `aircraft.json` data.
 
 ### Changelog
+**24.03.22 - 0.16**
+- added new map layer Graticule (gird with coordinates)
+- aircraft photo preview tweaks/optimization
+- added `localdb.js` - this is bigger update with initial [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) implementation. For now basic aircraft logger is added with more features on the way.
+  - added [dexie](https://github.com/dexie/Dexie.js) as an framework and library for IndexedDB communication.
+  - added basic option to backup (import/export) whole database to JSON file.
+  - added `dbAircraftRegister()` to log and register aircrafts to local db. Function works very similar to `sql\tools\seen-database` script form [alkissack's](https://github.com/alkissack/Dump1090-OpenLayers3-html) but doesn't require python+AMP stack to work. For now it logs unique ICAO codes along with first seen, last seen date and distinct sight counter.
+	- added new info to aircraft details table based on `dbAircraftRegister()`.
+
+	There are obvious downsides of this; data is only logged to DB with opened browser (browser tab doesn't need to be active just opened), and performance with higher data volume is also debatable. But it works 'out of the box'.
+
 **22.03.22 - 0.15**
 - added custom map overlays for Poland (airfields, airports, zones etc.)
 - added proximity sound alert function. The sound is played if aircraft position is from MLAT and its range is lower than provided in configuration. Sound volume is relative to proximity. This has to be also enabled by clicking the bell icon in settings menu. This is initial feature with intention to be configurable by the user.
