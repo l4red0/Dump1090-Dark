@@ -146,6 +146,16 @@ div#update_error {
 	margin: 60px 0 0 -125px;
 	border-radius: 0px;
 }
+.genericSpinner svg {
+	width: 40px;
+	height: 40px;
+}
+
+.genericSpinner {
+	margin: 35px auto;
+	width: 50px;
+	height: 60px;
+}
 
 .radioSpinner svg {
 	width: 40px;
@@ -502,7 +512,7 @@ progress {
 	margin: .2em;
 	color: #FFFFFF;
 	font-weight: 400;
-	font-size: 14px;
+	font-size: 10px;
 	border: 1px solid #095e5d;
 	display: flex;
 	align-items: center;

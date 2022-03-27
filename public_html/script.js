@@ -177,12 +177,13 @@ function processReceiverUpdate(data) {
 			}.bind(undefined, hex));
 
 			Planes[hex] = plane;
+
 			PlanesOrdered.push(plane);
 		}
 
 		// Call the function update
 		plane.updateData(now, ac);
-		localStorage.setItem("currentIcaos", JSON.stringify(Array.from(Object.getOwnPropertyNames(Planes))));
+		//localStorage.setItem("currentIcaos", JSON.stringify(Array.from(Object.getOwnPropertyNames(Planes))));
 	}
 }
 
@@ -212,7 +213,6 @@ function fetchData() {
 		selectNewPlanes();
 		refreshTableInfo();
 		refreshSelected();
-		//signalStrenghtPlot();
 
 		if (ReceiverClock) {
 			var rcv = new Date(now * 1000);
@@ -1179,7 +1179,9 @@ function refreshSelected() {
 
 //fetch and display planespotters.net image in selected_infoblock
 function getPlaneSpottersApiData(hex) {
+	$('#selected_infoblock .psImage').html('<div class="genericSpinner rotating"><i icon-name="radio"></i></div>');
 	if (hex !== null && hex !== "") {
+
 		$.ajax({
 			url: "https://api.planespotters.net/pub/photos/hex/" + hex,
 			type: 'GET',
@@ -1192,16 +1194,18 @@ function getPlaneSpottersApiData(hex) {
 			},
 			beforeSend: function(xhr) {
 				//xhr.setRequestHeader("Authorization", "Basic " + btoa(""));
-				$('#selected_infoblock .psImage').html('<i icon-name="image-off"></i><br>NO MEDIA');
+				$('#selected_infoblock .psImage').html('<div class="genericSpinner rotating"><i icon-name="radio"></i></div>');
 			},
 			success: function(data) {
 				if (data.photos.length >= 1) {
-					renderPlaneSpottersImage(data);
+					//delay to not choke API
+					setTimeout(function() {
+						renderPlaneSpottersImage(data);
+					}, 2500);
 				} else {
 					$('#selected_infoblock .psImage').html('<i icon-name="image-off"></i><br>NO MEDIA');
 				}
 			},
-
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
 				console.log("[i] Image cound not be delivered: " + errorThrown + textStatus);
 			}
@@ -1216,9 +1220,11 @@ function renderPlaneSpottersImage(data) {
 	var psPhotoUrl = data.photos[0].thumbnail_large.src;
 	var psPhotoAuthor = data.photos[0].photographer;
 
-	var psPhotoDiv = '<img src="' + psPhotoUrl + '" alt="Photo author: ' + psPhotoAuthor + '"><div class="psPhotoInfo">Author: ' + psPhotoAuthor + ' - <a href="' + psPhotoLink + '" target="_blank">Source</a></div>';
+	var psPhotoDiv = '<img src="' + psPhotoUrl + '" alt="Photo author: ' + psPhotoAuthor + '" style="display:none;"><div class="psPhotoInfo">Author: ' + psPhotoAuthor + ' - <a href="' + psPhotoLink + '" target="_blank">Source</a></div>';
 
 	selectedInfoBlock.html(psPhotoDiv);
+	$('#selected_infoblock .psImage img').fadeIn(400);
+
 
 }
 
@@ -1240,6 +1246,9 @@ function refreshTableInfo() {
 	for (var i = 0; i < PlanesOrdered.length; ++i) {
 		var tableplane = PlanesOrdered[i];
 		TrackedHistorySize += tableplane.history_size;
+
+		dbAircraftRegister(tableplane.icao, tableplane.flight); //locDb
+
 		if (tableplane.seen >= 120 || tableplane.isFiltered()) {
 
 			$(PlanesOrdered[i].tr).fadeOut("400", function() {

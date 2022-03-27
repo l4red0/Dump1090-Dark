@@ -22,10 +22,12 @@
 	<script type="text/javascript" src="planeObject.js"></script>
 	<script type="text/javascript" src="js/formatter.js"></script>
 	<script type="text/javascript" src="js/flags.js"></script>
-
-	<script type="text/javascript" src="script.js"></script>
-		<script type="text/javascript" src="layers.js"></script>
 	<script type="text/javascript" src="js/lucide.min.js"></script>
+	<script type="text/javascript" src="js/dexie.min.js"></script>
+	<script type="text/javascript" src="js/localdb.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+	<script type="text/javascript" src="layers.js"></script>
+
 	<title>FlightAware dump1090</title>
 </head>
 
@@ -113,6 +115,7 @@
 					<span class="sidebarButton pointer" onclick="deselectAllPlanes();" title="Deselect all"><i icon-name="plane"></i><span>Deselect</span></span>
 					<span class="sidebarButton pointer" onclick="resetMap();" title="Reset Map"><i icon-name="minimize"></i><span>Map</span></span>
 					<span class="sidebarButton pointer" onclick="resetRangePlot();" title="Reset Range"><i icon-name="trash-2"></i><span>Range</span></span> <!-- AKISSACK Ref: ref: AK8K -->
+					<span class="sidebarButton pointer" onclick="dbExport();" title="Local database export" id="exportLink"><i icon-name="database"></i><span>DB export</span></span>
 				</div>
 
 				<!--filters panel-->
