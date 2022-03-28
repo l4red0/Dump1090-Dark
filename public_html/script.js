@@ -1247,7 +1247,9 @@ function refreshTableInfo() {
 		var tableplane = PlanesOrdered[i];
 		TrackedHistorySize += tableplane.history_size;
 
-		dbAircraftRegister(tableplane.icao, tableplane.flight); //locDb
+		if (Localdb) {
+			dbAircraftRegister(tableplane.icao, tableplane.flight); //locDb
+		}
 
 		if (tableplane.seen >= 120 || tableplane.isFiltered()) {
 
@@ -2370,6 +2372,14 @@ function sndAlert(toggle, enable, distanceFactor) {
 		$('.proximityBtn').html('<i icon-name="bell"></i>');
 		lucide.createIcons();
 	}
+}
+
+function copyToClipboard(element) {
+	var $copyVal = $("<input>");
+	$("body").append($copyVal);
+	$copyVal.val($(element).text()).select();
+	document.execCommand("copy");
+	$copyVal.remove();
 }
 
 $(document).ready(function() {

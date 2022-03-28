@@ -6,6 +6,9 @@ This is fork of [alkissack's Dump1090-OpenLayers3-html](https://github.com/alkis
 #### Please keep in mind that this is bug heavy, pre-release project with experimental features. Currently developed (and compatible) with stock pi24 dump1090-mutabily with plan to support other dump1090 versions with broader `aircraft.json` data.
 
 ### Changelog
+**28.03.22 - v0.16a**
+- added copy to clipboard button for ICAO24
+
 **27.03.22 - v0.16**
 - added new map layer Graticule (gird with coordinates)
 - aircraft photo preview tweaks/optimization

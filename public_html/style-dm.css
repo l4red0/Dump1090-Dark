@@ -146,6 +146,7 @@ div#update_error {
 	margin: 60px 0 0 -125px;
 	border-radius: 0px;
 }
+
 .genericSpinner svg {
 	width: 40px;
 	height: 40px;
@@ -732,4 +733,39 @@ div.mp {
 	scrollbar-color: rgba(0, 0, 0, 0.1);
 	rgba(0, 0, 0, 0.9);
 	scrollbar-width: thin;
+}
+
+#selected_infoblock .icao24Block a, .icao24Block span {
+	width: 100%;
+	padding: 2px 0 2px 0px;
+}
+.icao24value {
+	display: block;
+	width: 45px;
+	font-family: 'Inconsolata', monospace;
+	margin-right: 5px;
+	text-align: center;
+}
+.icao24Block {
+	display: flex;
+	align-content: center;
+}
+
+.iconBtnDark:hover {
+	background: #505050;
+}
+
+.iconBtnDark {
+	width: 28px;
+	height: 28px;
+	padding: 2px;
+	background: #363636;
+	color: #fff;
+	border: none;
+	cursor: pointer;
+}
+
+.iconBtnDark svg {
+	height: 18px;
+	width: 18px;
 }

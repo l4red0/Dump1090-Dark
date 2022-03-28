@@ -194,3 +194,6 @@ BlindCone = false;
 
 //[enabled, range in displayUnits] Audio proximity alert. The sound is played if aircraft position is from MLAT and its range is lower than provided in configuration. Sound volume is relative to proximity. This has to be also enabled by clicking the bell icon in settings menu.
 SndAlert = [false, 20];
+
+//Default 'false'. Initial IndexedDB implementation
+Localdb = false;
