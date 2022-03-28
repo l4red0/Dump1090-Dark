@@ -52,9 +52,6 @@
 	</form>
 
 	<div id="layout_container">
-
-
-
 		<div id="map_container">
 			<div id="map_canvas">
 				<div id="popinfo"></div> <!-- AKISSACK  - HOVER OVER LABEL - ref: AK6B -->
@@ -92,66 +89,6 @@
 		<div id="sidebar_container">
 			<div id="splitter" class="ui-resizable-handle ui-resizable-w"></div>
 			<div id="sidebar_canvas">
-				<!--statistic panel-->
-				<div id="currentStats">
-					<div class="currentStatsLabel">AC (total):<span id="dump1090_total_ac">n/a</span></div>
-					<div class="currentStatsLabel">AC (positions):<span id="dump1090_total_ac_positions">n/a</span></div>
-					<div class="currentStatsLabel">Max. RNG<span id="dump1090_max_range">n/a</span>
-						<div class="distanceUnit"></div>
-					</div>
-					<div class="currentStatsLabel">Total max. RNG<span id="dump1090_max_range_history">n/a</span>
-						<div class="distanceUnit"></div>
-					</div>
-					<div class="currentStatsLabel">MSG<span id="dump1090_message_rate">n/a</span>/s</div>
-				</div>
-
-				<!--configuration panel-->
-				<span class="sidebarButton pointer" onclick="toggleOptions('sudo_buttons');" title="Settings"><i icon-name="settings"></i><span>Settings</span></span>
-				<div id="sudo_buttons" style="">
-					<span class="sidebarButton darkModeBtn pointer" onclick="darkMode();" title="Light/Dark Mode"><i icon-name="moon"></i></span>
-					<span class="sidebarButton proximityBtn pointer" onclick="sndAlert(true);" title="Proximity alert"><i icon-name="bell-ring"></i></span>
-					<span class="sidebarButton pointer" onclick="selectAllPlanes();"><i icon-name="plane" title="Select all Aircraft"></i><span>Select All</span></span>
-					<span class="sidebarButton pointer" onclick="selectMilPlanes();" title="Select only special Aircraft"><i icon-name="plane"></i><span>Select Special</span></span> <!-- AKISSACK Ref: AK9G -->
-					<span class="sidebarButton pointer" onclick="deselectAllPlanes();" title="Deselect all"><i icon-name="plane"></i><span>Deselect</span></span>
-					<span class="sidebarButton pointer" onclick="resetMap();" title="Reset Map"><i icon-name="minimize"></i><span>Map</span></span>
-					<span class="sidebarButton pointer" onclick="resetRangePlot();" title="Reset Range"><i icon-name="trash-2"></i><span>Range</span></span> <!-- AKISSACK Ref: ref: AK8K -->
-					<span class="sidebarButton pointer" onclick="dbExport();" title="Local database export" id="exportLink"><i icon-name="database"></i><span>DB export</span></span>
-				</div>
-
-				<!--filters panel-->
-				<span class="sidebarButton pointer" onclick="toggleOptions('altitude_filter_form');"><i icon-name="sliders" title="Filter data"></i><span>Filter data</span></span>
-				<form id="altitude_filter_form" style="display: none;">
-					<!-- AKISSACK Ref: AK11A -->
-					<label> Filter by height:</label>
-					<input id="altitude_filter_min" name="minAltitude" type="text" class="altitudeFilterInput" maxlength="5">
-					<label for="minAltitude" class="altitudeUnit"></label>
-					<span> to </span>
-					<input id="altitude_filter_max" name="maxAltitude" type="text" class="altitudeFilterInput" maxlength="5">
-					<label for="maxAltitude" class="altitudeUnit"></label>
-					<button type="submit" style="float: right;">Filter</button>
-					</br>
-					<label> Specials only:</label>
-					<input id="specials_filter" type="checkbox" name="specials">
-					<button id="altitude_filter_reset_button" style="float: right;">Reset</button>
-					<!-- AKISSACK Ref: AK11A  Ends -->
-				</form>
-
-
-
-
-				<div id="units_container">
-					<!--  AKISSACK Remove units option from panel
-						<label for="units_selector">Units:</label>
-						<select name="units_selector" id="units_selector">
-							<option value="nautical">Aeronautical</option>
-							<option value="metric">Metric</option>
-							<option value="imperial">Imperial</option>
-						</select>
--->
-				</div>
-
-
-
 				<div id="planes_table">
 					<table id="tableinfo" style="width: 100%">
 						<thead class="aircraft_table_header">
@@ -212,99 +149,167 @@
 				</div> <!-- planes_table -->
 
 
+				<div id="mainTabs">
+					<ul>
+						<li><a href="#selected_infoblock" title="Aircraft info panel"><i icon-name="plane"></i></a></li>
+						<li><a href="#mainTabsLinks" title="External links"><i icon-name="external-link"></i></a></li>
+						<li><a href="#mainTabsFilters" title="Filter data"><i icon-name="sliders"></i><span></a></li>
+						<li><a href="#mainTabsSettings" title="Settings"><i icon-name="settings"></i></a></li>
+					</ul>
 
-				<!-- selected_infoblock -->
-				<div id="selected_infoblock">
-					<div class="acInfoHeader">
-						<h2>
-							<span id="selected_flag"><img style="" src="./assets/flags-tiny/noflag.png" alt="Flag"></span>
-							<span id="selected_callsign" onclick="toggleFollowSelected();" class="pointer">n/a</span>
-							<span id="selected_follow" onclick="toggleFollowSelected();" class="pointer"><i icon-name="locate-fixed"></i></span>
-						</h2>
-						<div class="icao24Block">
+					<!-- selected_infoblock -->
+					<div id="selected_infoblock" class="mainTabContent">
+						<div class="acInfoHeader">
+							<h2>
+								<span id="selected_flag"><img style="" src="./assets/flags-tiny/noflag.png" alt="Flag"></span>
+								<span id="selected_callsign" onclick="toggleFollowSelected();" class="pointer">n/a</span>
+								<span id="selected_follow" onclick="toggleFollowSelected();" class="pointer"><i icon-name="locate-fixed"></i></span>
+							</h2>
+							<div class="icao24Block">
 
-							<span id="selected_emergency"></span>
-							<div class="icao24value"><span>ICAO24</span><a href="http://www.airframes.org/" onclick="document.getElementById('horrible_hack').submit.call(document.getElementById('airframes_post')); return false;" title="[ICAO] airframes.org" id="selected_icao"></a></div><button onclick="copyToClipboard('#selected_icao')" class="iconBtnDark" title="Copy to clipboard"><i icon-name="clipboard-copy"></i></button>
+								<span id="selected_emergency"></span>
+								<div class="icao24value"><span>ICAO24</span><a href="http://www.airframes.org/" onclick="document.getElementById('horrible_hack').submit.call(document.getElementById('airframes_post')); return false;"
+									 title="[ICAO] airframes.org" id="selected_icao"></a></div><button onclick="copyToClipboard('#selected_icao')" class="iconBtnDark" title="Copy to clipboard"><i icon-name="clipboard-copy"></i></button>
+							</div>
 						</div>
-						<div class="acInfoHeaderAdditional">
-							<span id="selected_links">
-								<a id="selected_adsbexchange_link" href="#" target="_blank" title="[ICAO] adsbexchange.com">[AEx]</a>
-								<a id="selected_flightaware_link" href="#" target="_blank" title="[FLIGHT] flightaware.com ">[FA]</a>
-								<a id="selected_planefinder_link" href="#" target="_blank" title="[FLIGHT] planefinder.net">[PF]</a>
-								<a id="selected_opensky_link" href="#" target="_blank" title="[ICAO] opensky-network.org">[OS]</a>
-							</span>
-						</div>
-					</div>
 
-					<div class="psImage"><i icon-name="image-off"></i><br>NO MEDIA</div>
-					<!--aircraft detailed data-->
-					<table id="acDetailsTable">
-						<tr class="infoblock_body">
-							<td class="acDetailsTableLabel"><i icon-name="plane"></i>MODEL</td>
-							<td class="acDetailsTableValue" colspan="3"><span id="selected_model"></span></td>
-						</tr>
+						<div class="psImage"><i icon-name="image-off"></i><br>NO MEDIA</div>
+						<!--aircraft detailed data-->
+						<table id="acDetailsTable">
+							<tr class="infoblock_body">
+								<td class="acDetailsTableLabel"><i icon-name="plane"></i>MODEL</td>
+								<td class="acDetailsTableValue" colspan="3"><span id="selected_model"></span></td>
+							</tr>
 
-						<tr class="infoblock_body">
-							<td class="acDetailsTableLabel"><i icon-name="locate-fixed"></i>Position</td>
-							<td class="acDetailsTableValue" colspan="3"><span id="selected_position"></span></td>
-						</tr>
+							<tr class="infoblock_body">
+								<td class="acDetailsTableLabel"><i icon-name="locate-fixed"></i>Position</td>
+								<td class="acDetailsTableValue" colspan="3"><span id="selected_position"></span></td>
+							</tr>
 
-						<tr id="infoblock_country" class="infoblock_body">
-							<td class="acDetailsTableLabel"><i icon-name="flag"></i>COUNTRY</td>
-							<td class="acDetailsTableValue"><span id="selected_country"></span></td>
-							<td class="acDetailsTableLabel"><i icon-name="move-vertical"></i>ALTITUDE</td>
-							<td class="acDetailsTableValue"><span id="selected_altitude"></span></td>
-						</tr>
+							<tr id="infoblock_country" class="infoblock_body">
+								<td class="acDetailsTableLabel"><i icon-name="flag"></i>COUNTRY</td>
+								<td class="acDetailsTableValue"><span id="selected_country"></span></td>
+								<td class="acDetailsTableLabel"><i icon-name="move-vertical"></i>ALTITUDE</td>
+								<td class="acDetailsTableValue"><span id="selected_altitude"></span></td>
+							</tr>
 
-						<tr class="infoblock_body">
-							<td class="acDetailsTableLabel"><i icon-name="form-input"></i>REGISTRATION</td>
-							<td class="acDetailsTableValue"><span id="selected_registration"></span></td>
-							<td class="acDetailsTableLabel"><i icon-name="ruler"></i>Distance</td>
-							<td class="acDetailsTableValue"><span id="selected_sitedist"></span></td>
+							<tr class="infoblock_body">
+								<td class="acDetailsTableLabel"><i icon-name="form-input"></i>REGISTRATION</td>
+								<td class="acDetailsTableValue"><span id="selected_registration"></span></td>
+								<td class="acDetailsTableLabel"><i icon-name="ruler"></i>Distance</td>
+								<td class="acDetailsTableValue"><span id="selected_sitedist"></span></td>
 
-						</tr>
-						<tr class="infoblock_body">
-							<td class="acDetailsTableLabel">AC category</td>
-							<td class="acDetailsTableValue"><span id="selected_category"></span></td>
-							<td class="acDetailsTableLabel"><i icon-name="gauge"></i>SPEED</td>
-							<td class="acDetailsTableValue"><span id="selected_speed"></span></td>
-						</tr>
+							</tr>
+							<tr class="infoblock_body">
+								<td class="acDetailsTableLabel">AC category</td>
+								<td class="acDetailsTableValue"><span id="selected_category"></span></td>
+								<td class="acDetailsTableLabel"><i icon-name="gauge"></i>SPEED</td>
+								<td class="acDetailsTableValue"><span id="selected_speed"></span></td>
+							</tr>
 
-						<tr class="infoblock_body">
-							<td class="acDetailsTableLabel">AC ICAO Code</td>
-							<td class="acDetailsTableValue"><span id="selected_icaotype"></span></td>
-							<td class="acDetailsTableLabel" title="Vertical rate / Rate of climb"><i icon-name="trending-up"></i>ROC</td>
-							<td class="acDetailsTableValue"><span id="selected_vertical_rate"></span></td>
-						</tr>
+							<tr class="infoblock_body">
+								<td class="acDetailsTableLabel">AC ICAO Code</td>
+								<td class="acDetailsTableValue"><span id="selected_icaotype"></span></td>
+								<td class="acDetailsTableLabel" title="Vertical rate / Rate of climb"><i icon-name="trending-up"></i>ROC</td>
+								<td class="acDetailsTableValue"><span id="selected_vertical_rate"></span></td>
+							</tr>
 
-						<tr class="infoblock_body">
-							<td class="acDetailsTableLabel"><i icon-name="binary"></i>Messages</td>
-							<td class="acDetailsTableValue"><span id="selected_message_count"></span></td>
-							<td class="acDetailsTableLabel"><i icon-name="radio"></i>RSSI</td>
-							<td class="acDetailsTableValue"><span id="selected_rssi"></span></td>
+							<tr class="infoblock_body">
+								<td class="acDetailsTableLabel"><i icon-name="binary"></i>Messages</td>
+								<td class="acDetailsTableValue"><span id="selected_message_count"></span></td>
+								<td class="acDetailsTableLabel"><i icon-name="radio"></i>RSSI</td>
+								<td class="acDetailsTableValue"><span id="selected_rssi"></span></td>
 
-						</tr>
+							</tr>
 
-						<tr class="infoblock_body">
-							<td class="acDetailsTableLabel"><i icon-name="history"></i>Last seen</td>
-							<td class="acDetailsTableValue"><span id="selected_seen"></span></td>
-							<td class="acDetailsTableLabel"><i icon-name="compass"></i>Track</td>
-							<td class="acDetailsTableValue"><span id="selected_track"></span></td>
-						</tr>
+							<tr class="infoblock_body">
+								<td class="acDetailsTableLabel"><i icon-name="history"></i>Last seen</td>
+								<td class="acDetailsTableValue"><span id="selected_seen"></span></td>
+								<td class="acDetailsTableLabel"><i icon-name="compass"></i>Track</td>
+								<td class="acDetailsTableValue"><span id="selected_track"></span></td>
+							</tr>
 
-						<tr class="infoblock_body">
-							<td class="acDetailsTableLabel"><i icon-name="megaphone"></i>SQUAWK</td>
-							<td class="acDetailsTableValue"><span id="selected_squawk"></span></td>
-							<td class="acDetailsTableLabel"><i icon-name="network"></i>SOURCE</td>
-							<td class="acDetailsTableValue"><span id="selected_source"></span></td>
-						</tr>
+							<tr class="infoblock_body">
+								<td class="acDetailsTableLabel"><i icon-name="megaphone"></i>SQUAWK</td>
+								<td class="acDetailsTableValue"><span id="selected_squawk"></span></td>
+								<td class="acDetailsTableLabel"><i icon-name="network"></i>SOURCE</td>
+								<td class="acDetailsTableValue"><span id="selected_source"></span></td>
+							</tr>
 
-						<!--
+							<!--
 						<tr class="infoblock_body">
 							<td colspan="2"><span id="selected_photo_link"></span></td>
 						</tr>-->
-					</table>
+						</table>
+					</div>
+					<!--external links-->
+					<div id="mainTabsLinks" class="mainTabContent">
+						<div class="acInfoHeaderAdditional">
+							<span id="selected_links">
+								<ul>
+									<li><a id="selected_adsbexchange_link" href="#" target="_blank" title="[ICAO] adsbexchange.com">[ICAO] adsbexchange.com</a></li>
+									<li><a id="selected_opensky_link" href="#" target="_blank" title="[ICAO] opensky-network.org">[ICAO] opensky-network.org</a></li>
+									<li><a id="selected_flightaware_link" href="#" target="_blank" title="[FLIGHT] flightaware.com ">[FLIGHT] flightaware.com</a></li>
+									<li><a id="selected_planefinder_link" href="#" target="_blank" title="[FLIGHT] planefinder.net">[FLIGHT] planefinder.net</a></li>
+								</ul>
+							</span>
+						</div>
+					</div>
+					<!--configuration panel-->
+					<div id="mainTabsSettings" class="mainTabContent">
+						<div id="sudo_buttons">
+							<span class="sidebarButton proximityBtn pointer" onclick="sndAlert(true);" title="Proximity alert"><i icon-name="bell-ring"></i></span>
+							<span class="sidebarButton pointer" onclick="selectAllPlanes();"><i icon-name="plane" title="Select all Aircraft"></i><span>Select All</span></span>
+							<span class="sidebarButton pointer" onclick="selectMilPlanes();" title="Select only special Aircraft"><i icon-name="plane"></i><span>Select Special</span></span> <!-- AKISSACK Ref: AK9G -->
+							<span class="sidebarButton pointer" onclick="deselectAllPlanes();" title="Deselect all"><i icon-name="plane"></i><span>Deselect</span></span>
+							<span class="sidebarButton pointer" onclick="resetMap();" title="Reset Map"><i icon-name="minimize"></i><span>Map</span></span>
+							<span class="sidebarButton pointer" onclick="resetRangePlot();" title="Reset Range"><i icon-name="trash-2"></i><span>Range</span></span> <!-- AKISSACK Ref: ref: AK8K -->
+							<span class="sidebarButton pointer" onclick="dbExport();" title="Local database export" id="exportLink"><i icon-name="database"></i><span>DB export</span></span>
+						</div>
 
+						<div id="units_container">
+							<!--  AKISSACK Remove units option from panel
+								<label for="units_selector">Units:</label>
+								<select name="units_selector" id="units_selector">
+									<option value="nautical">Aeronautical</option>
+									<option value="metric">Metric</option>
+									<option value="imperial">Imperial</option>
+								</select>
+		-->
+						</div>
+
+
+					</div>
+					<!--filters panel-->
+					<div id="mainTabsFilters" class="mainTabContent">
+						<form id="altitude_filter_form">
+							<!-- AKISSACK Ref: AK11A -->
+							<label> Filter by height:</label>
+							<input id="altitude_filter_min" name="minAltitude" type="text" class="altitudeFilterInput" maxlength="5">
+							<label for="minAltitude" class="altitudeUnit"></label>
+							<span> to </span>
+							<input id="altitude_filter_max" name="maxAltitude" type="text" class="altitudeFilterInput" maxlength="5">
+							<label for="maxAltitude" class="altitudeUnit"></label>
+							<button type="submit" style="float: right;">Filter</button>
+							</br>
+							<label> Specials only:</label>
+							<input id="specials_filter" type="checkbox" name="specials">
+							<button id="altitude_filter_reset_button" style="float: right;">Reset</button>
+							<!-- AKISSACK Ref: AK11A  Ends -->
+						</form>
+					</div>
+				</div> <!-- end mainTabs -->
+				<!--statistic bar-->
+				<div id="currentStats">
+					<div class="currentStatsLabel">AC total:<span id="dump1090_total_ac">n/a</span></div>
+					<div class="currentStatsLabel">AC positions:<span id="dump1090_total_ac_positions">n/a</span></div>
+					<div class="currentStatsLabel">Max Range<span id="dump1090_max_range">n/a</span>
+						<div class="distanceUnit"></div>
+					</div>
+					<div class="currentStatsLabel">Max Range (all time)<span id="dump1090_max_range_history">n/a</span>
+						<div class="distanceUnit"></div>
+					</div>
+					<div class="currentStatsLabel">MSG<span id="dump1090_message_rate">n/a</span>/s</div>
 				</div>
 			</div> <!-- sidebar_canvas -->
 		</div> <!-- sidebar_container -->

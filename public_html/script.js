@@ -2268,29 +2268,9 @@ function getTerrianColorByAlti(alti) {
 	return 'hsl(' + (h / 5).toFixed(0) * 5 + ',' + (s / 5).toFixed(0) * 5 + '%,' + (l / 5).toFixed(0) * 5 + '%)'
 }
 
-function darkModeInit() {
-	if (DarkMode === true) {
-		localStorage.setItem('darkMode', 'false');
-		darkMode();
-	} else {
-		localStorage.setItem('darkMode', 'false');
-	}
 
-}
 
-function darkMode() {
-	if (localStorage.getItem("darkMode") === null || localStorage.getItem('darkMode') === 'false') {
-		$('link[href="style.css"]').attr('href', 'style-dm.css');
-		localStorage.setItem('darkMode', 'true');
 
-		//can make negative of any map but the output is usally ugly
-		//document.querySelector('canvas').style.filter = "invert(85%)";
-	} else if (localStorage.getItem('darkMode') === 'true' || $('link[href="style.css"]').attr('href') === 'style-dm.css') {
-		$('link[href="style-darkMode.css"]').attr('href', 'style.css');
-		localStorage.setItem('darkMode', 'false');
-	}
-
-}
 
 function toggleOptions(elementid) {
 	$("#" + elementid).slideToggle("fast");
@@ -2383,6 +2363,6 @@ function copyToClipboard(element) {
 }
 
 $(document).ready(function() {
+	$("#mainTabs").tabs();
 	lucide.createIcons();
-	darkModeInit();
 });
