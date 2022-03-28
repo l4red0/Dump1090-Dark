@@ -8,6 +8,9 @@ This is fork of [alkissack's Dump1090-OpenLayers3-html](https://github.com/alkis
 ### Changelog
 **28.03.22 - v0.16a**
 - added copy to clipboard button for ICAO24
+- added tabs to the right panel in order to handle more data and settings
+- added database tab to manage and display information about local DB
+- lots of minor UI changes
 
 **27.03.22 - v0.16**
 - added new map layer Graticule (gird with coordinates)

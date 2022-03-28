@@ -94,7 +94,7 @@
 						<thead class="aircraft_table_header">
 							<tr>
 								<td id="flag" onclick="sortByCountry()"></td>
-								<td id="icao" onclick="sortByICAO();">ICAO</td>
+								<td id="icao" onclick="sortByICAO();">ICAO24</td>
 								<td id="flight" onclick="sortByFlight();" title="ID / Flight">FLIGHT</td>
 								<td id="registration" onclick="sortByRegistration();">Registration</td>
 								<td id="aircraft_type" onclick="sortByAircraftType();"> Air craft type</td>
@@ -154,6 +154,7 @@
 						<li><a href="#selected_infoblock" title="Aircraft info panel"><i icon-name="plane"></i></a></li>
 						<li><a href="#mainTabsLinks" title="External links"><i icon-name="external-link"></i></a></li>
 						<li><a href="#mainTabsFilters" title="Filter data"><i icon-name="sliders"></i><span></a></li>
+						<li><a href="#mainTabsDb" title="Database settings and information"><i icon-name="database"></i><span></a></li>
 						<li><a href="#mainTabsSettings" title="Settings"><i icon-name="settings"></i></a></li>
 					</ul>
 
@@ -255,18 +256,27 @@
 							</span>
 						</div>
 					</div>
+					<!--database panel-->
+					<div id="mainTabsDb" class="mainTabContent">
+						<span class="sidebarButton pointer" onclick="dbStats();" title="Refresh local database statistics"><i icon-name="refresh-cw"></i><span>Refresh DB statistics</span></span>
+						<span class="sidebarButton pointer" onclick="dbExport();" title="Local database export" id="exportLink"><i icon-name="download"></i><span>DB export</span></span>
+						<span class="sidebarButton pointer dbPersistant" onclick="dbPersistant();" title="Local database export"><i icon-name="hard-drive"></i><span>Make local DB persistant</span></span>
+						<div class="locDbInfo">
+							<table id="tableGeneric" style="margin:10px 0 0 0 ">
+								<tr class="tableGenericTr">
+									<td class="tableGenericLabel">aircrafts registered</td>
+									<td class="tableGenericValue dbStatsRegisterd">n/a</td>
+									<td class="tableGenericLabel">storage uasge</td>
+									<td class="tableGenericValue dbStatsSize">n/a</td>
+								</tr>
+							</table>
+						</div>
+					</div>
 					<!--configuration panel-->
 					<div id="mainTabsSettings" class="mainTabContent">
-						<div id="sudo_buttons">
-							<span class="sidebarButton proximityBtn pointer" onclick="sndAlert(true);" title="Proximity alert"><i icon-name="bell-ring"></i></span>
-							<span class="sidebarButton pointer" onclick="selectAllPlanes();"><i icon-name="plane" title="Select all Aircraft"></i><span>Select All</span></span>
-							<span class="sidebarButton pointer" onclick="selectMilPlanes();" title="Select only special Aircraft"><i icon-name="plane"></i><span>Select Special</span></span> <!-- AKISSACK Ref: AK9G -->
-							<span class="sidebarButton pointer" onclick="deselectAllPlanes();" title="Deselect all"><i icon-name="plane"></i><span>Deselect</span></span>
-							<span class="sidebarButton pointer" onclick="resetMap();" title="Reset Map"><i icon-name="minimize"></i><span>Map</span></span>
-							<span class="sidebarButton pointer" onclick="resetRangePlot();" title="Reset Range"><i icon-name="trash-2"></i><span>Range</span></span> <!-- AKISSACK Ref: ref: AK8K -->
-							<span class="sidebarButton pointer" onclick="dbExport();" title="Local database export" id="exportLink"><i icon-name="database"></i><span>DB export</span></span>
-						</div>
-
+						<span class="sidebarButton proximityBtn pointer" onclick="sndAlert(true);" title="Proximity sound alert"><i icon-name="bell-ring"></i><span>Proximity alert</span></span>
+						<span class="sidebarButton pointer" onclick="resetMap();" title="Reset map position and zoom"><i icon-name="minimize"></i><span>Reset map</span></span>
+						<span class="sidebarButton pointer" onclick="resetRangePlot();" title="Delete range data"><i icon-name="trash-2"></i><span>Reset range</span></span> <!-- AKISSACK Ref: ref: AK8K -->
 						<div id="units_container">
 							<!--  AKISSACK Remove units option from panel
 								<label for="units_selector">Units:</label>
@@ -282,6 +292,9 @@
 					</div>
 					<!--filters panel-->
 					<div id="mainTabsFilters" class="mainTabContent">
+						<span class="sidebarButton pointer" onclick="selectAllPlanes();"><i icon-name="plane" title="Select all Aircraft"></i><span>Select All</span></span>
+						<span class="sidebarButton pointer" onclick="selectMilPlanes();" title="Select only special Aircraft"><i icon-name="plane"></i><span>Select Special</span></span> <!-- AKISSACK Ref: AK9G -->
+						<span class="sidebarButton pointer" onclick="deselectAllPlanes();" title="Deselect all"><i icon-name="plane"></i><span>Deselect</span></span>
 						<form id="altitude_filter_form">
 							<!-- AKISSACK Ref: AK11A -->
 							<label> Filter by height:</label>
@@ -290,11 +303,14 @@
 							<span> to </span>
 							<input id="altitude_filter_max" name="maxAltitude" type="text" class="altitudeFilterInput" maxlength="5">
 							<label for="maxAltitude" class="altitudeUnit"></label>
-							<button type="submit" style="float: right;">Filter</button>
+
 							</br>
 							<label> Specials only:</label>
 							<input id="specials_filter" type="checkbox" name="specials">
-							<button id="altitude_filter_reset_button" style="float: right;">Reset</button>
+							<div style="display:block; margin:5px;">
+								<button id="altitude_filter_reset_button" class="sidebarButton pointer">Reset</button>
+								<button type="submit" class="sidebarButton pointer">Filter</button>
+							</div>
 							<!-- AKISSACK Ref: AK11A  Ends -->
 						</form>
 					</div>

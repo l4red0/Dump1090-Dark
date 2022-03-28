@@ -1,9 +1,5 @@
-$.getScript("/js/dexie-export-import.min.js", function() {
-	console.log("dexie-export-import.min.js loaded");
-});
-$.getScript("/js/download.min.js", function() {
-	console.log("download.min.js loaded");
-});
+$.getScript("/js/dexie-export-import.min.js");
+$.getScript("/js/download.min.js");
 
 var locDb = new Dexie("db1090");
 
@@ -11,6 +7,7 @@ locDb.version(1.1).stores({
 	aircraft: "++id,&icao,[lastSeen+firstSeen],*flight, sightCount",
 	signalStrenght: "++id,&sector,*alt,*rssi"
 });
+
 
 async function dbAircraftRegister(planeIcao, flight) {
 	var exist = false;
@@ -66,18 +63,26 @@ async function dbAircraftRegister(planeIcao, flight) {
 	});
 }
 
+//refresh DB statistics
+async function dbStats() {
+	locDb.aircraft.count(function(count) {
+		$('.dbStatsRegisterd').text(count + 1);
+	});
+	isStoragePersisted().then(function() {
+		$('.dbPersistant span').text("DB is persistant");
+	});
+	showEstimatedQuota().then(function(quotaData) {
+		var usage = formatBytes(quotaData.usage);
+		var quota = formatBytes(quotaData.quota);
+		$('.dbStatsSize').text(usage + " (quota: " + quota + ")");
+	});
+}
 
 //exporting dexie DB
 async function dbExport() {
-
-	//	document.addEventListener('DOMContentLoaded', () => {
 	console.log('export initiated');
-
-	//showContent().catch(err => console.error('' + err));
 	const exportLink = document.getElementById('exportLink');
-
-
-	async function blogGenerate(){
+	async function blobGenerate() {
 		try {
 			const blob = await locDb.export({
 				prettyJson: false,
@@ -89,7 +94,34 @@ async function dbExport() {
 			console.error('' + error);
 		}
 	};
-	blogGenerate();
-	//	});
+	blobGenerate();
+}
 
+//check if indexedDB is persistant
+async function isStoragePersisted() {
+	return await navigator.storage && navigator.storage.persisted &&
+		navigator.storage.persisted();
+}
+
+function dbPersistant() {
+	isStoragePersisted().then(async isPersisted => {
+		if (isPersisted) {
+			alert("Storage is successfully persisted.");
+		} else {
+			alert("Storage is not persisted.");
+			alert("Trying to persist..:");
+			if (await navigator.storage.persist()) {
+				alert("Successfully turned the storage to be persisted.");
+			} else {
+				alert("Failed to make storage persisted");
+			}
+		}
+	})
+}
+
+//DB volume and quota information (experimental)
+async function showEstimatedQuota() {
+	return await navigator.storage && navigator.storage.estimate ?
+		navigator.storage.estimate() :
+		undefined;
 }

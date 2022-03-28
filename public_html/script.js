@@ -1981,7 +1981,6 @@ function expandSidebar(e) {
 	$("#map_container").hide()
 	$("#toggle_sidebar_control").hide();
 	$("#splitter").hide();
-	$("#sudo_buttons").hide();
 	$("#show_map_button").show();
 	$('#dump1090_infoblock').css('display', 'block');
 	$("#sidebar_container").width("100%");
@@ -1994,7 +1993,6 @@ function showMap() {
 	$("#map_container").show()
 	$("#toggle_sidebar_control").show();
 	$("#splitter").show();
-	$("#sudo_buttons").show();
 	$("#show_map_button").hide();
 	$('#dump1090_infoblock').css('display', 'none');
 	$("#sidebar_container").width("470px");
