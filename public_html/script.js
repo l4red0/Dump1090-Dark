@@ -167,7 +167,9 @@ function processReceiverUpdate(data) {
 				selectPlaneByHex(h, false);
 				getPlaneSpottersApiData(h);
 				getVariousLinksFlight();
-				$("#mainTabs").tabs({active:0});
+				$("#mainTabs").tabs({
+					active: 0
+				});
 				evt.preventDefault();
 			}.bind(undefined, hex));
 
@@ -478,6 +480,13 @@ function end_load_history() {
 	fetchData();
 
 }
+//MOUSE POSITION COORDINATES OL6
+const mousePositionControl = new ol.control.MousePosition({
+  coordinateFormat: ol.coordinate.createStringXY(4),
+  projection: 'EPSG:4326',
+  className: 'mp',
+});
+
 
 // Initalizes the map and starts up our timers to call various functions
 function initialize_map() {
@@ -534,6 +543,8 @@ function initialize_map() {
 		groupSelectStyle: 'group', // Can be 'children' [default], 'group' or 'none'
 		activationMode: 'click'
 	});
+
+	ShowMouseLatLong ? OLMap.addControl(mousePositionControl) : null ;
 
 	OLMap.addControl(layerSwitcher);
 	$('.layer-switcher button').html('<i icon-name="layers"></i>');
@@ -620,7 +631,9 @@ function initialize_map() {
 		if (hex) {
 			selectPlaneByHex(hex, (evt.type === 'dblclick'));
 			FollowSelected = true;
-			$("#mainTabs").tabs({active:0});
+			$("#mainTabs").tabs({
+				active: 0
+			});
 			evt.stopPropagation();
 		} else {
 			deselectAllPlanes();
@@ -634,36 +647,6 @@ function initialize_map() {
 		}
 	});
 
-	//------------------------------------------------------------------------------------
-	// AKISSACK - MOUSE POSITION ----------------------------------- ---- Ref: AK1C starts
-	//------------------------------------------------------------------------------------
-	var llFormat = function(dgts) {
-		return (
-			function(coord1) {
-				var coord2 = [coord1[1], coord1[0]];
-				// AKISSACK - also add range and bearing if site is known --  Ref: AK1D
-				var akret = ol.coordinate.toStringXY(coord2, dgts);
-				if (SitePosition !== null) {
-					var akbrn = (parseInt(getBearing(SitePosition[1], SitePosition[0], coord1[1], coord1[0]))).toString();
-					var akWGS84 = new ol.Sphere(6378137);
-					var akrng = akWGS84.haversineDistance(SitePosition, coord1);
-					return akret + " " + akbrn + "\u00B0 " + format_distance_long(akrng, DisplayUnits, 0);
-				} else { // no range or bearing required, just return akret
-					return akret;
-				}
-			});
-	}
-
-
-	var mousePosition = new ol.control.MousePosition({
-		coordinateFormat: llFormat(3), // ol.coordinate.createStringXY(4),
-		projection: OLMap.getView().getProjection(),
-		//target: document.getElementById('mouseposition').innerHTML = "X "+ akLat,
-		target: document.getElementById('mouseposition'),
-		undefinedHTML: '&nbsp;'
-	});
-
-	if (ShowMouseLatLong) OLMap.addControl(mousePosition);
 	//------------------------------------------------------------------------------------
 	// Ref: AK1C Ends ----------------------------------------------------------- AKISSACK
 	//------------------------------------------------------------------------------------
@@ -1009,7 +992,7 @@ function reaper() {
 			delete Planes[plane.icao];
 			plane.destroy();
 			if ($('tr#plane_row_template').css('display') == 'none') {
-					$(this).remove();
+				$(this).remove();
 			}
 		} else {
 			// Keep it.
@@ -1017,12 +1000,44 @@ function reaper() {
 		}
 	};
 
-
-
 	PlanesOrdered = newPlanes;
 	refreshTableInfo();
 	refreshSelected();
 }
+
+//------------------------------------------------------------------------------------
+// AKISSACK - MOUSE POSITION ----------------------------------- ---- Ref: AK1C starts
+//------------------------------------------------------------------------------------
+/*
+var llFormat = function(dgts) {
+	return (
+		function(coord1) {
+			var coord2 = [coord1[1], coord1[0]];
+			// AKISSACK - also add range and bearing if site is known --  Ref: AK1D
+			var akret = ol.coordinate.toStringXY(coord2, dgts);
+			if (SitePosition !== null) {
+				var akbrn = (parseInt(getBearing(SitePosition[1], SitePosition[0], coord1[1], coord1[0]))).toString();
+				var akWGS84 = new ol.sphere();
+				var akrng = akWGS84.haversineDistance(SitePosition, coord1);
+				return akret + " " + akbrn + "\u00B0 " + format_distance_long(akrng, DisplayUnits, 0);
+			} else { // no range or bearing required, just return akret
+				return akret;
+			}
+		});
+}
+
+
+var mousePosition = new ol.control.MousePosition({
+	coordinateFormat: llFormat(3), // ol.coordinate.createStringXY(4),
+	projection: OLMap.getView().getProjection(),
+	//target: document.getElementById('mouseposition').innerHTML = "X "+ akLat,
+	target: document.getElementById('mouseposition'),
+	undefinedHTML: '&nbsp;'
+});
+
+if (ShowMouseLatLong) OLMap.addControl(mousePosition);
+*/
+
 
 // Page Title update function
 function refreshPageTitle() {

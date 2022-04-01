@@ -355,7 +355,6 @@ progress {
 	text-transform: uppercase;
 	font-weight: 600;
 	background: #222;
-	max-width: 25%;
 }
 
 #acDetailsTable .acDetailsTableValue, #tableGeneric .tableGenericValue {
@@ -553,18 +552,22 @@ select.error, textarea.error, input.error {
 	text-transform: uppercase;
 }
 
-/* AKISSACK - ref: AK1B Starts ---------------------------------------------------------------------------- */
-div#mouseposition {
-	position: absolute;
-	top: 0px;
-	left: 20px;
-	opacity: 1;
-	text-align: left;
-	color: blue;
-}
-
 div.mp {
-	width: 210px;
+	min-width: 113px;
+	border-top: none;
+	font-size: 12px;
+	text-align: center;
+	margin: 1px;
+	transition: all .25s;
+	padding: 2px;
+	color: #fff;
+	position: absolute;
+	bottom: 26px;
+	left: 7px;
+	background: #014f4ebd;
+	border-radius: 0;
+	font-family: 'Inconsolata', monospace;
+	text-transform: uppercase;
 }
 
 #popinfo {
