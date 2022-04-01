@@ -154,10 +154,12 @@ function processReceiverUpdate(data) {
 			}
 
 			plane.tr.addEventListener('click', function(h, evt) {
+
 				if (evt.srcElement instanceof HTMLAnchorElement) {
 					evt.stopPropagation();
 					return;
 				}
+
 
 				if (!$("#map_container").is(":visible")) {
 					showMap();
@@ -165,6 +167,7 @@ function processReceiverUpdate(data) {
 				selectPlaneByHex(h, false);
 				getPlaneSpottersApiData(h);
 				getVariousLinksFlight();
+				$("#mainTabs").tabs({active:0});
 				evt.preventDefault();
 			}.bind(undefined, hex));
 
@@ -617,6 +620,7 @@ function initialize_map() {
 		if (hex) {
 			selectPlaneByHex(hex, (evt.type === 'dblclick'));
 			FollowSelected = true;
+			$("#mainTabs").tabs({active:0});
 			evt.stopPropagation();
 		} else {
 			deselectAllPlanes();
@@ -629,7 +633,6 @@ function initialize_map() {
 			refreshSelected();
 		}
 	});
-
 
 	//------------------------------------------------------------------------------------
 	// AKISSACK - MOUSE POSITION ----------------------------------- ---- Ref: AK1C starts
@@ -1005,8 +1008,8 @@ function reaper() {
 			plane.tr = null;
 			delete Planes[plane.icao];
 			plane.destroy();
-			if ($('tr#plane_row_template').hasClass('hidden')) {
-				$(plane.tr).remove();
+			if ($('tr#plane_row_template').css('display') == 'none') {
+					$(this).remove();
 			}
 		} else {
 			// Keep it.
@@ -1201,7 +1204,7 @@ function getPlaneSpottersApiData(hex) {
 					//delay to not choke API
 					setTimeout(function() {
 						renderPlaneSpottersImage(data);
-					}, 2500);
+					}, 800);
 				} else {
 					$('#selected_infoblock .psImage').html('<i icon-name="image-off"></i><br>NO MEDIA');
 				}
@@ -1220,7 +1223,7 @@ function renderPlaneSpottersImage(data) {
 	var psPhotoUrl = data.photos[0].thumbnail_large.src;
 	var psPhotoAuthor = data.photos[0].photographer;
 
-	var psPhotoDiv = '<img src="' + psPhotoUrl + '" alt="Photo author: ' + psPhotoAuthor + '" style="display:none;"><div class="psPhotoInfo">Author: ' + psPhotoAuthor + ' - <a href="' + psPhotoLink + '" target="_blank">Source</a></div>';
+	var psPhotoDiv = '<img src="' + psPhotoUrl + '" alt="Photo author: ' + psPhotoAuthor + '" style="display:none;"><div class="psPhotoInfo">(c) ' + psPhotoAuthor + ' - <a href="' + psPhotoLink + '" target="_blank">Source</a></div>';
 
 	selectedInfoBlock.html(psPhotoDiv);
 	$('#selected_infoblock .psImage img').fadeIn(400);
@@ -1282,7 +1285,7 @@ function refreshTableInfo() {
 				localStorage.setItem('historyMaxRange', format_distance_brief(MaxRange, DisplayUnits));
 			}
 
-			var classes = "plane_table_row";
+			var classes = "plane_table_row hidden";
 
 			if (tableplane.position !== null) {
 				classes += " vPosition";
@@ -1370,10 +1373,9 @@ function refreshTableInfo() {
 					tableplane.tr.cells[22].innerHTML = getFlightAwarePhotoLink(tableplane.registration);
 				}
 
-				$(tableplane.tr).fadeIn("400", function() {
-					tableplane.tr.className = classes;
-					//console.log(tableplane.icao);
-				});
+				tableplane.tr.className = classes;
+				$(tableplane.tr).fadeIn("300");
+
 			} else {
 				tableplane.tr.cells[3].textContent = (tableplane.registration !== null ? tableplane.registration : "");
 				tableplane.tr.cells[4].textContent = (tableplane.icaotype !== null ? tableplane.icaotype : "");
@@ -1396,10 +1398,8 @@ function refreshTableInfo() {
 				} else {
 					tableplane.tr.cells[19].innerHTML = getFlightAwarePhotoLink(tableplane.registration);
 				}
-
-				$(tableplane.tr).fadeIn("200", function() {
-					tableplane.tr.className = classes;
-				});
+				tableplane.tr.className = classes;
+				$(tableplane.tr).fadeIn("200");
 			}
 		}
 	}
