@@ -2,8 +2,18 @@
 
 This is fork of [alkissack's Dump1090-OpenLayers3-html](https://github.com/alkissack/Dump1090-OpenLayers3-html). For the full picture, please take a look at the documentation and repository from [alkissack's](https://github.com/alkissack/Dump1090-OpenLayers3-html), as I tend to clean up some files and comments that are unnecessary in my opinion.
 
-### This project provides default dark scheme for the dump1090 web interface. Also includes some new, ui-driven features.
-#### Please keep in mind that this is bug heavy, pre-release project with experimental features. Currently developed (and compatible) with stock pi24 dump1090-mutabily with plan to support other dump1090 versions with broader `aircraft.json` data.
+### This project provides default dark theme for the dump1090 web interface. Also includes some new, ui-driven features.
+##### DISCLAIMER: Please keep in mind that this is bug heavy, pre-release project with experimental features. Currently developed (and compatible) with stock pi24 dump1090-mutabily with plan to support other dump1090 versions with broader `aircraft.json` data.
+
+## Key developments
+- Eye-pleasing dark UI with animations and optimized information placement
+- Upgraded main libraries including jQuery and OpenLayers
+- IndexedDB as database to store interesting aircraft data and statistics (works out of the box)
+- Proximity aircraft sound alert
+- New dark-themed maps and map overlays (graticule and country specific for Poland)
+- New, general purpose dump1090 aircraft database tools
+
+More information on current development in [changlog](#changelog).
 
 ## Screenshot
 ![UI printscreen - initial release](https://github.com/l4red0/Dump1090-Dark-UI/blob/master/screen.webp?raw=true)
