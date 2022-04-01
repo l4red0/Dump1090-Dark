@@ -7,4 +7,4 @@ Unlike the previous one, this script is selective - you have to specify which co
 
 ### Credits
  - This is based on ["csv-to-json.py"](https://github.com/alkissack/Dump1090-OpenLayers3-html/blob/master/public_html/sql/tools/create-new-database/csv-to-json.py) from Dump1090-OpenLayers3-html
- - [OpenSky's Aircraft Metadata Database](https://opensky-network.org/data/datasets)
+ - [OpenSky's Aircraft Metadata Database](https://opensky-network.org/data/datasets) 
