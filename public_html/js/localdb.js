@@ -1,5 +1,5 @@
-$.getScript("/js/dexie-export-import.min.js");
-$.getScript("/js/download.min.js");
+$.getScript("./js/dexie-export-import.min.js");
+$.getScript("./js/download.min.js");
 
 var locDb = new Dexie("db1090");
 
@@ -7,6 +7,8 @@ locDb.version(1.5).stores({
 	aircraft: "++id,&icao,lastSeen,firstSeen,flight, sightCount",
 	signalStrenght: "++id,&sector,alt,rssi"
 });
+
+
 
 async function dbAircraftRegister(planeIcao, flight) {
 	var exist = false;

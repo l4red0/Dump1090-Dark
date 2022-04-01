@@ -5,7 +5,41 @@ This is fork of [alkissack's Dump1090-OpenLayers3-html](https://github.com/alkis
 ### This project provides default dark scheme for the dump1090 web interface. Also includes some new, ui-driven features.
 #### Please keep in mind that this is bug heavy, pre-release project with experimental features. Currently developed (and compatible) with stock pi24 dump1090-mutabily with plan to support other dump1090 versions with broader `aircraft.json` data.
 
-### Changelog
+## Screenshot
+![UI printscreen - initial release](https://github.com/l4red0/Dump1090-Dark-UI/blob/master/screen.webp?raw=true)
+> UI preview (v0.16b).
+
+## Instructions
+The contents of public_html are a complete replacement to the webserver root directory on your dump1090-fa, or compatible, installation.
+
+1. Go to your Dump1090 web directory. Usually it's in `/usr/share/dump1090`.
+
+2. Copy and rename your existing `html` or `public_html` folder depending on which Dump1090 version are you using. e.g.
+```
+cp -R ./html ./html_original
+```
+3. Download files from this repo. e.g.
+```
+git clone https://github.com/l4red0/Dump1090-Dark.git
+```
+4. Copy this one in, and remember to rename it as original. e.g.
+```
+cp -R ./Dump1090-Dark/public_html ./html
+```
+5. Set your options in `config.js` file. Especially: `SiteLat`, `SiteLon` and `EndpointDump1090` variables. Save config file and rename it to `config.loc.js`. e.g.
+```
+nano ./html/config.js
+```
+   - And after editing the file press ctrl+O, rename file to `config.loc.js` and hit enter.
+
+6. Clear your browser cache and re-load your Dump1090 page. Usually it's `http://<your-dump1090-ip>/dump1090/index.html`
+
+## Changelog
+**1.04.22 - v0.16b**
+- added some JSON db tools
+- config file: added basic validation and some minor bugfix
+- readme.md: updated instructions
+
 **28.03.22 - v0.16a**
 - added copy to clipboard button for ICAO24
 - added tabs to the right panel in order to handle more data and settings
@@ -58,8 +92,7 @@ This is fork of [alkissack's Dump1090-OpenLayers3-html](https://github.com/alkis
 - jquery upgraded to latest version
 - added lucide icon library
 
-![UI printscreen - initial release](https://github.com/l4red0/Dump1090-Dark-UI/blob/master/screen.webp?raw=true)
-> UI preview (v0.14).
-
-**Quote from original project description**
-> Modifications to the OL3 html files (part of the dump1090-fa branch). The contents of public_html are a complete replacement to the webserver root directory on your dump1090-fa, or compatible, installation. Better to rename your existing html folder, and copy this one in (calling it as per the orignal). Set your options at the bottom of config.js, clear your browser cache and re-load your dump1090-fa page.
+## Credits
+- "Dump1090 Dark" fork by [Leszek Soltys](https://github.com/l4red0)
+- Originally from: [dump1090-fa Debian/Raspbian packages](https://github.com/flightaware/dump1090) and webserver (html sub-directory) changes by [Allan Kissack](https://github.com/alkissack)
+- Which is a fork of: dump1090-mutability for FlightAware's PiAware software.
