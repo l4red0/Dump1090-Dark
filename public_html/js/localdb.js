@@ -3,12 +3,11 @@ $.getScript("./js/download.min.js");
 
 var locDb = new Dexie("db1090");
 
-locDb.version(1.5).stores({
+locDb.version(1.6).stores({
 	aircraft: "++id,&icao,lastSeen,firstSeen,flight, sightCount",
-	signalStrenght: "++id,&sector,alt,rssi"
+	signalStrenght: "++id,&sector,alt,rssi",
+	dailyLog: "&day, acIds",
 });
-
-
 
 async function dbAircraftRegister(planeIcao, flight) {
 	var exist = false;
@@ -49,9 +48,9 @@ async function dbAircraftRegister(planeIcao, flight) {
 					newSightCount = 1;
 				} else {
 					newSightCount = aircraftData.sightCount;
-					//console.log('alredy seen ' + newSightCount + aircraftData.sightCount);
 				}
-
+				//Log to daily
+				dbAircraftRegisterDaily(aircraftData.id);
 			}).then(function() {
 				locDb.aircraft.where('icao').equals(planeIcao).modify({
 					lastSeen: currentTime,
@@ -59,7 +58,39 @@ async function dbAircraftRegister(planeIcao, flight) {
 					sightCount: newSightCount
 				});
 			});
-			//console.log('update: ' + planeIcao);
+
+		}
+	});
+}
+
+//Daily log of aircrafts ids
+async function dbAircraftRegisterDaily(planeIcao) {
+	var exist = false;
+	var today = new Date();
+	const offset = today.getTimezoneOffset();
+	today = new Date(today.getTime() - (offset * 60 * 1000)).toISOString().split('T')[0];
+
+	locDb.dailyLog.where('day').equals(today).count(function(count) {
+		count == 0 ? exist = false : exist = true
+	}).then(function() {
+		if (!exist) {
+			locDb.dailyLog.add({
+				day: today,
+				acIds: []
+			});
+			console.log('Daily log added: ' + today);
+		} else {
+			locDb.dailyLog.get({
+				day: today
+			}).then(function(daily) {
+				addIcao = daily.acIds;
+				if (addIcao.indexOf(planeIcao) === -1) {
+					addIcao.push(planeIcao);
+					locDb.dailyLog.where('day').equals(today).modify({
+						acIds: addIcao,
+					});
+				}
+			});
 		}
 	});
 }
