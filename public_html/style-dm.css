@@ -782,7 +782,9 @@ div.mp {
 }
 
 .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
-	padding: 2px 8px;
+	padding: 2px 7px;
+	color: #fff;
+	font-size: 12px;
 }
 
 .ui-tabs .ui-tabs-panel {
@@ -889,9 +891,29 @@ div.mp {
 	margin-left: -10px;
 }
 
+.legend {
+	display: block;
+	font-size: 11px;
+	float: left;
+	margin: 10px;
+}
+
+.color-a {
+	background: #014f4e;
+}
+
+.color-b {
+	background: #018786;
+}
+
 .ct-series-a .ct-bar {
 	stroke: #014f4e;
-	stroke-width: 10px;
+	stroke-width: 8px;
+}
+
+.ct-series-b .ct-bar {
+	stroke: #018786;
+	stroke-width: 8px;
 }
 
 .ct-grid {

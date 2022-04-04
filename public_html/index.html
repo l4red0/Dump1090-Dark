@@ -157,7 +157,7 @@
 						<li><a href="#selected_infoblock" title="Aircraft info panel"><i icon-name="plane"></i></a></li>
 						<li><a href="#mainTabsLinks" title="External links"><i icon-name="external-link"></i></a></li>
 						<li><a href="#mainTabsFilters" title="Filter data"><i icon-name="sliders"></i><span></a></li>
-						<li><a href="#mainTabsCharts" title="Charts and statistics" onClick="dbAircraftGetDaily();"><i icon-name="pie-chart"></i><span></a></li>
+						<li><a href="#mainTabsCharts" title="Charts and statistics" onClick="dbAircraftGetStats();"><i icon-name="pie-chart"></i><span></a></li>
 						<li><a href="#mainTabsDb" title="Database settings and information"><i icon-name="database"></i><span></a></li>
 						<li><a href="#mainTabsSettings" title="Settings"><i icon-name="settings"></i></a></li>
 					</ul>
@@ -278,8 +278,16 @@
 					</div>
 					<!--charts panel-->
 					<div id="mainTabsCharts" class="mainTabContent">
-						<h3>Unique aircrafts by day</h3>
-						<div class="chartDailySeen ct-chart ct-major-twelfth"></div>
+
+						<div id="secTabsCharts">
+							<ul>
+								<li><a href="#chartsByDay" title="Unique ICAO24 adresses registered by day" class="pointer">AC daily</a></li>
+							</ul>
+							<div id="chartsByDay">
+								<div class="chartDailySeen ct-chart ct-major-twelfth"></div>
+								<span class="legend color-a">All AC this day</span><span class="legend color-b">AC seen first time</span>
+							</div>
+						</div>
 					</div>
 					<!--configuration panel-->
 					<div id="mainTabsSettings" class="mainTabContent">
@@ -294,7 +302,7 @@
 									<option value="metric">Metric</option>
 									<option value="imperial">Imperial</option>
 								</select>
-		-->
+							-->
 						</div>
 
 

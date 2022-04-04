@@ -1271,15 +1271,15 @@ function refreshTableInfo() {
 
 		if (tableplane.seen >= 120 || tableplane.isFiltered()) {
 
-			$(PlanesOrdered[i].tr).fadeOut("400", function() {
+			//$(PlanesOrdered[i].tr).fadeOut("400", function() {
 				tableplane.tr.className = "plane_table_row hidden";
-			});
+			//});
 
 		} else if ($(PlanesOrdered.tr).length && tableplane.seen_pos >= 60) {
 
-			$(PlanesOrdered[i].tr).fadeOut("400", function() {
+			//$(PlanesOrdered[i].tr).fadeOut("400", function() {
 				tableplane.tr.className = "plane_table_row hidden";
-			});
+			//});
 
 		} else {
 			TrackedAircraft++;
@@ -2375,7 +2375,10 @@ function copyToClipboard(element) {
 	$copyVal.remove();
 }
 
+
+
 $(document).ready(function() {
 	$("#mainTabs").tabs();
+	$("#secTabsCharts").tabs();
 	lucide.createIcons();
 });
