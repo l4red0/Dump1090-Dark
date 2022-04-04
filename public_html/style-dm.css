@@ -883,3 +883,23 @@ div.mp {
 	line-height: 1.6em;
 	font-weight: bolder;
 }
+
+/*CHARTS*/
+.ct-chart {
+	margin-left: -10px;
+}
+
+.ct-series-a .ct-bar {
+	stroke: #014f4e;
+	stroke-width: 10px;
+}
+
+.ct-grid {
+	stroke: #00000063;
+	stroke-width: 1px;
+	stroke-dasharray: 2px;
+}
+
+g.ct-labels foreignObject span {
+	color: #a1a1a1;
+}

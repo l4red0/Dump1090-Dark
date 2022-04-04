@@ -1,5 +1,6 @@
 $.getScript("./js/dexie-export-import.min.js");
 $.getScript("./js/download.min.js");
+$.getScript("./js/chartist.min.js"); //Charts are locacl Db dependant
 
 var locDb = new Dexie("db1090");
 
@@ -49,8 +50,7 @@ async function dbAircraftRegister(planeIcao, flight) {
 				} else {
 					newSightCount = aircraftData.sightCount;
 				}
-				//Log to daily
-				dbAircraftRegisterDaily(aircraftData.id);
+				dbAircraftRegisterDaily(aircraftData.id); //Log to daily AC
 			}).then(function() {
 				locDb.aircraft.where('icao').equals(planeIcao).modify({
 					lastSeen: currentTime,
@@ -87,11 +87,29 @@ async function dbAircraftRegisterDaily(planeIcao) {
 				if (addIcao.indexOf(planeIcao) === -1) {
 					addIcao.push(planeIcao);
 					locDb.dailyLog.where('day').equals(today).modify({
-						acIds: addIcao,
+						acIds: addIcao
 					});
 				}
 			});
 		}
+	});
+}
+
+//Get daily stats
+async function dbAircraftGetDaily() {
+	var chartDailySeen = new Chartist.Bar('.chartDailySeen');
+	var dailyStatsDay = [];
+	var dailyStatsCount = [];
+
+	await locDb.table("dailyLog").orderBy('day').toArray().then(function(result) {
+		result.forEach(function(item, index) {
+			dailyStatsDay.push(item.day.slice(5) + '\n' + Object.keys(item.acIds).length);
+			dailyStatsCount.push(Object.keys(item.acIds).length);
+		});
+		chartDailySeen.update({
+			labels: dailyStatsDay,
+			series: [dailyStatsCount]
+		});
 	});
 }
 

@@ -45,9 +45,11 @@ nano ./html/config.js
 6. Clear your browser cache and re-load your Dump1090 page. Usually it's `http://<your-dump1090-ip>/dump1090/index.html`
 
 ## Changelog
-**1.04.22 - v0.16b**
+**4.04.22 - v0.16b**
 - added some JSON db tools
-- config file: added basic validation and some minor bugfix
+- added daily aircraft log (local DB)
+- added new tab: statistics and charts with [chartist.js](https://github.com/gionkunz/chartist-js)
+- config file: added basic validation and some minor bugfixes
 - readme.md: updated instructions
 
 **28.03.22 - v0.16a**
