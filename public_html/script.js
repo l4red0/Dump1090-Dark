@@ -482,9 +482,9 @@ function end_load_history() {
 }
 //MOUSE POSITION COORDINATES OL6
 const mousePositionControl = new ol.control.MousePosition({
-  coordinateFormat: ol.coordinate.createStringXY(4),
-  projection: 'EPSG:4326',
-  className: 'mp',
+	coordinateFormat: ol.coordinate.createStringXY(4),
+	projection: 'EPSG:4326',
+	className: 'mp',
 });
 
 
@@ -544,7 +544,7 @@ function initialize_map() {
 		activationMode: 'click'
 	});
 
-	ShowMouseLatLong ? OLMap.addControl(mousePositionControl) : null ;
+	ShowMouseLatLong ? OLMap.addControl(mousePositionControl) : null;
 
 	OLMap.addControl(layerSwitcher);
 	$('.layer-switcher button').html('<i icon-name="layers"></i>');
@@ -1272,13 +1272,13 @@ function refreshTableInfo() {
 		if (tableplane.seen >= 120 || tableplane.isFiltered()) {
 
 			//$(PlanesOrdered[i].tr).fadeOut("400", function() {
-				tableplane.tr.className = "plane_table_row hidden";
+			tableplane.tr.className = "plane_table_row hidden";
 			//});
 
 		} else if ($(PlanesOrdered.tr).length && tableplane.seen_pos >= 60) {
 
 			//$(PlanesOrdered[i].tr).fadeOut("400", function() {
-				tableplane.tr.className = "plane_table_row hidden";
+			tableplane.tr.className = "plane_table_row hidden";
 			//});
 
 		} else {
@@ -2378,7 +2378,17 @@ function copyToClipboard(element) {
 
 
 $(document).ready(function() {
-	$("#mainTabs").tabs();
-	$("#secTabsCharts").tabs();
+	$("#mainTabs").tabs({
+		beforeActivate: function(event, ui) {
+			dbAircraftGetStats();
+		}
+	});
+	$("#secTabsCharts").tabs({
+		beforeActivate: function(event, ui) {
+			dbAircraftGetStats();
+		}
+	});
+
+	dbAircraftGetStats();
 	lucide.createIcons();
 });

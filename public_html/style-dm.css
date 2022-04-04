@@ -888,7 +888,7 @@ div.mp {
 
 /*CHARTS*/
 .ct-chart {
-	margin-left: -10px;
+	margin: 20px 0px 5px -10px;
 }
 
 .legend {
@@ -896,6 +896,11 @@ div.mp {
 	font-size: 11px;
 	float: left;
 	margin: 10px;
+}
+
+.legendWrap {
+	float: right;
+	display: block;
 }
 
 .color-a {

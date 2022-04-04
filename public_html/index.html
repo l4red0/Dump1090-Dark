@@ -15,10 +15,7 @@
 	<script src="./js/plugins/jquery.validate.min.js"></script>
 	<script src="./js/ol6/ol.js" type="text/javascript"></script>
 	<script src="./js/ol6/ol-layerswitcher.js" type="text/javascript"></script>
-	<!--<script src="./js/chartist.min.js" type="text/javascript"></script>-->
-	<script type="text/javascript" src="./config.loc.js">
-		//CHANGE TO AND EDIT <config.js>
-	</script>
+	<script type="text/javascript" src="./config.loc.js"></script>
 	<script type="text/javascript" src="./js/markers.js"></script>
 	<script type="text/javascript" src="./js/myMarkers.js"></script> <!-- AKISSACK Ref: AK10A -->
 	<script type="text/javascript" src="./js/dbloader.js"></script>
@@ -157,7 +154,7 @@
 						<li><a href="#selected_infoblock" title="Aircraft info panel"><i icon-name="plane"></i></a></li>
 						<li><a href="#mainTabsLinks" title="External links"><i icon-name="external-link"></i></a></li>
 						<li><a href="#mainTabsFilters" title="Filter data"><i icon-name="sliders"></i><span></a></li>
-						<li><a href="#mainTabsCharts" title="Charts and statistics" onClick="dbAircraftGetStats();"><i icon-name="pie-chart"></i><span></a></li>
+						<li><a href="#mainTabsCharts" title="Charts and statistics"><i icon-name="pie-chart"></i><span></a></li>
 						<li><a href="#mainTabsDb" title="Database settings and information"><i icon-name="database"></i><span></a></li>
 						<li><a href="#mainTabsSettings" title="Settings"><i icon-name="settings"></i></a></li>
 					</ul>
@@ -281,11 +278,15 @@
 
 						<div id="secTabsCharts">
 							<ul>
-								<li><a href="#chartsByDay" title="Unique ICAO24 adresses registered by day" class="pointer">AC daily</a></li>
+								<li><a href="#chartsByDay" title="Unique ICAO24 adresses registered by day" class="pointer">Daily</a></li>
+								<li><a href="#chartsTop" title="Most commonly seen aircrafts by ICAO24" class="pointer">Top</a></li>
 							</ul>
 							<div id="chartsByDay">
+								<div class="legendWrap"><span class="legend color-a">All AC this day</span><span class="legend color-b">AC seen first time</span></div>
 								<div class="chartDailySeen ct-chart ct-major-twelfth"></div>
-								<span class="legend color-a">All AC this day</span><span class="legend color-b">AC seen first time</span>
+							</div>
+							<div id="chartsTop">
+								<div class="chartTopSeen ct-chart ct-major-twelfth"></div>
 							</div>
 						</div>
 					</div>
