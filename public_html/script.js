@@ -985,7 +985,7 @@ function reaper() {
 	for (var i = 0; i < PlanesOrdered.length; ++i) {
 		var plane = PlanesOrdered[i];
 
-		if (plane.seen > 300) {
+		if (plane.seen > 250) {
 			// Reap it.
 			plane.tr.parentNode.removeChild(plane.tr);
 			plane.tr = null;
@@ -1271,15 +1271,15 @@ function refreshTableInfo() {
 
 		if (tableplane.seen >= 120 || tableplane.isFiltered()) {
 
-			//$(PlanesOrdered[i].tr).fadeOut("400", function() {
+			$(PlanesOrdered[i].tr).fadeOut("400", function() {
 			tableplane.tr.className = "plane_table_row hidden";
-			//});
+			});
 
 		} else if ($(PlanesOrdered.tr).length && tableplane.seen_pos >= 60) {
 
-			//$(PlanesOrdered[i].tr).fadeOut("400", function() {
+			$(PlanesOrdered[i].tr).fadeOut("400", function() {
 			tableplane.tr.className = "plane_table_row hidden";
-			//});
+			});
 
 		} else {
 			TrackedAircraft++;
