@@ -1,7 +1,5 @@
 $.getScript("./js/dexie-export-import.min.js");
 $.getScript("./js/download.min.js");
-$.getScript("./js/chartist.min.js"); //Charts are locacl Db dependant
-$.getScript("./js/chartist-plugin-tooltip.min.js");
 
 var locDb = new Dexie("db1090");
 
@@ -97,8 +95,12 @@ async function dbAircraftRegisterDaily(planeIcao) {
 
 //Get stats from DB and draw charts
 async function dbAircraftGetStats() {
-	var chartDailySeen = new Chartist.Bar('.chartDailySeen', {}, {plugins: [Chartist.plugins.tooltip()] });
-	var chartTopSeen = new Chartist.Bar('.chartTopSeen', {}, {plugins: [Chartist.plugins.tooltip()]});
+	var chartDailySeen = new Chartist.Bar('.chartDailySeen', {}, {
+		plugins: [Chartist.plugins.tooltip()]
+	});
+	var chartTopSeen = new Chartist.Bar('.chartTopSeen', {}, {
+		plugins: [Chartist.plugins.tooltip()]
+	});
 	var dailyStatsDay = [];
 	var dailyStatsCount = [];
 	var dailyStatsNewCount = [];
@@ -155,21 +157,50 @@ async function dbStats() {
 
 //exporting dexie DB
 async function dbExport() {
-	console.log('export initiated');
+	$('.dbOpInfo').html('export initiated');
 	const exportLink = document.getElementById('exportLink');
 	async function blobGenerate() {
 		try {
 			const blob = await locDb.export({
 				prettyJson: false,
-				//progressCallback
+				progressCallback
 			});
 			console.log(blob);
 			download(blob, "db1090_export.json", "application/json");
 		} catch (error) {
-			console.error('' + error);
+			$('.dbOpInfo').html('' + error);
 		}
 	};
 	blobGenerate();
+}
+
+//importing dexie DB
+function dbImportHandle() {
+	$('#jsonUploadInput').trigger('click');
+	$("#jsonUploadInput").change(function(e) {
+		dbImport();
+	});
+}
+
+async function dbImport() {
+	const file = jsonUploadInput.files[0];
+	try {
+		if (!file) throw new Error(`Only files can be dropped here`);
+		$('.dbOpInfo').html("Importing " + file.name);
+		await locDb.delete();
+		locDb = await Dexie.import(file, {
+			progressCallback
+		});
+	} catch (error) {
+		$('.dbOpInfo').html('' + error);
+	}
+}
+
+function progressCallback({
+	totalRows,
+	completedRows
+}) {
+	$('.dbOpInfo').html(`DB operation progress: ${completedRows} of ${totalRows} rows completed`).fadeOut(5000);
 }
 
 //check if indexedDB is persistant

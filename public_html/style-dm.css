@@ -618,6 +618,11 @@ div.mp {
 	padding: 2px;
 }
 
+.dbOpInfo {
+	margin: 12px;
+	font-size: 11px;
+}
+
 .flag {
 	width: 20px;
 	height: 12px;
@@ -889,7 +894,7 @@ div.mp {
 
 /*CHARTS*/
 .ct-chart {
-	margin: 20px 0px 5px -10px;
+	margin: 15px 0px 5px -10px;
 }
 
 .legend {
