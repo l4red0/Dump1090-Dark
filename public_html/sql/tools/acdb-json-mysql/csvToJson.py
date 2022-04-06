@@ -43,24 +43,34 @@ def readcsv(name, infile, blocks):
     if not 'icao24' in reader.fieldnames:
         raise RuntimeError('CSV should have at least an "icao24" column')
 
-    for row in dictFilter(reader,'icao24', 'country', 'image', 'interesting', 'op', 'owner', 'short', 'trail', 'type', 'airforce', 't', 'r',
-    'operatoricao', 'operatorcallsign', 'built', 'm', 'icaoaircrafttype', 'serialnumber', 'registered', 'engines', 'categoryDescription', 'notes' ): #select columns you want to include in output json
+# select columns you want to include in output json. Complete column list:
+# 'icao24', 'country', 'image', 'interesting', 'op', 'owner', 'short', 'trail', 'type', 'airforce', 't', 'r', 'operatoricao', 'operatorcallsign', 'built', 'm', 'icaoaircrafttype', 'serialnumber', 'registered', 'engines', 'categoryDescription', 'notes'
+    for row in dictFilter(reader,'icao24', 'image', 'interesting', 'op', 'short', 'trail', 'type', 'airforce', 't', 'r',
+    'operatoricao', 'operatorcallsign', 'built', 'm', 'icaoaircrafttype', 'serialnumber', 'engines' ):
         icao24 = row['icao24']
-        row['Owner'] = row.pop('owner')
+        if row['built'] == "0":
+            row['built'] = ""
+        if row['trail'] == "0":
+            row['trail'] = ""
+
+        if row['image'] == "":
+            if row['icaoaircrafttype'] != "":
+                row['image'] = row['icaoaircrafttype']
+
+        row['icaoaircrafttype'] = ""
         row['Int'] = row.pop('interesting')
+        row['Image'] = row.pop('image')
         row['Built'] = row.pop('built')
         row['Op'] = row.pop('op')
         row['Type'] = row.pop('type')
         row['Force'] = row.pop('airforce')
         row['Short'] = row.pop('short')
         row['Trail'] = row.pop('trail')
-        html.unescape(row['engines'])
-        html.unescape(row['notes'])
 
         entry = {}
         for k,v in list(row.items()):
             if k != 'icao24' and v != '':
-                entry[k] = v
+                entry[k] = html.unescape(v).replace('<br>', '').replace('&nbsp;', ' ')
 
         if len(entry) > 0:
             ac_count += 1
