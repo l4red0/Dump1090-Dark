@@ -869,6 +869,10 @@ div.mp {
 	width: 18px;
 }
 
+.copyBtn {
+	width: 32px;
+}
+
 /*jQuery UI Tooltips overwrite*/
 .ui-tooltip {
 	background: #000;
@@ -894,7 +898,7 @@ div.mp {
 
 /*CHARTS*/
 .ct-chart {
-	margin: 15px 0px 5px -10px;
+	margin: 0px 0px 5px -10px;
 }
 
 .legend {
@@ -907,6 +911,7 @@ div.mp {
 .legendWrap {
 	float: right;
 	display: block;
+	margin: -10px 16px 0px 0px;
 }
 
 .color-a {

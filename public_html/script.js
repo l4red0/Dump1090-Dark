@@ -2372,11 +2372,16 @@ function sndAlert(toggle, enable, distanceFactor) {
 }
 
 function copyToClipboard(element) {
+	$('.iconBtnDark').html('&check;');
 	var $copyVal = $("<input>");
 	$("body").append($copyVal);
 	$copyVal.val($(element).text()).select();
 	document.execCommand("copy");
 	$copyVal.remove();
+
+	setTimeout(function() {
+		$('.iconBtnDark').html('<i icon-name="clipboard-copy"></i>');
+	}, 1000);
 }
 
 
