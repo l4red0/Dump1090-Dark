@@ -9,6 +9,7 @@ This is fork of [alkissack's Dump1090-OpenLayers3-html](https://github.com/alkis
 - Eye-pleasing dark UI with animations and optimized information placement
 - Upgraded main libraries including jQuery and OpenLayers
 - IndexedDB as database to store interesting aircraft data and statistics (works out of the box)
+- Charts and statistics based on local data (most seen aircrafts, daily sight count etc.)
 - Proximity aircraft sound alert
 - New dark-themed maps and map overlays (graticule and country specific for Poland)
 - New, general purpose dump1090 aircraft database tools
@@ -45,6 +46,10 @@ nano ./html/config.js
 6. Clear your browser cache and re-load your Dump1090 page. Usually it's `http://<your-dump1090-ip>/dump1090/index.html`
 
 ## Changelog
+**6.04.22 - v0.17**
+- added Import DB option. Now it's possible to save and restore complete IndexedDB.
+- added tools `sql/tools/acdb-json-mysql` for merging multiple JSON aircraft DB in one. (Using php, python and mysql)
+
 **4.04.22 - v0.16b**
 - added some JSON db tools
 - added daily aircraft log (local DB)
@@ -108,3 +113,6 @@ nano ./html/config.js
 - "Dump1090 Dark" fork by [Leszek Soltys](https://github.com/l4red0)
 - Originally from: [dump1090-fa Debian/Raspbian packages](https://github.com/flightaware/dump1090) and webserver (html sub-directory) changes by [Allan Kissack](https://github.com/alkissack)
 - Which is a fork of: dump1090-mutability for FlightAware's PiAware software.
+
+#### Libraries and dependences
+[openLayers](https://github.com/openlayers/openlayers), [jQuery](https://github.com/jquery/jquery), [lucide](https://github.com/lucide-icons/lucide), [dexie](https://github.com/dexie/Dexie.js), [chartist.js](https://github.com/gionkunz/chartist-js)
