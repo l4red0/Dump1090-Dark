@@ -43,7 +43,7 @@ async function dbAircraftRegister(planeIcao, flight) {
 			}).then(function(aircraftData) {
 				if (Date.now() > aircraftData.lastSeen + (1000 * 60 * 60)) {
 					newSightCount = aircraftData.sightCount + 1;
-					console.log('seen more than hour ago ' + aircraftData.icao);
+					//console.log('seen more than hour ago ' + aircraftData.icao);
 				} else if (aircraftData.sightCount == null) {
 					newSightCount = 1;
 				} else {

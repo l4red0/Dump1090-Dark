@@ -1272,13 +1272,17 @@ function refreshTableInfo() {
 		if (tableplane.seen >= 120 || tableplane.isFiltered()) {
 
 			$(PlanesOrdered[i].tr).fadeOut("400", function() {
-			tableplane.tr.className = "plane_table_row hidden";
+				if (typeof PlanesOrdered[i] != "undefined") {
+					tableplane.tr.className = "plane_table_row hidden";
+				}
 			});
 
 		} else if ($(PlanesOrdered.tr).length && tableplane.seen_pos >= 60) {
 
 			$(PlanesOrdered[i].tr).fadeOut("400", function() {
-			tableplane.tr.className = "plane_table_row hidden";
+				if (typeof PlanesOrdered[i] != "undefined") {
+					tableplane.tr.className = "plane_table_row hidden";
+				}
 			});
 
 		} else {
