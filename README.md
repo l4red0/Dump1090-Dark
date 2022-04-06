@@ -47,8 +47,9 @@ nano ./html/config.js
 
 ## Changelog
 **6.04.22 - v0.17**
-- added Import DB option. Now it's possible to save and restore complete IndexedDB.
+- added Import local DB option. Now it's possible to save and restore complete IndexedDB.
 - added tools `sql/tools/acdb-json-mysql` for merging multiple JSON aircraft DB in one. (Using php, python and mysql)
+- updated static JSON aircraft database. This is large update from ~180k to ~525k records.
 
 **4.04.22 - v0.16b**
 - added some JSON db tools

@@ -46,7 +46,7 @@ def readcsv(name, infile, blocks):
 # select columns you want to include in output json. Complete column list:
 # 'icao24', 'country', 'image', 'interesting', 'op', 'owner', 'short', 'trail', 'type', 'airforce', 't', 'r', 'operatoricao', 'operatorcallsign', 'built', 'm', 'icaoaircrafttype', 'serialnumber', 'registered', 'engines', 'categoryDescription', 'notes'
     for row in dictFilter(reader,'icao24', 'image', 'interesting', 'op', 'short', 'trail', 'type', 'airforce', 't', 'r',
-    'operatoricao', 'operatorcallsign', 'built', 'm', 'icaoaircrafttype', 'serialnumber', 'engines' ):
+    'operatoricao', 'operatorcallsign', 'built', 'm', 'icaoaircrafttype', 'engines' ):
         icao24 = row['icao24']
         if row['built'] == "0":
             row['built'] = ""
