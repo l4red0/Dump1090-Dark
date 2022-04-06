@@ -107,13 +107,13 @@ async function dbAircraftGetStats() {
 	let allTopSeen = [];
 	let allTopSeenCount = [];
 
-	await locDb.table("dailyLog").orderBy('day').limit(14).toArray().then(function(result) {
+	await locDb.table("dailyLog").orderBy('day').limit(7).reverse().toArray().then(function(result) {
 		result.forEach(function(item, index) {
 			dailyStatsDay.push(item.day);
 			dailyStatsCount.push(Object.keys(item.acIds).length);
 		});
 	}).then(function(result) {
-		locDb.table("aircraft").orderBy('firstSeen').reverse().toArray().then(function(result) {
+		locDb.table("aircraft").orderBy('firstSeen').toArray().then(function(result) {
 			result.forEach(function(item) {
 				var oneDay = new Date(item.firstSeen).toISOString().split('T')[0];
 				if (dailyStatsDay.includes(oneDay)) {
@@ -122,8 +122,8 @@ async function dbAircraftGetStats() {
 			});
 		}).then(function(result) {
 			chartDailySeen.update({
-				labels: dailyStatsDay,
-				series: [dailyStatsCount, Object.values(dailyStatsNewCount).reverse()]
+				labels: dailyStatsDay.reverse(),
+				series: [dailyStatsCount.reverse(), Object.values(dailyStatsNewCount)]
 			});
 		});
 	});
@@ -134,8 +134,8 @@ async function dbAircraftGetStats() {
 			allTopSeenCount.push(item.sightCount);
 		});
 		chartTopSeen.update({
-			labels: allTopSeen,
-			series: [allTopSeenCount]
+			labels: allTopSeen.reverse(),
+			series: [allTopSeenCount.reverse()],
 		});
 	});
 }

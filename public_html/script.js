@@ -2381,6 +2381,7 @@ $(document).ready(function() {
 	$("#mainTabs").tabs({
 		beforeActivate: function(event, ui) {
 			dbAircraftGetStats();
+			dbStats();
 		}
 	});
 	$("#secTabsCharts").tabs({
