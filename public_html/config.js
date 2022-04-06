@@ -212,7 +212,6 @@
 	// ----------------------------------------------------------------------------------------------------------------------------
 	ShowMyPreferences = true; // Required to enable the FOUR options below
 	ShowAdditionalData = true;
-	ExtendedIcons = true; // https://github.com/alkissack/Dump1090-OpenLayers3-html/wiki/10.-Aircraft-icon-changes
 	ShowMyIcons = false; // https://github.com/alkissack/Dump1090-OpenLayers3-html/wiki/10.-Aircraft-icon-changes
 	ShowSimpleColours = false; // https://github.com/alkissack/Dump1090-OpenLayers3-html/wiki/9.-Minor-personal-preference-changes
 	// ******************************************************************************

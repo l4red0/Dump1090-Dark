@@ -407,11 +407,8 @@ PlaneObject.prototype.updateIcon = function() {
 	var col = this.getMarkerColor();
 	var opacity = 1;
 	var outline = (this.position_from_mlat ? OutlineMlatColor : OutlineADSBColor);
-	var baseMarker = getBaseMarker(this.category, this.icaotype, this.typeDescription, this.wtc);
+	var baseMarker = getBaseMarker(this.category, this.icaotype, this.typeDescription, this.wtc, this.ac_category);
 	if (ShowMyPreferences) { // Ref: AK9D starts
-		if (ExtendedIcons) { // Ref: AK10B starts
-			var baseMarker = getMyBaseMarker(this.category, this.icaotype, this.typeDescription, this.wtc, this.ac_category);
-		} // Ref: AK10B ends
 		var adjWeight = (this.is_interesting ? 0.5 : 0.5)
 		var weight = ((this.selected ? 0.75 : adjWeight) / baseMarker.scale).toFixed(1);
 		if (this.is_interesting == 'Y') {
