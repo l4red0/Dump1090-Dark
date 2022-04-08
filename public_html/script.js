@@ -1269,20 +1269,14 @@ function refreshTableInfo() {
 			dbAircraftRegister(tableplane.icao, tableplane.flight); //locDb
 		}
 
-		if (tableplane.seen >= 120 || tableplane.isFiltered()) {
-
+		if (tableplane.seen >= 120 || tableplane.isFiltered() && typeof PlanesOrdered[i] != "undefined") {
 			$(PlanesOrdered[i].tr).fadeOut("400", function() {
-				if (typeof PlanesOrdered[i] != "undefined") {
-					tableplane.tr.className = "plane_table_row hidden";
-				}
+				tableplane.tr.className = "plane_table_row hidden";
 			});
-
-		} else if ($(PlanesOrdered.tr).length && tableplane.seen_pos >= 60) {
+		} else if ($(PlanesOrdered.tr).length && tableplane.seen_pos >= 60 && typeof PlanesOrdered[i] != "undefined") {
 
 			$(PlanesOrdered[i].tr).fadeOut("400", function() {
-				if (typeof PlanesOrdered[i] != "undefined") {
-					tableplane.tr.className = "plane_table_row hidden";
-				}
+				tableplane.tr.className = "plane_table_row hidden";
 			});
 
 		} else {
