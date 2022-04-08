@@ -480,6 +480,7 @@ var TypeDesignatorIcons = {
 	'B737': _b738,
 	'B738': _b738,
 	'B739': _b738,
+  'B38M': _b738,
 
 	'B741': _b744,
 	'B742': _b744,
@@ -491,6 +492,7 @@ var TypeDesignatorIcons = {
 	'BLCF': _b744,
 	'BSCA': _b744, // hah!
 	'B748': _b744,
+
 
 	'B772': _b777, // all pretty similar except for length
 	'B77W': _b777,
@@ -531,7 +533,8 @@ var TypeDescriptionIcons = {
 	'L2J-H': _b777,
 
 	'L4T': _c130,
-	'L4J-H': _b744
+	'L4J-H': _b744,
+	'A20N': _a320
 };
 
 var CategoryIcons = {
@@ -544,15 +547,16 @@ var CategoryIcons = {
 };
 
 function getBaseMarker(category, typeDesignator, typeDescription, wtc, ac_category) {
-
+  if (typeDesignator in TypeDesignatorIcons) {
+		return TypeDesignatorIcons[typeDesignator];
+	}
+  
   // AKISSACK icon category, merged from `myMarker.js`
 	if (ac_category in AkCategory) {
 		return AkCategory[ac_category];
 	}
 
-	if (typeDesignator in TypeDesignatorIcons) {
-		return TypeDesignatorIcons[typeDesignator];
-	}
+
 
   if (category in CategoryIcons) {
     return CategoryIcons[category];
@@ -574,7 +578,8 @@ function getBaseMarker(category, typeDesignator, typeDescription, wtc, ac_catego
 		if (basicType in TypeDescriptionIcons) {
 			return TypeDescriptionIcons[basicType];
 		}
-	}
+  }
+
 
 
 
