@@ -165,7 +165,6 @@ function processReceiverUpdate(data) {
 					showMap();
 				}
 				selectPlaneByHex(h, false);
-				getPlaneSpottersApiData(h);
 				getVariousLinksFlight();
 				$("#mainTabs").tabs({
 					active: 0
@@ -1191,7 +1190,6 @@ function refreshSelected() {
 	if (selected.registration != null) {
 		$('#selected_photo_link').html(getJetPhotosPhotoLink(selected.registration));
 		$('#selected_photo_link').append(" &bull; " + getFlightAwarePhotoLink(selected.registration));
-		$('#selected_photo_link').append(" &bull; " + getPlaneSpottersPhotoLink(selected.registration));
 	}
 }
 
@@ -1235,7 +1233,7 @@ function renderPlaneSpottersImage(data) {
 
 	var selectedInfoBlock = $('#selected_infoblock .psImage');
 	var psPhotoLink = data.photos[0].link;
-	var psPhotoUrl = data.photos[0].thumbnail_large.src;
+	var psPhotoUrl = data.photos[0].thumbnail_large.src; // or .thumbnail.src
 	var psPhotoAuthor = data.photos[0].photographer;
 
 	var psPhotoDiv = '<img src="' + psPhotoUrl + '" alt="Photo author: ' + psPhotoAuthor + '" style="display:none;"><div class="psPhotoInfo">(c) ' + psPhotoAuthor + ' - <a href="' + psPhotoLink + '" target="_blank">Source</a></div>';
@@ -2217,14 +2215,6 @@ function getFlightAwarePhotoLink(registration) {
 function getJetPhotosPhotoLink(registration) {
 	if (registration !== null && registration !== "") {
 		return "<a target=\"_blank\" href=\"https://www.jetphotos.com/registration/" + registration.trim() + "\">[Photo] jetphotos.com</a>";
-	}
-
-	return "";
-}
-
-function getPlaneSpottersPhotoLink(registration) {
-	if (registration !== null && registration !== "") {
-		return "<a target=\"_blank\" href=\"https://www.planespotters.net/photos/reg/" + registration.trim() + "\">[Photo] planespotters.net</a>";
 	}
 
 	return "";
