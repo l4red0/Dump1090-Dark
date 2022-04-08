@@ -46,6 +46,10 @@ nano ./html/config.js
 6. Clear your browser cache and re-load your Dump1090 page. Usually it's `http://<your-dump1090-ip>/dump1090/index.html`
 
 ## Changelog
+**8.04.22 - v0.17a**
+- updated: Aircraft Type Designators `public_html\db\aircraft_types\icao_aircraft_types.json`
+- initial markers (aircraft icons on map) refactoring and update. This is part of longer process with deeper changes to markers mechanism so regressions are expected.
+
 **6.04.22 - v0.17**
 - added Import local DB option. Now it's possible to save and restore complete IndexedDB.
 - added tools `sql/tools/acdb-json-mysql` for merging multiple JSON aircraft DB in one. (Using php, python and mysql)
