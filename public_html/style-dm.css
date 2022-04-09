@@ -81,21 +81,21 @@ html, body {
 #splitter {
 	flex: 0 0 6px;
 	cursor: col-resize;
-	background-color: #464646;
+	background-color: #3a3a3a;
 	left: 0 !important;
+	width: 5px;
 }
 
 #splitter:after {
 	content: '\2807';
-	color: #303030;
-	font-size: 28px;
+	color: #181818;
+	font-size: 22px;
 	line-height: 100vh;
 	margin-left: -3px;
 }
 
 #sidebar_canvas {
 	flex: 1 1 auto;
-	padding: 10px;
 	display: flex;
 	overflow: auto;
 	flex-direction: column;
@@ -388,10 +388,9 @@ progress {
 .psImage {
 	display: block;
 	width: 200px;
-	height: 133px;
+	min-height: 133px;
 	float: left;
 	position: relative;
-	margin-left: 8px;
 	margin-right: 4px;
 	text-align: center;
 	background: #363636;
@@ -594,7 +593,6 @@ div.mp {
 	color: #cbcbcb;
 	height: 20px;
 	padding: 8px 0 0 0;
-	margin: 3px -17px -10px 3px;
 	background: #000000;
 }
 
@@ -667,9 +665,9 @@ div.mp {
 }
 
 #planes_table {
-	height: 70vh;
+	height: 68vh;
 	overflow-y: auto;
-	margin: -9px -9px 2px -2px;
+	margin: 0px 0px 5px 5px;
 }
 
 /*styled scrollbar*/
@@ -716,17 +714,17 @@ div.mp {
 }
 
 .acInfoHeader {
-	margin: 8px;
+	margin: 0px 5px 5px 0px;
 	font-size: 12px;
 	display: flex;
 	justify-content: space-between;
-	align-items: flex-start;
 }
 
 .acInfoHeader h2 {
 	display: flex;
 	margin-block-start: 0px;
 	margin-block-end: 0px;
+	align-items: center;
 }
 
 .acInfoHeaderAdditional {
@@ -753,13 +751,10 @@ div.mp {
 	position: relative;
 	width: auto;
 	z-index: 99;
-	height: 28vh;
 	overflow: hidden;
-	margin-top: auto;
-	margin-right: -9px;
-	margin-left: -3px;
-	margin-bottom: -10px;
-	min-height: 295px;
+	margin: auto 0px -8px 5px;
+	min-height: 300px;
+	height: 30vh;
 }
 
 .mainTabContent {
@@ -795,13 +790,10 @@ div.mp {
 
 .ui-tabs .ui-tabs-panel {
 	background: #2a2a2a;
-	padding: 5px;
+	padding: 6px;
 	height: 100%;
 	overflow: auto;
-	margin-top: auto;
-	margin-right: -6px;
-	margin-left: -3px;
-	margin-bottom: 0px;
+	margin: auto -6px 0px -3px;
 	border-top: 1px solid #363636;
 }
 
