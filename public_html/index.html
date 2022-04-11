@@ -152,7 +152,6 @@
 				<div id="mainTabs">
 					<ul>
 						<li><a href="#selected_infoblock" title="Aircraft info panel"><i icon-name="plane"></i></a></li>
-						<li><a href="#mainTabsLinks" title="External links"><i icon-name="external-link"></i></a></li>
 						<li><a href="#mainTabsFilters" title="Filter data"><i icon-name="sliders"></i><span></a></li>
 						<li><a href="#mainTabsCharts" title="Charts and statistics"><i icon-name="pie-chart"></i><span></a></li>
 						<li><a href="#mainTabsDb" title="Database settings and information"><i icon-name="database"></i><span></a></li>
@@ -170,94 +169,101 @@
 							<div class="icao24Block">
 
 								<span id="selected_emergency"></span>
-								<div class="icao24value"><span>ICAO24</span><a href="http://www.airframes.org/" onclick="document.getElementById('horrible_hack').submit.call(document.getElementById('airframes_post')); return false;"
+								<div class="icao24value" title="Aircraft unique ICAO 24-bit address (aka 'Mode-S', 'ICAO24' or 'hex code') since 2007 based on registration allocated by the relevant civil aviation authority."><span>ICAO24</span><a href="http://www.airframes.org/" onclick="document.getElementById('horrible_hack').submit.call(document.getElementById('airframes_post')); return false;"
 									 title="[ICAO] airframes.org" id="selected_icao"></a></div>
 								<button onclick="copyToClipboard('#selected_icao')" class="iconBtnDark copyBtn" title="Copy to clipboard"><i icon-name="clipboard-copy"></i></button>
 							</div>
 						</div>
 
-						<div class="psImage"><i icon-name="image-off"></i><br>NO MEDIA</div>
-						<!--aircraft detailed data-->
-						<table id="acDetailsTable">
-							<tr class="infoblock_body">
-								<td class="acDetailsTableLabel"><i icon-name="plane"></i>MODEL</td>
-								<td class="acDetailsTableValue" colspan="3"><span id="selected_model"></span></td>
-							</tr>
+						<div id="secTabsInfo">
+							<ul>
+								<li><a href="#tabInfoBasic" title="Overall AC data - live and from DB" class="pointer">Basic</a></li>
+								<li><a href="#tabInfoExternal" title="Links to additional data on external sites" class="pointer">External links</a></li>
+							</ul>
+							<div id="tabInfoBasic">
+								<div class="psImage"><i icon-name="image-off"></i><br>NO MEDIA</div>
+								<!--aircraft detailed data-->
+								<table id="acDetailsTable">
+									<tr class="infoblock_body">
+										<td class="acDetailsTableLabel"><i icon-name="plane"></i>MODEL</td>
+										<td class="acDetailsTableValue" colspan="3"><span id="selected_model"></span></td>
+									</tr>
 
-							<tr class="infoblock_body">
-								<td class="acDetailsTableLabel"><i icon-name="locate-fixed"></i>Position</td>
-								<td class="acDetailsTableValue" colspan="3"><span id="selected_position"></span></td>
-							</tr>
+									<tr class="infoblock_body">
+										<td class="acDetailsTableLabel"><i icon-name="locate-fixed"></i>Position</td>
+										<td class="acDetailsTableValue" colspan="3"><span id="selected_position"></span></td>
+									</tr>
 
-							<tr id="infoblock_country" class="infoblock_body">
-								<td class="acDetailsTableLabel"><i icon-name="flag"></i>COUNTRY</td>
-								<td class="acDetailsTableValue"><span id="selected_country"></span></td>
-								<td class="acDetailsTableLabel"><i icon-name="move-vertical"></i>ALTITUDE</td>
-								<td class="acDetailsTableValue"><span id="selected_altitude"></span></td>
-							</tr>
+									<tr id="infoblock_country" class="infoblock_body">
+										<td class="acDetailsTableLabel"><i icon-name="flag"></i>COUNTRY</td>
+										<td class="acDetailsTableValue"><span id="selected_country"></span></td>
+										<td class="acDetailsTableLabel"><i icon-name="move-vertical"></i>ALTITUDE</td>
+										<td class="acDetailsTableValue"><span id="selected_altitude"></span></td>
+									</tr>
 
-							<tr class="infoblock_body">
-								<td class="acDetailsTableLabel"><i icon-name="form-input"></i>REGISTRATION</td>
-								<td class="acDetailsTableValue"><span id="selected_registration"></span></td>
-								<td class="acDetailsTableLabel"><i icon-name="ruler"></i>Distance</td>
-								<td class="acDetailsTableValue"><span id="selected_sitedist"></span></td>
+									<tr class="infoblock_body">
+										<td class="acDetailsTableLabel"><i icon-name="form-input"></i>REGISTRATION</td>
+										<td class="acDetailsTableValue"><span id="selected_registration"></span></td>
+										<td class="acDetailsTableLabel"><i icon-name="ruler"></i>Distance</td>
+										<td class="acDetailsTableValue"><span id="selected_sitedist"></span></td>
 
-							</tr>
-							<tr class="infoblock_body">
-								<td class="acDetailsTableLabel">AC category</td>
-								<td class="acDetailsTableValue"><span id="selected_category"></span></td>
-								<td class="acDetailsTableLabel"><i icon-name="gauge"></i>SPEED</td>
-								<td class="acDetailsTableValue"><span id="selected_speed"></span></td>
-							</tr>
+									</tr>
+									<tr class="infoblock_body">
+										<td class="acDetailsTableLabel">AC category</td>
+										<td class="acDetailsTableValue"><span id="selected_category"></span></td>
+										<td class="acDetailsTableLabel"><i icon-name="gauge"></i>SPEED</td>
+										<td class="acDetailsTableValue"><span id="selected_speed"></span></td>
+									</tr>
 
-							<tr class="infoblock_body">
-								<td class="acDetailsTableLabel">AC ICAO Code</td>
-								<td class="acDetailsTableValue"><span id="selected_icaotype"></span></td>
-								<td class="acDetailsTableLabel" title="Vertical rate / Rate of climb"><i icon-name="trending-up"></i>ROC</td>
-								<td class="acDetailsTableValue"><span id="selected_vertical_rate"></span></td>
-							</tr>
+									<tr class="infoblock_body">
+										<td class="acDetailsTableLabel">AC ICAO Code</td>
+										<td class="acDetailsTableValue"><span id="selected_icaotype"></span></td>
+										<td class="acDetailsTableLabel" title="Vertical rate / Rate of climb"><i icon-name="trending-up"></i>ROC</td>
+										<td class="acDetailsTableValue"><span id="selected_vertical_rate"></span></td>
+									</tr>
 
-							<tr class="infoblock_body">
-								<td class="acDetailsTableLabel"><i icon-name="binary"></i>Messages</td>
-								<td class="acDetailsTableValue"><span id="selected_message_count"></span></td>
-								<td class="acDetailsTableLabel"><i icon-name="radio"></i>RSSI</td>
-								<td class="acDetailsTableValue"><span id="selected_rssi"></span></td>
+									<tr class="infoblock_body">
+										<td class="acDetailsTableLabel"><i icon-name="binary"></i>Messages</td>
+										<td class="acDetailsTableValue"><span id="selected_message_count"></span></td>
+										<td class="acDetailsTableLabel"><i icon-name="radio"></i>RSSI</td>
+										<td class="acDetailsTableValue"><span id="selected_rssi"></span></td>
 
-							</tr>
+									</tr>
 
-							<tr class="infoblock_body">
-								<td class="acDetailsTableLabel"><i icon-name="history"></i>Last seen</td>
-								<td class="acDetailsTableValue"><span id="selected_seen"></span></td>
-								<td class="acDetailsTableLabel"><i icon-name="compass"></i>Track</td>
-								<td class="acDetailsTableValue"><span id="selected_track"></span></td>
-							</tr>
+									<tr class="infoblock_body">
+										<td class="acDetailsTableLabel"><i icon-name="history"></i>Last seen</td>
+										<td class="acDetailsTableValue"><span id="selected_seen"></span></td>
+										<td class="acDetailsTableLabel"><i icon-name="compass"></i>Track</td>
+										<td class="acDetailsTableValue"><span id="selected_track"></span></td>
+									</tr>
 
-							<tr class="infoblock_body">
-								<td class="acDetailsTableLabel"><i icon-name="megaphone"></i>SQUAWK</td>
-								<td class="acDetailsTableValue"><span id="selected_squawk"></span></td>
-								<td class="acDetailsTableLabel"><i icon-name="network"></i>SOURCE</td>
-								<td class="acDetailsTableValue"><span id="selected_source"></span></td>
-							</tr>
+									<tr class="infoblock_body">
+										<td class="acDetailsTableLabel"><i icon-name="megaphone"></i>SQUAWK</td>
+										<td class="acDetailsTableValue"><span id="selected_squawk"></span></td>
+										<td class="acDetailsTableLabel"><i icon-name="network"></i>SOURCE</td>
+										<td class="acDetailsTableValue"><span id="selected_source"></span></td>
+									</tr>
 
-							<!--
-						<tr class="infoblock_body">
-							<td colspan="2"><span id="selected_photo_link"></span></td>
-						</tr>-->
-						</table>
-					</div>
-					<!--external links-->
-					<div id="mainTabsLinks" class="mainTabContent">
-						<div class="acInfoHeaderAdditional">
-							<span id="selected_links">
-								<ul>
-									<li><a id="selected_adsbexchange_link" href="#" target="_blank" title="[ICAO] adsbexchange.com">[ICAO] adsbexchange.com</a></li>
-									<li><a id="selected_opensky_link" href="#" target="_blank" title="[ICAO] opensky-network.org">[ICAO] opensky-network.org</a></li>
-									<li><a id="selected_flightaware_link" href="#" target="_blank" title="[FLIGHT] flightaware.com ">[FLIGHT] flightaware.com</a></li>
-									<li><a id="selected_planefinder_link" href="#" target="_blank" title="[FLIGHT] planefinder.net">[FLIGHT] planefinder.net</a></li>
-								</ul>
-							</span>
+									<!--
+								<tr class="infoblock_body">
+									<td colspan="2"><span id="selected_photo_link"></span></td>
+								</tr>-->
+								</table>
+							</div>
+							<!--external links-->
+							<div id="tabInfoExternal">
+								<span id="selected_links">
+									<ul>
+										<li><a id="selected_adsbexchange_link" href="#" target="_blank" title="[ICAO] adsbexchange.com">[ICAO] adsbexchange.com</a></li>
+										<li><a id="selected_opensky_link" href="#" target="_blank" title="[ICAO] opensky-network.org">[ICAO] opensky-network.org</a></li>
+										<li><a id="selected_flightaware_link" href="#" target="_blank" title="[FLIGHT] flightaware.com ">[FLIGHT] flightaware.com</a></li>
+										<li><a id="selected_planefinder_link" href="#" target="_blank" title="[FLIGHT] planefinder.net">[FLIGHT] planefinder.net</a></li>
+									</ul>
+								</span>
+							</div>
 						</div>
 					</div>
+
 					<!--database panel-->
 					<div id="mainTabsDb" class="mainTabContent">
 						<span class="sidebarButton pointer" onclick="dbStats();" title="Refresh local database statistics"><i icon-name="refresh-cw"></i><span>Refresh DB statistics</span></span>
@@ -271,7 +277,9 @@
 								<tr class="tableGenericTr">
 									<td class="tableGenericLabel">aircrafts registered</td>
 									<td class="tableGenericValue dbStatsRegisterd">n/a</td>
-									<td class="tableGenericLabel">storage uasge</td>
+								</tr>
+								<tr class="tableGenericTr">
+									<td class="tableGenericLabel">storage uasge <span class="informativeIcon" title="Storage usage do not represent DB actual size. Size is usually much larger, controlled by the browser and will be periodcally reduced due to browser Indexed DB cache implementation."><i icon-name="info"></i></span></td>
 									<td class="tableGenericValue dbStatsSize">n/a</td>
 								</tr>
 							</table>

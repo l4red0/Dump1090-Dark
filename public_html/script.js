@@ -166,9 +166,8 @@ function processReceiverUpdate(data) {
 				}
 				selectPlaneByHex(h, false);
 				getVariousLinksFlight();
-				$("#mainTabs").tabs({
-					active: 0
-				});
+				$("#mainTabs").tabs({	active: 0	});
+				$("#secTabsInfo").tabs({	active: 0	});
 				evt.preventDefault();
 			}.bind(undefined, hex));
 
@@ -630,9 +629,8 @@ function initialize_map() {
 		if (hex) {
 			selectPlaneByHex(hex, (evt.type === 'dblclick'));
 			FollowSelected = true;
-			$("#mainTabs").tabs({
-				active: 0
-			});
+			$("#mainTabs").tabs({	active: 0	});
+			$("#secTabsInfo").tabs({	active: 0	});
 			evt.stopPropagation();
 		} else {
 			deselectAllPlanes();
@@ -1209,15 +1207,16 @@ function getPlaneSpottersApiData(hex) {
 				'Access-Control-Allow-Origin': '*',
 			},
 			beforeSend: function(xhr) {
-				//xhr.setRequestHeader("Authorization", "Basic " + btoa(""));
 				$('#selected_infoblock .psImage').html('<div class="genericSpinner rotating"><i icon-name="radio"></i></div>');
 			},
 			success: function(data) {
 				if (data.photos.length >= 1) {
-					//delay to not choke API
 					setTimeout(function() {
 						renderPlaneSpottersImage(data);
-					}, 800);
+						if(data.error) {
+							console.log("[i] Image cound not be delivered: " + data.error);
+						}
+					}, 800); //delay to not choke API
 				} else {
 					$('#selected_infoblock .psImage').html('<i icon-name="image-off"></i><br>NO MEDIA');
 				}
@@ -1236,7 +1235,7 @@ function renderPlaneSpottersImage(data) {
 	var psPhotoUrl = data.photos[0].thumbnail_large.src; // or .thumbnail.src
 	var psPhotoAuthor = data.photos[0].photographer;
 
-	var psPhotoDiv = '<img src="' + psPhotoUrl + '" alt="Photo author: ' + psPhotoAuthor + '" style="display:none;"><div class="psPhotoInfo">(c) ' + psPhotoAuthor + ' - <a href="' + psPhotoLink + '" target="_blank">Source</a></div>';
+	var psPhotoDiv = '<a href="' + psPhotoLink + '" target="_blank"><img src="' + psPhotoUrl + '" alt="Photo author: ' + psPhotoAuthor + '" style="display:none;"><div class="psPhotoInfo">(c) ' + psPhotoAuthor + '</a></div>';
 
 	selectedInfoBlock.html(psPhotoDiv);
 	$('#selected_infoblock .psImage img').fadeIn(400);
@@ -2382,7 +2381,7 @@ $(document).ready(function() {
 			dbAircraftGetStats();
 		}
 	});
-
+	$("#secTabsInfo").tabs();
 	dbAircraftGetStats();
 	lucide.createIcons();
 });

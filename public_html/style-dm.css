@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;300;700&family=Ubuntu:wght@300;400;500&display=swap');
 @import "./js/chartist-plugin-tooltip.css";
 @import "./js/chartist.min.css";
+
 html, body {
 	margin: 0;
 	padding: 0;
@@ -345,7 +346,7 @@ progress {
 	text-overflow: ellipsis;
 }
 
-#acDetailsTable td svg {
+#acDetailsTable td svg, span.informativeIcon svg {
 	height: 18px;
 	margin: -2px -2px -4px -5px;
 	stroke: #8f8f8f;
@@ -703,18 +704,26 @@ div.mp {
 }
 
 #selected_infoblock a {
-	color: #84d1d0;
+	color: #fff;
 	text-decoration: none;
-	font-size: 12px;
-	font-family: 'Inconsolata', monospace;
+	cursor: pointer;
 }
 
 #selected_infoblock a:hover {
-	color: #5aa5a4;
+	font-weight: 600;
+}
+
+#selected_infoblock .ui-tabs .ui-tabs-nav li a:hover {
+	font-weight: normal;
+}
+
+.ui-tabs .ui-tabs-nav li:hover {
+	background: #096463;
+	border-color: #0a7473;
 }
 
 .acInfoHeader {
-	margin: 0px 5px 5px 0px;
+	margin: 0px 5px 0px 0px;
 	font-size: 12px;
 	display: flex;
 	justify-content: space-between;
@@ -837,6 +846,10 @@ div.mp {
 	text-align: center;
 }
 
+#selected_icao {
+	font-weight: 800;
+}
+
 .icao24Block {
 	display: flex;
 	align-content: center;
@@ -932,17 +945,18 @@ div.mp {
 
 g.ct-labels foreignObject span {
 	color: #a1a1a1;
-		font-size: 11px;
+	font-size: 11px;
 }
 
-svg.ct-chart-bar, svg.ct-chart-line{
+svg.ct-chart-bar, svg.ct-chart-line {
 	overflow: visible;
 }
+
 .ct-label.ct-label.ct-horizontal.ct-end {
-  position: relative;
-  justify-content: flex-end;
-  text-align: center;
-  transform-origin: 100% 0;
-  transform: translate(-50%) rotate(-35deg);
-  white-space:nowrap;
+	position: relative;
+	justify-content: flex-end;
+	text-align: center;
+	transform-origin: 100% 0;
+	transform: translate(-50%) rotate(-35deg);
+	white-space: nowrap;
 }
