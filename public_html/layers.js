@@ -10,7 +10,7 @@ function createBaseLayers() {
 	var us = [];
 
 	// DarkMode for OpenStreetMap
-	world.push(new ol.layer.Tile({
+	world.push(new ol.layer.WebGLTile({
 		source: new ol.source.OSM({
 			"url": "http://{a-c}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
 		}),
@@ -24,7 +24,7 @@ function createBaseLayers() {
 	// AKISSACK - DEFAULT MAPS ------------------- ref: AK2A starts
 	// ------------------------------------------------------------
 	if (ShowAdditionalMaps) {
-		world.push(new ol.layer.Tile({
+		world.push(new ol.layer.WebGLTile({
 			source: new ol.source.OSM({
 				"url": "http://{a-c}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"
 			}),
@@ -32,6 +32,7 @@ function createBaseLayers() {
 			title: 'OpenStreetMap Light',
 			type: 'base',
 			preload: Infinity,
+			//style: {saturation: -0.7}
 		}));
 	}
 
@@ -40,7 +41,7 @@ function createBaseLayers() {
 	// ---------------------------------------------- ref: AK2A ends
 	// ------------------------------------------------------------
 
-	world.push(new ol.layer.Tile({
+	world.push(new ol.layer.WebGLTile({
 		source: new ol.source.OSM(),
 		name: 'osm',
 		title: 'OpenStreetMap',
@@ -51,7 +52,7 @@ function createBaseLayers() {
 	// AKISSACK - additional MAPS ---------------- ref: AK2B starts
 	// ------------------------------------------------------------
 	if (ShowAdditionalMaps) {
-		world.push(new ol.layer.Tile({
+		world.push(new ol.layer.WebGLTile({
 			source: new ol.source.OSM({
 				"url": "http://{a-d}.tile.stamen.com/terrain/{z}/{x}/{y}.png",
 				"attributions": 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. ' +
@@ -62,7 +63,7 @@ function createBaseLayers() {
 			type: 'base',
 		}));
 
-		world.push(new ol.layer.Tile({
+		world.push(new ol.layer.WebGLTile({
 			source: new ol.source.OSM({
 				"url": "http://{a-d}.tile.stamen.com/terrain-background/{z}/{x}/{y}.png",
 				"attributions": 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. ' +
@@ -79,7 +80,7 @@ function createBaseLayers() {
 	// ------------------------------------------------------------
 
 	if (BingMapsAPIKey) {
-		world.push(new ol.layer.Tile({
+		world.push(new ol.layer.WebGLTile({
 			source: new ol.source.BingMaps({
 				key: BingMapsAPIKey,
 				imagerySet: 'Aerial'
@@ -90,7 +91,7 @@ function createBaseLayers() {
 			preload: Infinity,
 		}));
 
-		world.push(new ol.layer.Tile({
+		world.push(new ol.layer.WebGLTile({
 			source: new ol.source.BingMaps({
 				key: BingMapsAPIKey,
 				imagerySet: 'Road',
@@ -512,35 +513,7 @@ function createBaseLayers() {
 			})
 		});
 		ukmilLayer.setVisible(false);
-
-
 	}
-
-	//PL last updated 2018-05-01
-	//Source: https://www.google.com/maps/d/viewer?hl=pl&z=7&mid=1STEikPe5IwRNA84Q6OQEnzbui0c&ll=52.06643630147709%2C19.38760333344835
-	/*var PLairwaysLayer = new ol.layer.Vector({
-		name: 'plairways',
-		type: 'overlay',
-		title: 'Airfields and aerodromes',
-		source: new ol.source.Vector({
-			url: 'layers/PL_airfields_aerodromes.geojson',
-			format: new ol.format.GeoJSON({
-				defaultDataProjection: 'EPSG:4326',
-				projection: 'EPSG:3857'
-			})
-		}),
-		style: new ol.style.Style({
-			fill: new ol.style.Fill({
-				color: 'rgba(0, 102,0, 0.07)'
-			}),
-			stroke: new ol.style.Stroke({
-				color: 'rgba(0, 64,0, 0.5)',
-				width: 2
-			})
-		})
-	});
-	PLairwaysLayer.setVisible(false);
-*/
 
 	var PLairports = new ol.layer.WebGLPoints({
 		name: 'plairports',
