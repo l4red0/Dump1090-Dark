@@ -4,12 +4,21 @@
 $json = file_get_contents("./raw-icao-db.json"); #Raw json path to file
 $jsonOut = "./icao_aircraft_types.json"; #Output file
 
-$rawArray = json_decode($json, true);
+$rawArray = json_decode($json,true);
 $outArray = [];
 
 foreach ($rawArray as $field => $value) {
-		 $outArray[$value['Designator']]['desc'] = $value['Description'];
-		 $outArray[$value['Designator']]['wtc'] = $value['WTC'];
+		#Basic data
+		$outArray[$value['Designator']]['desc'] = $value['Description'];
+		$outArray[$value['Designator']]['wtc'] = $value['WTC'];
+
+		#Extended data
+		/*
+		$outArray[$value['Designator']]['n'] = $value['ModelFullName'];
+		$outArray[$value['Designator']]['m'] = $value['ManufacturerCode'];
+		$outArray[$value['Designator']]['ec'] = $value['EngineCount'];
+		$outArray[$value['Designator']]['et'] = $value['EngineType'];
+		*/
 }
 
 $arrJson = json_encode($outArray);
