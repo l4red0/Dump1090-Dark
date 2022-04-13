@@ -15,7 +15,7 @@ function createBaseLayers() {
 			"url": "http://{a-c}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
 		}),
 		name: 'osm dark',
-		title: 'OpenStreetMap Dark',
+		title: '[OSM] Dark',
 		type: 'base',
 	}));
 
@@ -29,7 +29,7 @@ function createBaseLayers() {
 				"url": "http://{a-c}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"
 			}),
 			name: 'osm light',
-			title: 'OpenStreetMap Light',
+			title: '[OSM] Light',
 			type: 'base',
 			preload: Infinity,
 			//style: {saturation: -0.7}
@@ -44,7 +44,7 @@ function createBaseLayers() {
 	world.push(new ol.layer.WebGLTile({
 		source: new ol.source.OSM(),
 		name: 'osm',
-		title: 'OpenStreetMap',
+		title: '[OSM] Default',
 		type: 'base',
 	}));
 
@@ -53,27 +53,31 @@ function createBaseLayers() {
 	// ------------------------------------------------------------
 	if (ShowAdditionalMaps) {
 		world.push(new ol.layer.WebGLTile({
-			source: new ol.source.OSM({
-				"url": "http://{a-d}.tile.stamen.com/terrain/{z}/{x}/{y}.png",
-				"attributions": 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. ' +
-					'Data by <a _href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
+			source: new ol.source.Stamen({
+				layer: 'terrain',
 			}),
 			name: 'terrain',
-			title: 'Terrain + Roads',
+			title: '[Stamen] Terrain + Roads',
 			type: 'base',
 		}));
 
 		world.push(new ol.layer.WebGLTile({
-			source: new ol.source.OSM({
-				"url": "http://{a-d}.tile.stamen.com/terrain-background/{z}/{x}/{y}.png",
-				"attributions": 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. ' +
-					'Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
+			source: new ol.source.Stamen({
+					layer: 'toner',
 			}),
-			name: 'terrain',
-			title: 'Terrain',
+			name: 'toner',
+			title: '[Stamen] Toner',
 			type: 'base',
 		}));
 
+		world.push(new ol.layer.WebGLTile({
+			source: new ol.source.Stamen({
+					layer: 'toner-lite',
+			}),
+			name: 'toner-lite',
+			title: '[Stamen] Toner Lite',
+			type: 'base',
+		}));
 	}
 	// ------------------------------------------------------------
 	// ---------------------------------------------- ref: AK2B ends
@@ -86,7 +90,7 @@ function createBaseLayers() {
 				imagerySet: 'Aerial'
 			}),
 			name: 'bing_aerial',
-			title: 'Bing Aerial',
+			title: '[Bing] Aerial',
 			type: 'base',
 			preload: Infinity,
 		}));
@@ -99,7 +103,7 @@ function createBaseLayers() {
 			}),
 			preload: Infinity,
 			name: 'bing_roads',
-			title: 'Bing Roads',
+			title: '[Bing] Roads',
 			type: 'base',
 
 		}));
@@ -174,7 +178,7 @@ function createBaseLayers() {
 	if (world.length > 0) {
 		layers.push(new ol.layer.Group({
 			name: 'world',
-			title: 'Worldwide',
+			title: 'Base maps',
 			layers: world
 		}));
 	}

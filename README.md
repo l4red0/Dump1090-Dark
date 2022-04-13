@@ -46,6 +46,13 @@ nano ./html/config.js
 6. Clear your browser cache and re-load your Dump1090 page. Usually it's `http://<your-dump1090-ip>/dump1090/index.html`
 
 ## Changelog
+**13.04.22 - v0.18**
+- changed all base map layers to webGL
+- added new monochromatic base map layers: [Stamen] Toner, [Stamen] Toner Lite
+- plane info tabs rearrangement and cleanup
+- added zoom+pan on aircraft photo hover
+- added hints to some options, minor UI tweaks
+
 **8.04.22 - v0.17a**
 - updated: Aircraft Type Designators `public_html\db\aircraft_types\icao_aircraft_types.json`
 - initial markers (aircraft icons on map) refactoring and update. This is part of longer process with deeper changes to markers mechanism so regressions are expected.
