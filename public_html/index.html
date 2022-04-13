@@ -96,9 +96,9 @@
 								<td id="flag" onclick="sortByCountry()"></td>
 								<td id="icao" onclick="sortByICAO();">ICAO24</td>
 								<td id="flight" onclick="sortByFlight();" title="ID / Flight">FLIGHT</td>
-								<td id="registration" onclick="sortByRegistration();">Registration</td>
-								<td id="aircraft_type" onclick="sortByAircraftType();"> Air craft type</td>
-								<td id="myAc" onclick="sortByICAO();">Aircraft</td> <!-- AKISSACK [MYTB] -->
+								<td id="registration" onclick="sortByRegistration();">REG.</td>
+								<td id="aircraft_type" onclick="sortByAircraftType();">TYPE</td>
+								<td id="myAc" onclick="sortByICAO();">MODEL</td> <!-- AKISSACK [MYTB] -->
 								<td id="myAcAc" onclick="sortByICAO();">NAME</td> <!-- AKISSACK [MYTB] -->
 								<td id="myAcCat" onclick="sortByICAO();">Icon</td> <!-- AKISSACK [MYTB] -->
 								<td id="squawk" onclick="sortBySquawk();" title="Squawk"><i icon-name="megaphone"></i></td>
@@ -150,6 +150,7 @@
 
 
 				<div id="mainTabs">
+					<!---->
 					<ul>
 						<li><a href="#selected_infoblock" title="Aircraft info panel"><i icon-name="plane"></i></a></li>
 						<li><a href="#mainTabsFilters" title="Filter data"><i icon-name="sliders"></i><span></a></li>
@@ -157,97 +158,98 @@
 						<li><a href="#mainTabsDb" title="Database settings and information"><i icon-name="database"></i><span></a></li>
 						<li><a href="#mainTabsSettings" title="Settings"><i icon-name="settings"></i></a></li>
 					</ul>
-
 					<!-- selected_infoblock -->
 					<div id="selected_infoblock" class="mainTabContent">
 						<div class="acInfoHeader">
 							<h2>
 								<span id="selected_flag"><img style="" src="./assets/flags-tiny/noflag.png" alt="Flag"></span>
-								<span id="selected_callsign" onclick="toggleFollowSelected();" class="pointer">n/a</span>
+								<span id="selected_callsign" onclick="toggleFollowSelected();" class="pointer" title="Flight name / callsign">n/a</span>
 								<span id="selected_follow" onclick="toggleFollowSelected();" class="pointer"><i icon-name="locate-fixed"></i></span>
 							</h2>
 							<div class="icao24Block">
-
 								<span id="selected_emergency"></span>
-								<div class="icao24value" title="Aircraft unique ICAO 24-bit address (aka 'Mode-S', 'ICAO24' or 'hex code') since 2007 based on registration allocated by the relevant civil aviation authority."><span>ICAO24</span><a href="http://www.airframes.org/" onclick="document.getElementById('horrible_hack').submit.call(document.getElementById('airframes_post')); return false;"
-									 title="[ICAO] airframes.org" id="selected_icao"></a></div>
+								<div class="icao24value" title="Aircraft unique ICAO 24-bit address (aka 'Mode-S', 'ICAO24' or 'hex code') since 2007 based on registration allocated by the relevant civil aviation authority."><span>ICAO24</span><a
+									 href="http://www.airframes.org/" onclick="document.getElementById('horrible_hack').submit.call(document.getElementById('airframes_post')); return false;" title="[ICAO] airframes.org" id="selected_icao"></a></div>
 								<button onclick="copyToClipboard('#selected_icao')" class="iconBtnDark copyBtn" title="Copy to clipboard"><i icon-name="clipboard-copy"></i></button>
 							</div>
 						</div>
 
 						<div id="secTabsInfo">
 							<ul>
-								<li><a href="#tabInfoBasic" title="Overall AC data - live and from DB" class="pointer">Basic</a></li>
+								<li><a href="#tabInfoBasic" title="Overall AC data - live and from DB" class="pointer">Main data</a></li>
 								<li><a href="#tabInfoExternal" title="Links to additional data on external sites" class="pointer">External links</a></li>
 							</ul>
 							<div id="tabInfoBasic">
-								<div class="psImage"><i icon-name="image-off"></i><br>NO MEDIA</div>
-								<!--aircraft detailed data-->
-								<table id="acDetailsTable">
-									<tr class="infoblock_body">
-										<td class="acDetailsTableLabel"><i icon-name="plane"></i>MODEL</td>
-										<td class="acDetailsTableValue" colspan="3"><span id="selected_model"></span></td>
+								<!-- AC BASIC INFORMATION TABLE-->
+								<table class="acDetailsTable">
+									<tr class="acInfoTr">
+										<td class="acDetailsTableLabel" title="Manufacturer and model name"><i icon-name="plane"></i>MODEL</td>
+										<td class="acDetailsTableValue"><span id="selected_model"></span></td>
 									</tr>
-
-									<tr class="infoblock_body">
-										<td class="acDetailsTableLabel"><i icon-name="locate-fixed"></i>Position</td>
-										<td class="acDetailsTableValue" colspan="3"><span id="selected_position"></span></td>
-									</tr>
-
-									<tr id="infoblock_country" class="infoblock_body">
+									<tr id="infoblock_country" class="acInfoTr">
 										<td class="acDetailsTableLabel"><i icon-name="flag"></i>COUNTRY</td>
 										<td class="acDetailsTableValue"><span id="selected_country"></span></td>
-										<td class="acDetailsTableLabel"><i icon-name="move-vertical"></i>ALTITUDE</td>
-										<td class="acDetailsTableValue"><span id="selected_altitude"></span></td>
 									</tr>
-
-									<tr class="infoblock_body">
-										<td class="acDetailsTableLabel"><i icon-name="form-input"></i>REGISTRATION</td>
+									<tr class="acInfoTr">
+										<td class="acDetailsTableLabel" title="Aircraft Registration"><i icon-name="form-input"></i>REGISTR.</td>
 										<td class="acDetailsTableValue"><span id="selected_registration"></span></td>
-										<td class="acDetailsTableLabel"><i icon-name="ruler"></i>Distance</td>
-										<td class="acDetailsTableValue"><span id="selected_sitedist"></span></td>
-
 									</tr>
-									<tr class="infoblock_body">
+									<tr class="acInfoTr">
 										<td class="acDetailsTableLabel">AC category</td>
 										<td class="acDetailsTableValue"><span id="selected_category"></span></td>
-										<td class="acDetailsTableLabel"><i icon-name="gauge"></i>SPEED</td>
+									</tr>
+									<tr class="acInfoTr">
+										<td class="acDetailsTableLabel" title="Aircraft type designator by ICAO standard">AC ICAO TYPE</td>
+										<td class="acDetailsTableValue"><span id="selected_icaotype"></span></td>
+									</tr>
+									<tr class="acInfoTr">
+										<td class="acDetailsTableLabel" title="How long ago a message was last received from this aircraft"><i icon-name="history"></i>Last seen</td>
+										<td class="acDetailsTableValue"><span id="selected_seen"></span></td>
+									</tr>
+									<tr class="acInfoTr">
+										<td class="acDetailsTableLabel" title="4-digit (octal representation) transponder code that aircraft can use to identify themselves or send a specific message to air traffic control"><i icon-name="megaphone"></i>SQUAWK</td>
+										<td class="acDetailsTableValue"><span id="selected_squawk"></span></td>
+									</tr>
+								</table>
+
+								<!-- AC TELEMETRY TABLE-->
+								<table class="acDetailsTable">
+									<tr class="acInfoTr">
+										<td class="acDetailsTableLabel" title="Aircraft position in decimal degrees (how long ago updated)"><i icon-name="locate-fixed"></i>Position</td>
+										<td class="acDetailsTableValue"><span id="selected_position"></span> <span class="positionUpadtedAgo"></span></td>
+									</tr>
+									<tr class="acInfoTr">
+										<td class="acDetailsTableLabel" title="Aircraft altitude or 'ground' if it is reporting it is on the ground"><i icon-name="move-vertical"></i>ALTITUDE</td>
+										<td class="acDetailsTableValue"><span id="selected_altitude"></span></td>
+									</tr>
+									<tr class="acInfoTr">
+										<td class="acDetailsTableLabel" title="Distance between your location and aircraft"><i icon-name="ruler"></i>Distance</td>
+										<td class="acDetailsTableValue"><span id="selected_sitedist"></span></td>
+									</tr>
+									<tr class="acInfoTr">
+										<td class="acDetailsTableLabel" title="Usually speed over ground (might be IAS)"><i icon-name="gauge"></i>SPEED</td>
 										<td class="acDetailsTableValue"><span id="selected_speed"></span></td>
 									</tr>
-
-									<tr class="infoblock_body">
-										<td class="acDetailsTableLabel">AC ICAO Code</td>
-										<td class="acDetailsTableValue"><span id="selected_icaotype"></span></td>
+									<tr class="acInfoTr">
+										<td class="acDetailsTableLabel" title="True track over ground in degrees"><i icon-name="compass"></i>Track</td>
+										<td class="acDetailsTableValue"><span id="selected_track"></span></td>
+									</tr>
+								<tr class="acInfoTr">
 										<td class="acDetailsTableLabel" title="Vertical rate / Rate of climb"><i icon-name="trending-up"></i>ROC</td>
 										<td class="acDetailsTableValue"><span id="selected_vertical_rate"></span></td>
 									</tr>
-
-									<tr class="infoblock_body">
-										<td class="acDetailsTableLabel"><i icon-name="binary"></i>Messages</td>
+									<tr class="acInfoTr">
+										<td class="acDetailsTableLabel" title="Total number of Mode S messages received from aircraft"><i icon-name="binary"></i>Messages</td>
 										<td class="acDetailsTableValue"><span id="selected_message_count"></span></td>
-										<td class="acDetailsTableLabel"><i icon-name="radio"></i>RSSI</td>
+									</tr>
+									<tr class="acInfoTr">
+										<td class="acDetailsTableLabel" title="Recent average RSSI - signal strenght (dbFS)"><i icon-name="radio"></i>RSSI</td>
 										<td class="acDetailsTableValue"><span id="selected_rssi"></span></td>
-
 									</tr>
-
-									<tr class="infoblock_body">
-										<td class="acDetailsTableLabel"><i icon-name="history"></i>Last seen</td>
-										<td class="acDetailsTableValue"><span id="selected_seen"></span></td>
-										<td class="acDetailsTableLabel"><i icon-name="compass"></i>Track</td>
-										<td class="acDetailsTableValue"><span id="selected_track"></span></td>
-									</tr>
-
-									<tr class="infoblock_body">
-										<td class="acDetailsTableLabel"><i icon-name="megaphone"></i>SQUAWK</td>
-										<td class="acDetailsTableValue"><span id="selected_squawk"></span></td>
-										<td class="acDetailsTableLabel"><i icon-name="network"></i>SOURCE</td>
+									<tr class="acInfoTr">
+										<td class="acDetailsTableLabel" title="Where information aboiut aircraft are coming from"><i icon-name="network"></i>SOURCE</td>
 										<td class="acDetailsTableValue"><span id="selected_source"></span></td>
 									</tr>
-
-									<!--
-								<tr class="infoblock_body">
-									<td colspan="2"><span id="selected_photo_link"></span></td>
-								</tr>-->
 								</table>
 							</div>
 							<!--external links-->
@@ -262,6 +264,7 @@
 								</span>
 							</div>
 						</div>
+						<div class="psImage"><i icon-name="image-off"></i><br>NO MEDIA</div>
 					</div>
 
 					<!--database panel-->
@@ -273,13 +276,15 @@
 						<span class="sidebarButton pointer dbPersistant" onclick="dbPersistant();" title="Database persistance"><i icon-name="hard-drive"></i><span>Make local DB persistant</span></span>
 						<div class="locDbInfo">
 							<div class="dbOpInfo"></div>
-							<table id="tableGeneric" style="margin:10px 0 0 0 ">
+							<table class="tableGeneric" style="margin:10px 0 0 0 ">
 								<tr class="tableGenericTr">
 									<td class="tableGenericLabel">aircrafts registered</td>
 									<td class="tableGenericValue dbStatsRegisterd">n/a</td>
 								</tr>
 								<tr class="tableGenericTr">
-									<td class="tableGenericLabel">storage uasge <span class="informativeIcon" title="Storage usage do not represent DB actual size. Size is usually much larger, controlled by the browser and will be periodcally reduced due to browser Indexed DB cache implementation."><i icon-name="info"></i></span></td>
+									<td class="tableGenericLabel">storage uasge <span class="informativeIcon"
+										 title="Storage usage do not represent DB actual size. Size is usually much larger, controlled by the browser and will be periodcally reduced due to browser Indexed DB cache implementation."><i
+											 icon-name="info"></i></span></td>
 									<td class="tableGenericValue dbStatsSize">n/a</td>
 								</tr>
 							</table>
@@ -294,7 +299,7 @@
 								<li><a href="#chartsTop" title="Most commonly seen aircrafts by ICAO24" class="pointer">Top</a></li>
 							</ul>
 							<div id="chartsByDay">
-								<div class="legendWrap"><span class="legend color-a">All AC this day</span><span class="legend color-b">AC seen first time</span></div>
+								<div class="legendWrap"><span class="legend color-a">AC seen this day</span><span class="legend color-b">AC seen first time</span></div>
 								<div class="chartDailySeen ct-chart ct-major-twelfth"></div>
 							</div>
 							<div id="chartsTop">

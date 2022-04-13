@@ -155,9 +155,9 @@ div#update_error {
 }
 
 .genericSpinner {
-	margin: 35px auto;
-	width: 50px;
-	height: 60px;
+	margin: 31px auto;
+	width: 40px;
+	height: 40px;
 }
 
 .radioSpinner svg {
@@ -332,35 +332,59 @@ progress {
 	display: none;
 }
 
-#acDetailsTable, #tableGeneric {
-	font-size: 12px;
-	border-collapse: collapse;
-	width: -webkit-fill-available;
-	margin: 0px 4px 8px 0px;
+.acDetailsTable {
+	max-width: 49.5%;
+	width: 49.5%;
 }
 
-#acDetailsTable td, #tableGeneric td {
+#tabInfoBasic {}
+
+.tableGeneric {
+	width: 100%;
+}
+
+.acDetailsTable, .tableGeneric {
+	font-size: 12px;
+	border-collapse: collapse;
+	margin: 0px 0.5% 8px 0px;
+	float: left;
+}
+
+.acDetailsTable td, .tableGeneric td {
 	border: 1px solid #343434;
 	padding: 3px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
 
-#acDetailsTable td svg, span.informativeIcon svg {
+.acDetailsTable td svg, span.informativeIcon svg {
 	height: 18px;
-	margin: -2px -2px -4px -5px;
+	margin: -2px 2px -4px -5px;
 	stroke: #8f8f8f;
 }
 
-#acDetailsTable .acDetailsTableLabel, #tableGeneric .tableGenericLabel {
+.tableGeneric .tableGenericLabel {
+	width: 50%;
+}
+
+.acDetailsTable .acDetailsTableLabel {
+	width: 82px;
+	cursor: help;
+}
+
+.acDetailsTable .acDetailsTableLabel, .tableGeneric .tableGenericLabel {
 	font-family: 'Inconsolata', monospace;
 	text-transform: uppercase;
 	font-weight: 600;
 	background: #222;
 }
 
-#acDetailsTable .acDetailsTableValue, #tableGeneric .tableGenericValue {
+.acDetailsTable .acDetailsTableValue, .tableGeneric .tableGenericValue {
 	font-family: 'Inconsolata', monospace;
+}
+
+.positionUpadtedAgo {
+	font-size: 10px;
 }
 
 #selected_flag img {
@@ -387,42 +411,48 @@ progress {
 }
 
 .psImage {
-	display: block;
-	width: 200px;
-	min-height: 133px;
-	float: left;
-	position: relative;
-	margin-right: 4px;
+	width: 190px;
+	position: absolute;
+	margin: 0px -8px 0px 0px;
 	text-align: center;
 	background: #363636;
 	color: #161616;
+	height: 98px;
+	top: -40px;
+	right: 9px;
+	border: 1px solid #363636;
+	overflow: hidden;
+	text-align: center;
 }
 
 .psImage svg {
-	margin-top: 20%;
+	display: block;
+	width: 100%;
+	margin-top: 10%;
 }
 
 .psImage img {
 	width: 100%;
 	height: auto;
+	transform-origin: 50% 50%;
+	transition: transform .25s, visibility .25s ease-out;
+	transform: translate(0px, -10px);
 }
 
+/*
 .psImage img:hover {
 	position: relative;
-	width: 200%;
 	height: auto;
-	display: block;
-	transition: 0.2s;
-}
-
+	transition: .5s;
+}*/
 .psPhotoInfo {
 	position: absolute;
 	top: 5px;
-	left: 5px;
+	right: 5px;
 	display: block;
 	background: #0000008f;
 	width: auto;
-	padding: 5px;
+	padding: 3px;
 	font-size: 10px;
 	color: #fff;
 }
@@ -707,6 +737,7 @@ div.mp {
 	color: #fff;
 	text-decoration: none;
 	cursor: pointer;
+	text-transform: uppercase;
 }
 
 #selected_infoblock a:hover {
@@ -718,8 +749,8 @@ div.mp {
 }
 
 .ui-tabs .ui-tabs-nav li:hover {
-	background: #096463;
-	border-color: #0a7473;
+	background: #343434;
+	border-color: #363636;
 }
 
 .acInfoHeader {
@@ -727,6 +758,7 @@ div.mp {
 	font-size: 12px;
 	display: flex;
 	justify-content: space-between;
+	width: 65%;
 }
 
 .acInfoHeader h2 {
@@ -766,6 +798,10 @@ div.mp {
 	height: 30vh;
 }
 
+#secTabsInfo {
+	margin: auto -1px 0px -6px;
+}
+
 .mainTabContent {
 	overflow: auto;
 }
@@ -801,7 +837,7 @@ div.mp {
 	background: #2a2a2a;
 	padding: 6px;
 	height: 100%;
-	overflow: auto;
+	overflow: visible;
 	margin: auto -6px 0px -3px;
 	border-top: 1px solid #363636;
 }
@@ -823,9 +859,21 @@ div.mp {
 }
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
-	cursor: initial;
+	cursor: pointer;
 }
 
+#secTabsInfo ul.ui-tabs-nav li a {
+	font-size: 11px;
+	line-height: 12px;
+	margin-top: -3px;
+}
+
+#secTabsInfo ul.ui-tabs-nav li {}
+
+/*
+#secTabsInfo.ui-tabs ul.ui-tabs-nav {
+	margin: 0px 0px -1px 0px;
+}*/
 .ui-tabs .ui-tabs-nav li {
 	margin: 1px 5px 0 0;
 	z-index: 2;

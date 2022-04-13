@@ -166,8 +166,12 @@ function processReceiverUpdate(data) {
 				}
 				selectPlaneByHex(h, false);
 				getVariousLinksFlight();
-				$("#mainTabs").tabs({	active: 0	});
-				$("#secTabsInfo").tabs({	active: 0	});
+				$("#mainTabs").tabs({
+					active: 0
+				});
+				$("#secTabsInfo").tabs({
+					active: 0
+				});
 				evt.preventDefault();
 			}.bind(undefined, hex));
 
@@ -629,8 +633,12 @@ function initialize_map() {
 		if (hex) {
 			selectPlaneByHex(hex, (evt.type === 'dblclick'));
 			FollowSelected = true;
-			$("#mainTabs").tabs({	active: 0	});
-			$("#secTabsInfo").tabs({	active: 0	});
+			$("#mainTabs").tabs({
+				active: 0
+			});
+			$("#secTabsInfo").tabs({
+				active: 0
+			});
 			evt.stopPropagation();
 		} else {
 			deselectAllPlanes();
@@ -1174,7 +1182,8 @@ function refreshSelected() {
 	} else {
 		var mlat_bit = (selected.position_from_mlat ? "MLAT: " : "");
 		if (selected.seen_pos > 1) {
-			$('#selected_position').text(mlat_bit + format_latlng(selected.position) + " (" + selected.seen_pos.toFixed(1) + "s)");
+			$('#selected_position').text(mlat_bit + format_latlng(selected.position));
+			$('.positionUpadtedAgo').text("(" + selected.seen_pos.toFixed(1) + "s)");
 		} else {
 			$('#selected_position').text(mlat_bit + format_latlng(selected.position));
 		}
@@ -1213,7 +1222,7 @@ function getPlaneSpottersApiData(hex) {
 				if (data.photos.length >= 1) {
 					setTimeout(function() {
 						renderPlaneSpottersImage(data);
-						if(data.error) {
+						if (data.error) {
 							console.log("[i] Image cound not be delivered: " + data.error);
 						}
 					}, 800); //delay to not choke API
@@ -1229,8 +1238,8 @@ function getPlaneSpottersApiData(hex) {
 }
 
 function renderPlaneSpottersImage(data) {
-
 	var selectedInfoBlock = $('#selected_infoblock .psImage');
+	var selectedInfoBlockImg = $('#selected_infoblock .psImage img');
 	var psPhotoLink = data.photos[0].link;
 	var psPhotoUrl = data.photos[0].thumbnail_large.src; // or .thumbnail.src
 	var psPhotoAuthor = data.photos[0].photographer;
@@ -1238,8 +1247,23 @@ function renderPlaneSpottersImage(data) {
 	var psPhotoDiv = '<a href="' + psPhotoLink + '" target="_blank"><img src="' + psPhotoUrl + '" alt="Photo author: ' + psPhotoAuthor + '" style="display:none;"><div class="psPhotoInfo">(c) ' + psPhotoAuthor + '</a></div>';
 
 	selectedInfoBlock.html(psPhotoDiv);
-	$('#selected_infoblock .psImage img').fadeIn(400);
-
+	$('#selected_infoblock .psImage img').fadeIn(400, function() {
+	// pan thumbnail AC photos
+	$(selectedInfoBlock).on('mouseover', function() {
+		$('#selected_infoblock .psImage img').css({
+			'transform': 'scale(2.5)'
+		});
+	}).on('mouseout', function() {
+		$('#selected_infoblock .psImage img').css({
+			'transform': 'scale(1)',
+			'transform': 'translate(0px, -10px)'
+		});
+	}).on('mousemove', function(event) {
+		$('#selected_infoblock .psImage img').css({
+			'transform-origin': ((event.pageX - $(this).offset().left) / $(this).width()) * 100 + '% ' + ((event.pageY - $(this).offset().top) / $(this).height()) * 100 + '%'
+		});
+	})
+	  });
 
 }
 
